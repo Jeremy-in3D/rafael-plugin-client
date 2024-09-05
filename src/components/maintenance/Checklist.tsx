@@ -10,17 +10,31 @@ export function Checklist({ pluginData }: any) {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   const handleCheckBox = (idx: number) => {
-    if (idx !== currentItem) {
-      return;
-    }
+    const isUserRecheckingPreviouslyEditedChecks = idx !== currentItem;
 
-    if (!checkedItems.includes(idx)) {
-      setCheckedItems([...checkedItems, idx]);
-      if (idx === currentItem) {
-        setCurrentItem(currentItem + 1);
+    if (isEditMode) {
+      if (checkedItems.includes(idx)) {
+        const updatedArray = [...checkedItems].filter((item) => item != idx);
+        setCheckedItems(updatedArray);
       }
     } else {
-      setCheckedItems(checkedItems.filter((item) => item !== idx));
+      if (isUserRecheckingPreviouslyEditedChecks) {
+        if (!checkedItems.includes(idx) && currentItem > idx) {
+          const updatedArray = [...checkedItems];
+          updatedArray.splice(idx, 0, idx);
+          setCheckedItems(updatedArray);
+        }
+        return;
+      }
+
+      if (!checkedItems.includes(idx)) {
+        setCheckedItems([...checkedItems, idx]);
+        if (idx === currentItem) {
+          setCurrentItem(currentItem + 1);
+        }
+      } else {
+        setCheckedItems(checkedItems.filter((item) => item !== idx));
+      }
     }
   };
 

@@ -13,7 +13,6 @@ function App() {
     const fetchData = async () => {
       const res = await fetch("http://192.168.1.224:3000");
       const data = await res.json();
-      console.log({ data });
       if (data && data.checklistData) {
         setPluginData(data.checklistData);
       }

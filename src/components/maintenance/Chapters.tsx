@@ -20,15 +20,15 @@ export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
         <div style={{ flex: 3 }}>
           <Checklist pluginData={pluginData} />
         </div>
-        <List pluginData={pluginData} />
+        <ChapterList pluginData={pluginData} title={title} />
       </div>
     </div>
   );
 }
 
-export const List = ({ pluginData }: any) => {
+export const ChapterList = ({ pluginData, title }: any) => {
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
-  const chaptersArr = new Array(5).fill(null);
+  const chaptersArr = pluginData; // new Array(5).fill(null);
 
   return (
     <div
@@ -37,7 +37,6 @@ export const List = ({ pluginData }: any) => {
         flexDirection: "column",
         alignItems: "center",
         flex: 1,
-        border: "1px solid black",
       }}
     >
       <div className="content-navbar">
@@ -52,20 +51,28 @@ export const List = ({ pluginData }: any) => {
         </div>
       </div>
       <div className="content-list">
-        <div className="chapter-title">Chapter title</div>
+        <div className="chapter-title">{title}</div>
         {chaptersArr && chaptersArr.length
           ? chaptersArr.map((element: any, idx: number) => (
-              <div
-                key={idx}
-                className="chapters-item"
-                style={{ border: "1px solid black", color: "white" }}
-              >
-                <ListItem
-                  chapter={idx}
-                  selectedChapter={selectedChapter}
-                  setSelectedChapter={setSelectedChapter}
-                />
-              </div>
+              <>
+                <div
+                  key={idx}
+                  className="chapters-item"
+                  style={{ border: "1px solid black", color: "white" }}
+                >
+                  <ChapterListItem
+                    chapter={idx}
+                    selectedChapter={selectedChapter}
+                    setSelectedChapter={setSelectedChapter}
+                    element={element}
+                  />
+                </div>
+                <div className="tasks-container">
+                  {tasksPerElement.map((item, idx) => (
+                    <TaskList idx={item} />
+                  ))}
+                </div>
+              </>
             ))
           : null}
       </div>
@@ -73,18 +80,20 @@ export const List = ({ pluginData }: any) => {
   );
 };
 
-type ListItemProps = {
+type ChapterListItemProps = {
   chapter: number;
   selectedChapter: number | null;
   setSelectedChapter: React.Dispatch<React.SetStateAction<number | null>>;
+  element: any;
 };
 
-const ListItem = ({
+const ChapterListItem = ({
   chapter,
   selectedChapter,
   setSelectedChapter,
-}: ListItemProps) => {
-  const adjustedChapter = chapter + 1;
+  element,
+}: ChapterListItemProps) => {
+  // const adjustedChapter = chapter + 1;
   return (
     <div>
       {selectedChapter == chapter ? (
@@ -92,16 +101,36 @@ const ListItem = ({
           className="chapter-item-open"
           onClick={() => setSelectedChapter(null)}
         >
-          hello world
+          {element.chapter}
         </div>
       ) : (
-        <div
-          className="chapter-item-closed"
-          onClick={() => setSelectedChapter(chapter)}
-        >
-          {adjustedChapter}
-        </div>
+        <>
+          <div
+            className="chapter-item-closed"
+            onClick={() => setSelectedChapter(chapter)}
+          >
+            {`${element.chapter} .${chapter + 1}`}
+          </div>
+        </>
       )}
+    </div>
+  );
+};
+
+const tasksPerElement = [1, 2, 3];
+
+type TaskListProps = {
+  idx: number;
+};
+
+const TaskList = ({ idx }: TaskListProps) => {
+  return (
+    <div
+      className="chapter-item-closed task-item"
+      key={idx}
+      style={{ marginTop: "0.5em" }}
+    >
+      <span style={{ marginRight: "1em" }}>{`task: ${idx}`}</span>
     </div>
   );
 };
