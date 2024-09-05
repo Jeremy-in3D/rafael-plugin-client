@@ -1,0 +1,143 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  /* max-width: 1100px; */
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* place-items: center;
+  min-width: 320px;
+  min-height: 100vh; */
+}
+
+.app-wrapper {
+  border: 1px solid black;
+  border-radius: 12px;
+  width: 80vw;
+  height: 90vh;
+  /* max-width: 1100px; */
+  padding: 4px;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.chapters-item {
+  margin-top: 1em;
+  background: grey;
+  width: 80%;
+  border-radius: 12px;
+}
+
+.chapter-item-open {
+  background: rgb(144, 69, 69);
+  border-radius: 8px;
+  height: 5em;
+}
+
+.chapter-title {
+  background: rgba(0, 0, 0, 0.908);
+  color: white;
+  border-radius: 12px;
+  width: 80%;
+  margin-top: 1em;
+  margin-left: 4em;
+}
+
+.checklist-container {
+  background: rgba(55, 11, 11, 0.168);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.checklist-content {
+  background: rgba(0, 0, 0, 0.745);
+  height: 100%;
+  margin-top: 1em;
+}
+
+.checklist-list-items {
+  border: 1px solid white;
+  text-align: right;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-list {
+  border-top: 1px solid black;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-navbar {
+  height: 7em;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.content-navbar-holder {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
