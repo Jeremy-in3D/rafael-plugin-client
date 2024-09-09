@@ -5,40 +5,48 @@ import { Operational } from "./components/operational/Operational";
 
 function App() {
   const [typeOfChecklist, setTypeOfChecklist] = useState("");
-  const [pluginData, setPluginData] = useState<any>(null);
+  const [pluginData, setPluginData] = useState<any>([]);
 
   const isMaintenance = typeOfChecklist == "maintenance";
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://192.168.1.224:3000");
-      const data = await res.json();
-      if (data && data.checklistData) {
-        setPluginData(data.checklistData);
-      }
-    };
+    // const fetchData = async () => {
+    //   const res = await fetch("http://192.168.1.224:3000");
+    //   const data = await res.json();
+    //   if (data && data.checklistData) {
+    //     setPluginData(data.checklistData);
+    //   } else {
+    //     setPluginData([]);
+    //   }
+    // };
 
     try {
-      fetchData();
+      // fetchData();
+      setPluginData([
+        {
+          name: "maintenance",
+          chapter: {
+            name: "chapter pool",
+            tasks: ["task1", "task2", "task3"],
+          },
+        },
+        {
+          name: "maintenance",
+          chapter: {
+            name: "Information",
+            tasks: ["learn", "apply", "test", "cool"],
+          },
+        },
+        {
+          name: "maintenance",
+          chapter: {
+            name: "Applications",
+            tasks: ["step 1", "step 2", "step 3"],
+          },
+        },
+      ]);
     } catch {
       console.log("in the first catch");
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://192.168.1.224:3000/sendData", {
-        method: "POST",
-        body: "hello world",
-      });
-      const blab = await res.text();
-      console.log({ blab });
-    };
-
-    try {
-      fetchData().catch((e) => console.log("some error ye: ", e));
-    } catch {
-      console.log("sup");
     }
   }, []);
 

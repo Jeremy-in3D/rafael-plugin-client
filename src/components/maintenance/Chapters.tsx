@@ -1,8 +1,11 @@
 import { useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
+  const [selectedTask, setSelectedTask] = useState<any>(null);
+
   return (
     <div
       style={{
@@ -18,16 +21,28 @@ export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
 
       <div style={{ height: "100%", display: "flex" }}>
         <div style={{ flex: 3 }}>
-          <Checklist pluginData={pluginData} />
+          <Checklist pluginData={pluginData} selectedTask={selectedTask} />
         </div>
-        <ChapterList pluginData={pluginData} title={title} />
+        <ChapterList
+          pluginData={pluginData}
+          title={title}
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+        />
       </div>
     </div>
   );
 }
 
-export const ChapterList = ({ pluginData, title }: any) => {
-  const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
+export const ChapterList = ({
+  pluginData,
+  title,
+
+  selectedTask,
+  setSelectedTask,
+}: any) => {
+  const [selectedChapters, setSelectedChapters] = useState<number[]>([]);
+
   const chaptersArr = pluginData; // new Array(5).fill(null);
 
   return (
@@ -40,11 +55,11 @@ export const ChapterList = ({ pluginData, title }: any) => {
       }}
     >
       <div className="content-navbar">
-        <div className="content-navbar-holder">
+        {/* <div className="content-navbar-holder">
           <HomeIcon fontSize="large" sx={{ color: "black" }} />
-        </div>
+        </div> */}
         <div className="content-navbar-holder">
-          <HomeIcon fontSize="large" sx={{ color: "black" }} />
+          <AssignmentIcon fontSize="large" sx={{ color: "black" }} />
         </div>
         <div className="content-navbar-holder">
           <HomeIcon fontSize="large" sx={{ color: "black" }} />
@@ -62,15 +77,27 @@ export const ChapterList = ({ pluginData, title }: any) => {
                 >
                   <ChapterListItem
                     chapter={idx}
-                    selectedChapter={selectedChapter}
-                    setSelectedChapter={setSelectedChapter}
+                    selectedChapters={selectedChapters}
+                    setSelectedChapters={setSelectedChapters}
                     element={element}
                   />
                 </div>
                 <div className="tasks-container">
-                  {tasksPerElement.map((item, idx) => (
-                    <TaskList idx={item} />
-                  ))}
+                  {selectedChapters.includes(idx)
+                    ? element?.chapter?.tasks?.map(
+                        (item: any, taskIdx: number) => (
+                          <TaskList
+                            chapterIdx={idx}
+                            taskIdx={taskIdx}
+                            key={taskIdx}
+                            selectedChapters={selectedChapters}
+                            item={item}
+                            setSelectedTask={setSelectedTask}
+                            selectedTask={selectedTask}
+                          />
+                        )
+                      )
+                    : null}
                 </div>
               </>
             ))
@@ -82,55 +109,87 @@ export const ChapterList = ({ pluginData, title }: any) => {
 
 type ChapterListItemProps = {
   chapter: number;
-  selectedChapter: number | null;
-  setSelectedChapter: React.Dispatch<React.SetStateAction<number | null>>;
+  selectedChapters: number[];
+  setSelectedChapters: React.Dispatch<React.SetStateAction<number[]>>;
   element: any;
 };
 
 const ChapterListItem = ({
   chapter,
-  selectedChapter,
-  setSelectedChapter,
+  selectedChapters,
+  setSelectedChapters,
   element,
 }: ChapterListItemProps) => {
   // const adjustedChapter = chapter + 1;
   return (
     <div>
-      {selectedChapter == chapter ? (
+      <>
         <div
-          className="chapter-item-open"
-          onClick={() => setSelectedChapter(null)}
+          className="chapter-item-closed"
+          onClick={() => {
+            if (selectedChapters.includes(chapter)) {
+              const newArr = selectedChapters.filter((item) => item != chapter);
+              setSelectedChapters(newArr);
+            } else {
+              const newArr = [...selectedChapters, chapter];
+              setSelectedChapters(newArr);
+            }
+          }}
         >
-          {element.chapter}
+          {`${element?.chapter?.name} .${chapter + 1}`}
         </div>
-      ) : (
-        <>
-          <div
-            className="chapter-item-closed"
-            onClick={() => setSelectedChapter(chapter)}
-          >
-            {`${element.chapter} .${chapter + 1}`}
-          </div>
-        </>
-      )}
+      </>
     </div>
   );
 };
 
-const tasksPerElement = [1, 2, 3];
+const tasksPerElement = ["task1", "task2", "task3"];
 
 type TaskListProps = {
-  idx: number;
+  selectedChapters: number[];
+  taskIdx: number;
+  item: any;
+  setSelectedTask: React.Dispatch<React.SetStateAction<any>>;
+  chapterIdx: number;
+  selectedTask: any;
 };
 
-const TaskList = ({ idx }: TaskListProps) => {
+const TaskList = ({
+  taskIdx,
+  selectedChapters,
+  item,
+  setSelectedTask,
+  selectedTask,
+
+  chapterIdx,
+}: TaskListProps) => {
+  // console.log({ selectedChapters, item });
+  // if (selectedChapter == idx) {
+  //   return null;
+  // }
+
+  const isSeletedTask =
+    taskIdx == selectedTask?.taskIdx && chapterIdx == selectedTask.chapterIdx;
   return (
     <div
       className="chapter-item-closed task-item"
-      key={idx}
+      // key={idx}
       style={{ marginTop: "0.5em" }}
+      onClick={() => {
+        setSelectedTask({ chapterIdx, taskIdx });
+      }}
     >
-      <span style={{ marginRight: "1em" }}>{`task: ${idx}`}</span>
+      <span
+        style={{
+          marginRight: "1em",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          color: isSeletedTask ? "blue" : "",
+        }}
+      >
+        {`${item}: ${taskIdx + 1}`} <AssignmentIcon fontSize="small" />
+      </span>
     </div>
   );
 };

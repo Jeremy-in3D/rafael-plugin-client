@@ -67,12 +67,6 @@ button:focus-visible {
   border-radius: 12px;
 }
 
-.chapter-item-open {
-  background: rgb(144, 69, 69);
-  border-radius: 8px;
-  height: 5em;
-}
-
 .chapter-item-closed {
   text-align: right;
   margin-right: 1em;

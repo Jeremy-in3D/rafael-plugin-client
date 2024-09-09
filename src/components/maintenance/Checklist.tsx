@@ -4,7 +4,7 @@ import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useState } from "react";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 
-export function Checklist({ pluginData }: any) {
+export function Checklist({ pluginData, selectedTask }: any) {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [currentItem, setCurrentItem] = useState<number>(0);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -38,6 +38,10 @@ export function Checklist({ pluginData }: any) {
     }
   };
 
+  const chapterName = pluginData[selectedTask?.chapterIdx]?.chapter?.name;
+  const taskName =
+    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx];
+
   return (
     <div className="checklist-container">
       <div
@@ -62,7 +66,11 @@ export function Checklist({ pluginData }: any) {
           />
           <span style={isEditMode ? { color: "red" } : {}}>Edit</span>
         </div>
-        chapter title
+        <span>
+          {taskName}
+          {" <- "}
+          {chapterName}
+        </span>
       </div>
       <div className="checklist-content">
         {checkItems.map((item, idx) => (
