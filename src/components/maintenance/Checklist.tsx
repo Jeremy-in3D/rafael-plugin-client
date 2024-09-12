@@ -53,8 +53,6 @@ export function Checklist({ pluginData, selectedTask }: any) {
   const taskName =
     pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx];
 
-  console.log({ relevantTasks });
-
   return (
     <div className="checklist-container">
       <div
