@@ -24,13 +24,14 @@ body {
   /* place-items: center;
   min-width: 320px;
   min-height: 100vh; */
+  overflow: hidden;
 }
 
 .app-wrapper {
   border: 1px solid black;
   border-radius: 12px;
-  width: 80vw;
-  height: 90vh;
+  width: 90vw;
+  height: 92vh;
   /* max-width: 1100px; */
   padding: 4px;
   overflow: hidden;
@@ -39,6 +40,14 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+.bottom-actions-bar-container {
+  background: #dbd3d3;
+  height: 6em;
+  /* margin-bottom: 10em; */
+  z-index: 2;
+  width: 100%;
 }
 
 button {
@@ -63,8 +72,9 @@ button:focus-visible {
 .chapters-item {
   margin-top: 1em;
   background: grey;
-  width: 80%;
+  width: 70%;
   border-radius: 12px;
+  margin-right: 1em;
 }
 
 .chapter-item-closed {
@@ -86,39 +96,53 @@ button:focus-visible {
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* justify-content: space-between; */
   border-top-left-radius: 12px;
+  /* overflow: scroll; */
 }
 
 .checklist-content {
   background: rgba(0, 0, 0, 0.745);
+  /* flex: 6; */
+  /* height: 20em; */
   height: 100%;
   margin-top: 1em;
   border-bottom-left-radius: 12px;
+  padding: 3px;
 }
 
 .checklist-list-items {
-  border: 1px solid white;
+  border-bottom: 1px solid white;
   text-align: right;
   padding: 4px;
   display: flex;
   justify-content: space-between;
+  margin-top: 0.5em;
 }
 
 .content-list {
   border-top: 1px solid black;
-  height: 100%;
+
+  /* max-height: 100%; */
+  height: 80%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 3px;
+  /* max-height: 20em; */
+  /* flex: 1; */
+  /* overflow: scroll; */
+  /* overflow-y: auto; */
 }
 
 .content-navbar {
-  height: 7em;
+  height: 6em;
   display: flex;
   width: 100%;
   justify-content: space-evenly;
   background: rgba(128, 128, 128, 0.645);
+  /* flex: 1; */
 }
 
 .content-navbar-holder {
@@ -128,13 +152,15 @@ button:focus-visible {
 }
 
 .tasks-container {
-  width: 80%;
-  margin-right: 2em;
+  width: 70%;
+  /* margin-right: 5em; */
+  margin-right: 1.5em;
 }
 
 .task-item {
   background: rgba(48, 47, 47, 0.168);
   border-radius: 12px;
+  margin-right: 0em;
   color: black;
   border: 1px solid rgba(0, 0, 0, 0.641);
 }
@@ -154,4 +180,7 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@media screen and (max-width: 1300px) {
 }

@@ -3,11 +3,22 @@ import CheckIcon from "@mui/icons-material/Check";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useState } from "react";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
 
 export function Checklist({ pluginData, selectedTask }: any) {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [currentItem, setCurrentItem] = useState<number>(0);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  // if (!!selectedTask.chapterIdx && !!selectedTask.taskIdx) {
+  // }
+
+  // console.log({ pluginData, selectedTask });
+
+  const relevantTasks =
+    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask.taskIdx]
+      .checkListData;
 
   const handleCheckBox = (idx: number) => {
     const isUserRecheckingPreviouslyEditedChecks = idx !== currentItem;
@@ -42,17 +53,19 @@ export function Checklist({ pluginData, selectedTask }: any) {
   const taskName =
     pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx];
 
+  console.log({ relevantTasks });
+
   return (
     <div className="checklist-container">
       <div
         style={{
-          marginRight: "3em",
           fontSize: "1.2em",
           fontWeight: "bold",
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          height: "3em",
+          height: "4em",
+          width: "90%",
         }}
       >
         <div
@@ -66,42 +79,84 @@ export function Checklist({ pluginData, selectedTask }: any) {
           />
           <span style={isEditMode ? { color: "red" } : {}}>Edit</span>
         </div>
-        <span>
-          {taskName}
-          {" <- "}
-          {chapterName}
-        </span>
-      </div>
-      <div className="checklist-content">
-        {checkItems.map((item, idx) => (
-          <div className="checklist-list-items" key={idx}>
-            <div
-              style={{
-                color: "white",
-                marginLeft: "1em",
-              }}
-            >
-              {currentItem === idx ? (
-                <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
-              ) : checkedItems.includes(idx) ? (
-                <CheckIcon
-                  sx={isEditMode ? { color: "red" } : { color: "#40e01f" }}
-                  onClick={() => handleCheckBox(idx)}
-                />
-              ) : (
-                <RadioButtonUncheckedIcon
-                  sx={isEditMode ? { color: "red" } : {}}
-                  onClick={() => handleCheckBox(idx)}
-                />
-              )}
-            </div>
 
-            <div style={{ color: "white", marginRight: "1em" }}>{item}</div>
-          </div>
-        ))}
+        {selectedTask ? (
+          <span>{`${chapterName} -> ${taskName?.name} `}</span>
+        ) : null}
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
+        <div className="checklist-content">
+          {relevantTasks
+            ? relevantTasks.map((item: any, idx: number) => (
+                <div className="checklist-list-items" key={idx}>
+                  <div
+                    style={{
+                      color: "white",
+                      marginLeft: "1em",
+                    }}
+                  >
+                    {currentItem === idx ? (
+                      <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
+                    ) : checkedItems.includes(idx) ? (
+                      <CheckIcon
+                        sx={
+                          isEditMode ? { color: "red" } : { color: "#40e01f" }
+                        }
+                        onClick={() => handleCheckBox(idx)}
+                      />
+                    ) : (
+                      <RadioButtonUncheckedIcon
+                        sx={isEditMode ? { color: "red" } : {}}
+                        onClick={() => handleCheckBox(idx)}
+                      />
+                    )}
+                  </div>
+
+                  <div style={{ color: "white", marginRight: "1em" }}>
+                    {item?.name}
+                  </div>
+                </div>
+              ))
+            : null}
+        </div>
+      </div>
+
+      <div className="bottom-actions-bar-container">
+        <BottomBar />
       </div>
     </div>
   );
 }
 
-const checkItems = ["thing1", "thing2", "thing3", "thing4"];
+const BottomBar = () => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        height: "100%",
+        borderBottomLeftRadius: "12px",
+      }}
+    >
+      <div>
+        <CloudDownloadIcon fontSize="large" sx={{ opacity: 0.6 }} />
+      </div>
+      <div>
+        <GpsFixedIcon fontSize="large" sx={{ opacity: 0.6 }} />
+        <FormatListNumberedRtlIcon
+          fontSize="large"
+          style={{ marginLeft: "2em" }}
+          sx={{ opacity: 0.6 }}
+        />
+      </div>
+    </div>
+  );
+};

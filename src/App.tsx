@@ -3,6 +3,94 @@ import "./App.css";
 import { Maintenance } from "./components/maintenance/Maintenance";
 import { Operational } from "./components/operational/Operational";
 
+const mockData = [
+  {
+    name: "maintenance",
+    chapter: {
+      name: "Information",
+      tasks: [
+        {
+          name: "learn",
+          checkListData: ["task 1", "task 2", "task 3", "task 4"],
+        },
+        {
+          name: "apply",
+          checkListData: [
+            "question 1",
+            "question 2",
+            "question 3",
+            "question 4",
+          ],
+        },
+        {
+          name: "test",
+          checkListData: ["attempt 1", "attempt 2", "attempt 3", "attempt 4"],
+        },
+        {
+          name: "cool",
+          checkListData: ["step 1", "step 2", "step 3", "step 4"],
+        },
+      ],
+    },
+  },
+
+  {
+    name: "maintenance",
+    chapter: {
+      name: "Application",
+      tasks: [
+        {
+          name: "Watch",
+          checkListData: ["task 1", "task 2", "task 3", "task 4"],
+        },
+        {
+          name: "Listen",
+          checkListData: [
+            "question 1",
+            "question 2",
+            "question 3",
+            "question 4",
+          ],
+        },
+        {
+          name: "React",
+          checkListData: ["attempt 1", "attempt 2", "attempt 3", "attempt 4"],
+        },
+        {
+          name: "Meditate",
+          checkListData: ["step 1", "step 2", "step 3", "step 4"],
+        },
+      ],
+    },
+  },
+
+  {
+    name: "operational",
+    chapter: {
+      name: "Shut Down",
+      tasks: [
+        {
+          name: "Do One",
+          checkListData: ["task 1", "task 2", "task 3", "task 4"],
+        },
+        {
+          name: "step 2",
+          checkListData: ["step 1", "step 2", "step 3", "step 4"],
+        },
+        {
+          name: "Then three",
+          checkListData: [
+            "question 1",
+            "question 2",
+            "question 3",
+            "question 4",
+          ],
+        },
+      ],
+    },
+  },
+];
+
 function App() {
   const [typeOfChecklist, setTypeOfChecklist] = useState("");
   const [pluginData, setPluginData] = useState<any>([]);
@@ -10,43 +98,22 @@ function App() {
   const isMaintenance = typeOfChecklist == "maintenance";
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const res = await fetch("http://192.168.1.224:3000");
-    //   const data = await res.json();
-    //   if (data && data.checklistData) {
-    //     setPluginData(data.checklistData);
-    //   } else {
-    //     setPluginData([]);
-    //   }
-    // };
+    const fetchData = async () => {
+      const res = await fetch("http://192.168.1.224:3000");
+      const data = await res.json();
+      if (data && data.checklistData) {
+        console.log(data.checklistData);
+        setPluginData(data.checklistData);
+      } else {
+        setPluginData([]);
+      }
+    };
 
     try {
-      // fetchData();
-      setPluginData([
-        {
-          name: "maintenance",
-          chapter: {
-            name: "chapter pool",
-            tasks: ["task1", "task2", "task3"],
-          },
-        },
-        {
-          name: "maintenance",
-          chapter: {
-            name: "Information",
-            tasks: ["learn", "apply", "test", "cool"],
-          },
-        },
-        {
-          name: "maintenance",
-          chapter: {
-            name: "Applications",
-            tasks: ["step 1", "step 2", "step 3"],
-          },
-        },
-      ]);
+      fetchData();
     } catch {
       console.log("in the first catch");
+      setPluginData(mockData);
     }
   }, []);
 

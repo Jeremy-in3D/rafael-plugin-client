@@ -2,6 +2,7 @@ import { useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import SearchIcon from "@mui/icons-material/Search";
 
 export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
   const [selectedTask, setSelectedTask] = useState<any>(null);
@@ -19,16 +20,25 @@ export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
         <button onClick={() => setTypeOfChecklist("")}>back to home</button>
       </div>
 
-      <div style={{ height: "100%", display: "flex" }}>
-        <div style={{ flex: 3 }}>
+      <div
+        style={{
+          display: "flex",
+          flexGrow: 1,
+          // height: "100%",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ flex: "0 0 76%", height: "100%" }}>
           <Checklist pluginData={pluginData} selectedTask={selectedTask} />
         </div>
-        <ChapterList
-          pluginData={pluginData}
-          title={title}
-          selectedTask={selectedTask}
-          setSelectedTask={setSelectedTask}
-        />
+        <div style={{ flex: 1 }}>
+          <ChapterList
+            pluginData={pluginData}
+            title={title}
+            selectedTask={selectedTask}
+            setSelectedTask={setSelectedTask}
+          />
+        </div>
       </div>
     </div>
   );
@@ -51,13 +61,19 @@ export const ChapterList = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        flex: 1,
+        overflowY: "auto",
+        height: "100%",
+        border: "1px solid black",
+        // overflow: "auto",
+        overflowX: "hidden",
+
+        // flex: 1,
       }}
     >
       <div className="content-navbar">
-        {/* <div className="content-navbar-holder">
-          <HomeIcon fontSize="large" sx={{ color: "black" }} />
-        </div> */}
+        <div className="content-navbar-holder">
+          <SearchIcon fontSize="large" sx={{ color: "black" }} />
+        </div>
         <div className="content-navbar-holder">
           <AssignmentIcon fontSize="large" sx={{ color: "black" }} />
         </div>
@@ -65,43 +81,56 @@ export const ChapterList = ({
           <HomeIcon fontSize="large" sx={{ color: "black" }} />
         </div>
       </div>
+
       <div className="content-list">
         <div className="chapter-title">{title}</div>
-        {chaptersArr && chaptersArr.length
-          ? chaptersArr.map((element: any, idx: number) => (
-              <>
-                <div
-                  key={idx}
-                  className="chapters-item"
-                  style={{ border: "1px solid black", color: "white" }}
-                >
-                  <ChapterListItem
-                    chapter={idx}
-                    selectedChapters={selectedChapters}
-                    setSelectedChapters={setSelectedChapters}
-                    element={element}
-                  />
-                </div>
-                <div className="tasks-container">
-                  {selectedChapters.includes(idx)
-                    ? element?.chapter?.tasks?.map(
-                        (item: any, taskIdx: number) => (
-                          <TaskList
-                            chapterIdx={idx}
-                            taskIdx={taskIdx}
-                            key={taskIdx}
-                            selectedChapters={selectedChapters}
-                            item={item}
-                            setSelectedTask={setSelectedTask}
-                            selectedTask={selectedTask}
-                          />
+        <div
+          style={{
+            height: "90%",
+            overflowY: "auto",
+            overflowX: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          {chaptersArr && chaptersArr.length
+            ? chaptersArr.map((element: any, idx: number) => (
+                <>
+                  <div
+                    key={idx}
+                    className="chapters-item"
+                    style={{ color: "white" }}
+                  >
+                    <ChapterListItem
+                      chapter={idx}
+                      selectedChapters={selectedChapters}
+                      setSelectedChapters={setSelectedChapters}
+                      element={element}
+                    />
+                  </div>
+                  <div className="tasks-container">
+                    {selectedChapters.includes(idx)
+                      ? element?.chapter?.tasks?.map(
+                          (item: any, taskIdx: number) => (
+                            <TaskList
+                              chapterIdx={idx}
+                              taskIdx={taskIdx}
+                              key={taskIdx}
+                              selectedChapters={selectedChapters}
+                              item={item}
+                              setSelectedTask={setSelectedTask}
+                              selectedTask={selectedTask}
+                            />
+                          )
                         )
-                      )
-                    : null}
-                </div>
-              </>
-            ))
-          : null}
+                      : null}
+                  </div>
+                </>
+              ))
+            : null}
+          <div style={{ opacity: 0 }}>hello world</div>
+        </div>
       </div>
     </div>
   );
@@ -122,28 +151,25 @@ const ChapterListItem = ({
 }: ChapterListItemProps) => {
   // const adjustedChapter = chapter + 1;
   return (
-    <div>
-      <>
-        <div
-          className="chapter-item-closed"
-          onClick={() => {
-            if (selectedChapters.includes(chapter)) {
-              const newArr = selectedChapters.filter((item) => item != chapter);
-              setSelectedChapters(newArr);
-            } else {
-              const newArr = [...selectedChapters, chapter];
-              setSelectedChapters(newArr);
-            }
-          }}
-        >
-          {`${element?.chapter?.name} .${chapter + 1}`}
-        </div>
-      </>
+    <div
+      className="chapter-item-closed"
+      style={{
+        fontWeight: selectedChapters.includes(chapter) ? "bold" : "",
+      }}
+      onClick={() => {
+        if (selectedChapters.includes(chapter)) {
+          const newArr = selectedChapters.filter((item) => item != chapter);
+          setSelectedChapters(newArr);
+        } else {
+          const newArr = [...selectedChapters, chapter];
+          setSelectedChapters(newArr);
+        }
+      }}
+    >
+      {`${element?.chapter?.name}`}
     </div>
   );
 };
-
-const tasksPerElement = ["task1", "task2", "task3"];
 
 type TaskListProps = {
   selectedChapters: number[];
@@ -156,20 +182,15 @@ type TaskListProps = {
 
 const TaskList = ({
   taskIdx,
-  selectedChapters,
   item,
   setSelectedTask,
   selectedTask,
 
   chapterIdx,
 }: TaskListProps) => {
-  // console.log({ selectedChapters, item });
-  // if (selectedChapter == idx) {
-  //   return null;
-  // }
-
   const isSeletedTask =
     taskIdx == selectedTask?.taskIdx && chapterIdx == selectedTask.chapterIdx;
+
   return (
     <div
       className="chapter-item-closed task-item"
@@ -185,10 +206,11 @@ const TaskList = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
-          color: isSeletedTask ? "blue" : "",
+          // color: isSeletedTask ? "red" : "",
+          fontWeight: isSeletedTask ? "bold" : "",
         }}
       >
-        {`${item}: ${taskIdx + 1}`} <AssignmentIcon fontSize="small" />
+        {`${item.name}`} <AssignmentIcon fontSize="small" />
       </span>
     </div>
   );

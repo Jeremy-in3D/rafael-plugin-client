@@ -6,12 +6,10 @@ export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
   );
 
   return (
-    <>
-      <Chapters
-        setTypeOfChecklist={setTypeOfChecklist}
-        title={"Maintenance"}
-        pluginData={maintenancePluginData}
-      />
-    </>
+    <Chapters
+      setTypeOfChecklist={setTypeOfChecklist}
+      title={"Maintenance"}
+      pluginData={maintenancePluginData}
+    />
   );
 }
