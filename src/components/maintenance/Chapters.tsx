@@ -3,11 +3,16 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
+import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
 
 export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<any>(null);
+
+  if (title == "Maintenance") {
+    console.log({ checkedItems: countCheckedItems(pluginData) });
+  }
 
   return (
     <div
@@ -250,9 +255,9 @@ const SearchChecklist = ({ pluginData, setSearchData, searchData }: any) => {
           <option className="search-dropdown-option" value="option1">
             דרג א
           </option>
-          <option className="search-dropdown-option" value="option2">
+          {/* <option className="search-dropdown-option" value="option2">
             דרג ב
-          </option>
+          </option> */}
           <option className="search-dropdown-option" value="option3">
             דרג ג
           </option>

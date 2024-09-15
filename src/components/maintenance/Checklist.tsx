@@ -10,6 +10,7 @@ export function Checklist({ pluginData, selectedTask }: any) {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [currentItem, setCurrentItem] = useState<number>(0);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [totalItemsInChecklist, setTotalItemsInChecklist] = useState<number>(0);
 
   // if (!!selectedTask.chapterIdx && !!selectedTask.taskIdx) {
   // }
@@ -117,7 +118,14 @@ export function Checklist({ pluginData, selectedTask }: any) {
                     )}
                   </div>
 
-                  <div style={{ color: "white", marginRight: "1em" }}>
+                  <div
+                    style={{
+                      color: "white",
+                      marginRight: "1em",
+                      fontSize: "1.2em",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {item?.name}
                   </div>
                 </div>
