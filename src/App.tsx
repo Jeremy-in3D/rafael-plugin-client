@@ -149,10 +149,16 @@ const CheckListSelect = ({ setTypeOfChecklist }: CheckListSelectProps) => (
     </div>
     <div>
       <p>Please Select a category</p>
-      <button onClick={() => setTypeOfChecklist("maintenance")}>
+      <button
+        style={{ border: "1px solid rgb(0,0,0,0.2)" }}
+        onClick={() => setTypeOfChecklist("maintenance")}
+      >
         Maintenance
       </button>
-      <button onClick={() => setTypeOfChecklist("operational")}>
+      <button
+        style={{ marginLeft: "2em", border: "1px solid rgb(0,0,0,0.2)" }}
+        onClick={() => setTypeOfChecklist("operational")}
+      >
         Operational
       </button>
     </div>
