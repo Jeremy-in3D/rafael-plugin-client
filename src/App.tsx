@@ -99,7 +99,11 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://192.168.1.224:3000");
+      // const res = await fetch("http://192.168.1.224:3000/getData");
+      const res = await fetch(
+        "https://rafael-plugin-server.onrender.com/getData"
+      );
+
       const data = await res.json();
       if (data && data.checklistData) {
         // console.log(data.checklistData);
