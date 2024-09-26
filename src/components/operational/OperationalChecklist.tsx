@@ -4,6 +4,7 @@ import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useEffect, useState } from "react";
 // import { OperationalFullChapterList } from "./OperationalFullChapterList";
 import { getOperationalChecklistData } from "./logic/getOperationalChecklistData";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 export function OperationalChecklist({
   pluginData,
@@ -108,53 +109,57 @@ const IndividualChecklist = ({
           }}
         >
           {!isCurrentTaskChecked ? (
-            <GpsFixedIcon
-              onClick={() => {
-                // console.log({ pluginData, selectedTask });
-                const testValue = checkPreviousTasks(
-                  pluginData,
-                  selectedTask,
-                  isWorkerOne
-                );
-                // console.log({ testValue });
-                if (!testValue) {
-                  return;
-                }
-                if (isEditMode) {
-                  if (isWorkerOne) {
-                    workerOneQuestions.isChecked = false;
-                  } else {
-                    workerTwoQuestion.isChecked = false;
+            checkPreviousTasks(pluginData, selectedTask, isWorkerOne) ? (
+              <GpsFixedIcon
+                onClick={() => {
+                  // console.log({ pluginData, selectedTask });
+                  const testValue = checkPreviousTasks(
+                    pluginData,
+                    selectedTask,
+                    isWorkerOne
+                  );
+                  // console.log({ testValue });
+                  if (!testValue) {
+                    return;
                   }
-                  return;
-                }
-                if (selectedTask?.chapterIdx != 0) {
-                  if (
-                    pluginData[selectedTask?.chapterIdx - 1]?.chapter.tasks[0]
-                      .questions[workerQuestion].isChecked == false
-                  ) {
-                    return null;
+                  if (isEditMode) {
+                    if (isWorkerOne) {
+                      workerOneQuestions.isChecked = false;
+                    } else {
+                      workerTwoQuestion.isChecked = false;
+                    }
+                    return;
                   }
-                  if (selectedTask.taskIdx == 0) {
-                  } else {
+                  if (selectedTask?.chapterIdx != 0) {
                     if (
-                      pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[
-                        selectedTask.taskIdx - 1
-                      ].questions[workerQuestion].isChecked == false
+                      pluginData[selectedTask?.chapterIdx - 1]?.chapter.tasks[0]
+                        .questions[workerQuestion].isChecked == false
                     ) {
                       return null;
                     }
+                    if (selectedTask.taskIdx == 0) {
+                    } else {
+                      if (
+                        pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[
+                          selectedTask.taskIdx - 1
+                        ].questions[workerQuestion].isChecked == false
+                      ) {
+                        return null;
+                      }
+                    }
                   }
-                }
 
-                if (isWorkerOne) {
-                  workerOneQuestions.isChecked = true;
-                } else {
-                  workerTwoQuestion.isChecked = true;
-                }
-                setIsChecked(!isChecked);
-              }}
-            />
+                  if (isWorkerOne) {
+                    workerOneQuestions.isChecked = true;
+                  } else {
+                    workerTwoQuestion.isChecked = true;
+                  }
+                  setIsChecked(!isChecked);
+                }}
+              />
+            ) : (
+              <RadioButtonUncheckedIcon />
+            )
           ) : (
             <CheckIcon
               // sx={{ color: "#40e01f" }}

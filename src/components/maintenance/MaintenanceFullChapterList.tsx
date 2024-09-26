@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import CheckIcon from "@mui/icons-material/Check";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 type MaintenanceFullChapterListProps = {
   pluginData: any;
@@ -127,7 +128,11 @@ export function MaintenanceFullChapterList({
                                             }
                                           }}
                                         />
-                                      ) : (
+                                      ) : checkPreviousTasks(pluginData, {
+                                          chapterIdx,
+                                          taskIdx,
+                                          checklistIdx,
+                                        }) ? (
                                         <GpsFixedIcon
                                           style={{ marginLeft: "2em" }}
                                           onClick={() => {
@@ -165,6 +170,10 @@ export function MaintenanceFullChapterList({
                                               console.log("out");
                                             }
                                           }}
+                                        />
+                                      ) : (
+                                        <RadioButtonUncheckedIcon
+                                          style={{ marginLeft: "2em" }}
                                         />
                                       )}
                                       <div

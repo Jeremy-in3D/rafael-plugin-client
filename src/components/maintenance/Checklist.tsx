@@ -170,8 +170,10 @@ export function Checklist({
                         //   // onClick={() => handleCheckBox(idx)}
                         // />
                       )
-                    ) : (
+                    ) : checkPreviousTasks(pluginData, selectedTask) ? (
                       <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
+                    ) : (
+                      <RadioButtonUncheckedIcon />
                     )
                   ) : (
                     <CheckIcon

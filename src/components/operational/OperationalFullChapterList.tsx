@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import CheckIcon from "@mui/icons-material/Check";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 type OperationalFullChapterListProps = {
   pluginData: any;
@@ -130,7 +131,11 @@ export function OperationalFullChapterList({
                                         return;
                                       }}
                                     />
-                                  ) : (
+                                  ) : checkPreviousTasks(
+                                      pluginData,
+                                      { chapterIdx: idx, taskIdx },
+                                      false
+                                    ) ? (
                                     <GpsFixedIcon
                                       onClick={() => {
                                         const testThing = [
@@ -151,6 +156,8 @@ export function OperationalFullChapterList({
                                         }
                                       }}
                                     />
+                                  ) : (
+                                    <RadioButtonUncheckedIcon />
                                   )}
                                 </div>
                                 <div
@@ -195,7 +202,11 @@ export function OperationalFullChapterList({
                                         return;
                                       }}
                                     />
-                                  ) : (
+                                  ) : checkPreviousTasks(
+                                      pluginData,
+                                      { chapterIdx: idx, taskIdx },
+                                      true
+                                    ) ? (
                                     <GpsFixedIcon
                                       onClick={() => {
                                         const testThing = [
@@ -218,6 +229,8 @@ export function OperationalFullChapterList({
                                         }
                                       }}
                                     />
+                                  ) : (
+                                    <RadioButtonUncheckedIcon />
                                   )}
                                 </div>
                                 <div
@@ -272,18 +285,18 @@ const checkPreviousTasks = (
           if (selectedTask.chapterIdx == 0) {
             if (selectedTask.taskIdx == 0) {
               if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
                   selectedTask.taskIdx
-                ].questions[workerQuestion].isChecked === false
+                ]?.questions[workerQuestion]?.isChecked === false
               ) {
                 testVal = true;
                 return;
               }
             } else {
               if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
                   selectedTask.taskIdx - 1
-                ].questions[workerQuestion].isChecked === false
+                ]?.questions[workerQuestion]?.isChecked === false
               ) {
                 testVal = false;
                 return;
@@ -292,19 +305,19 @@ const checkPreviousTasks = (
           } else {
             if (selectedTask.taskIdx == 0) {
               if (
-                pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
-                  pluginData[selectedTask.chapterIdx - 1].chapter.tasks.length -
-                    1
-                ].questions[workerQuestion].isChecked === false
+                pluginData[selectedTask.chapterIdx - 1]?.chapter?.tasks[
+                  pluginData[selectedTask.chapterIdx - 1]?.chapter?.tasks
+                    ?.length - 1
+                ]?.questions[workerQuestion]?.isChecked === false
               ) {
                 testVal = false;
                 return;
               }
             } else {
               if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx - 1
-                ].questions[workerQuestion].isChecked === false
+                pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
+                  selectedTask?.taskIdx - 1
+                ]?.questions[workerQuestion]?.isChecked === false
               ) {
                 testVal = false;
                 return;
