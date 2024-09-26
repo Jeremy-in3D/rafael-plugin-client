@@ -37,26 +37,28 @@ export function Checklist({
         setCheckedItems(updatedArray);
       }
     } else {
-      // if (isUserRecheckingPreviouslyEditedChecks) {
-      //   console.log("in 3");
-      //   if (!checkedItems.includes(idx) && currentItem > idx) {
-      //     console.log("in 4");
-      //     const updatedArray = [...checkedItems];
-      //     updatedArray.splice(idx, 0, idx);
-      //     setCheckedItems(updatedArray);
-      //   }
-      //   return;
-      // }
-
-      relevantTasks[idx].isChecked = true;
-      if (!checkedItems.includes(idx)) {
-        setCheckedItems([...checkedItems, idx]);
-        if (idx === currentItem) {
-          setCurrentItem(currentItem + 1);
+      if (checkPreviousTasks(pluginData, selectedTask)) {
+        relevantTasks[idx].isChecked = true;
+        if (!checkedItems.includes(idx)) {
+          setCheckedItems([...checkedItems, idx]);
+          if (idx === currentItem) {
+            setCurrentItem(currentItem + 1);
+          }
+        } else {
+          setCheckedItems(checkedItems.filter((item) => item !== idx));
         }
       } else {
-        setCheckedItems(checkedItems.filter((item) => item !== idx));
+        console.log(" ");
       }
+      // relevantTasks[idx].isChecked = true;
+      // if (!checkedItems.includes(idx)) {
+      //   setCheckedItems([...checkedItems, idx]);
+      //   if (idx === currentItem) {
+      //     setCurrentItem(currentItem + 1);
+      //   }
+      // } else {
+      //   setCheckedItems(checkedItems.filter((item) => item !== idx));
+      // }
     }
     // setCurrentQuestion(currentQuestion + 1);
   };
@@ -262,7 +264,7 @@ const BottomBar = ({
               background: isShowSoloChecklist == 2 ? "grey" : "",
             }}
           >
-            Worker 1{" "}
+            Worker 1
           </button>
         </div>
       ) : null}
@@ -279,4 +281,161 @@ const BottomBar = ({
       </div> */}
     </div>
   );
+};
+
+const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
+  let testVal = true;
+
+  pluginData.forEach((chapter: any) => {
+    if (!chapter) {
+      return false;
+    }
+    // console.log({ chapter });
+    for (const [key, value] of Object.entries(chapter)) {
+      if (key == "chapter") {
+        (value as any).tasks.forEach((task: any, taskIdx: number) => {
+          if (taskIdx != selectedTask.taskIdx) {
+            console.log(task);
+            return;
+          }
+          if (selectedTask.chapterIdx == 0) {
+            if (selectedTask.taskIdx == 0) {
+              if (
+                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                  selectedTask.taskIdx
+                ].checkListData.length > 1
+              ) {
+                // console.log("WELL HOW BOUT THADY");
+                // logic here for chapter == 0 and task == 0 and multiple questions in task
+                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                  selectedTask.taskIdx
+                ].checkListData.map((question: any, questionIdx: number) => {
+                  if (false) {
+                    console.log(question);
+                  }
+                  if (selectedTask.checklistIdx == 0) {
+                    testVal = true;
+                    return;
+                  } else {
+                    if (
+                      pluginData[selectedTask.chapterIdx].chapter.tasks[
+                        selectedTask.taskIdx
+                      ].checkListData[questionIdx - 1] == false
+                    ) {
+                      testVal = false;
+                      return;
+                    }
+                  }
+                });
+              } else {
+                if (
+                  pluginData[selectedTask.chapterIdx].chapter.tasks[
+                    selectedTask.taskIdx
+                  ].checkListData[0].isChecked == false
+                ) {
+                  testVal = true;
+                  return;
+                }
+              }
+            } else {
+              if (
+                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                  selectedTask.taskIdx
+                ].checkListData.length > 1
+              ) {
+                // logic for chapter = 0, but task > 0 and multiple questions in task
+
+                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                  selectedTask.taskIdx
+                ].checkListData.map((question: any, questionIdx: number) => {
+                  if (false) {
+                    console.log(question);
+                  }
+                  if (selectedTask.checklistIdx == 0) {
+                    // new logic here
+
+                    // if (
+                    //   pluginData[selectedTask.chapterIdx].chapter.tasks[
+                    //     pluginData[selectedTask.chapterIdx].chapter.tasks
+                    //       .length - 1
+                    //   ].checkListData[
+                    //     pluginData[selectedTask.chapterIdx].chapter.tasks[
+                    //       pluginData[selectedTask.chapterIdx].chapter.tasks
+                    //         .length - 1
+                    //     ].checkListData.length - 1
+                    //   ].isChecked == false
+                    // ) {
+                    //   testVal = false;
+                    //   return;
+                    // }
+
+                    testVal = true;
+
+                    return;
+                  } else {
+                    if (
+                      pluginData[selectedTask.chapterIdx].chapter.tasks[
+                        selectedTask.taskIdx
+                      ].checkListData[questionIdx - 1] == false
+                    ) {
+                      testVal = false;
+                      return;
+                    }
+                  }
+                });
+              } else {
+                if (
+                  pluginData[selectedTask.chapterIdx].chapter.tasks[
+                    selectedTask.taskIdx - 1
+                  ].checkListData[0].isChecked == false
+                ) {
+                  testVal = false;
+                  return;
+                }
+              }
+            }
+          } else {
+            if (selectedTask.taskIdx == 0) {
+              if (
+                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                  selectedTask.taskIdx
+                ].checkListData.length > 1
+              ) {
+                // insert logic here for first task in chapter > 0 where multiple questions per task
+              } else {
+                if (
+                  pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
+                    pluginData[selectedTask.chapterIdx - 1].chapter.tasks
+                      .length - 1
+                  ].checkListData[0].isChecked == false
+                ) {
+                  testVal = false;
+                  return;
+                }
+              }
+            } else {
+              if (
+                pluginData[selectedTask.chapterIdx].chapter.tasks[
+                  selectedTask.taskIdx
+                ].checkListData.length > 1
+              ) {
+                // console.log("WELL HOW BOUT THADY num 44");
+                // logic here where chapter > 0 and task > 0 and multipl questions per task
+              } else {
+                if (
+                  pluginData[selectedTask.chapterIdx].chapter.tasks[
+                    selectedTask.taskIdx - 1
+                  ].checkListData[0].isChecked == false
+                ) {
+                  testVal = false;
+                  return;
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+  });
+  return testVal;
 };

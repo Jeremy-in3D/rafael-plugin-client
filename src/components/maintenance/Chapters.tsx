@@ -160,8 +160,8 @@ export const ChapterList = ({
                       }}
                     >
                       <ChapterListItem
-                        // setSelectedTask={setSelectedTask}
-                        // selectedTask={selectedTask}
+                        setSelectedTask={setSelectedTask}
+                        selectedTask={selectedTask}
                         chapterIdx={idx}
                         selectedChapters={selectedChapters}
                         setSelectedChapters={setSelectedChapters}
@@ -201,8 +201,8 @@ type ChapterListItemProps = {
   selectedChapters: number[];
   setSelectedChapters: React.Dispatch<React.SetStateAction<number[]>>;
   element: any;
-  // setSelectedTask: React.Dispatch<any>;
-  // selectedTask: any;
+  setSelectedTask: React.Dispatch<any>;
+  selectedTask: any;
 };
 
 const ChapterListItem = ({
@@ -210,6 +210,8 @@ const ChapterListItem = ({
   selectedChapters,
   setSelectedChapters,
   element,
+  setSelectedTask,
+  selectedTask,
 }: // setSelectedTask,
 // selectedTask,
 ChapterListItemProps) => {
@@ -225,6 +227,11 @@ ChapterListItemProps) => {
         //   console.log("test baby");
         //   setSelectedTask({ chapterIdx: chapter, taskIdx: null });
         // }
+        console.log("idk");
+        if (selectedTask && selectedTask.taskIdx) {
+          console.log("UUUUUUUU");
+          setSelectedTask(null);
+        }
 
         if (selectedChapters.includes(chapterIdx)) {
           const newArr = selectedChapters.filter((item) => item != chapterIdx);
@@ -266,7 +273,15 @@ const TaskList = ({
       // key={idx}
       style={{ marginTop: "0.5em", width: "90%" }}
       onClick={() => {
-        setSelectedTask({ chapterIdx, taskIdx });
+        if (selectedTask?.taskIdx == taskIdx) {
+          if (!selectedTask) {
+            setSelectedTask({ chapterIdx, taskIdx });
+          } else {
+            setSelectedTask(null);
+          }
+        } else {
+          setSelectedTask({ chapterIdx, taskIdx });
+        }
       }}
     >
       <span
