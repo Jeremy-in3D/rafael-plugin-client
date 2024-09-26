@@ -203,7 +203,7 @@ const checkPreviousTasks = (
   const workerQuestion = isWorkerOne ? "question-1" : "question-2";
   let testVal = true;
 
-  pluginData.forEach((chapter: any, chapterIdx: number) => {
+  pluginData.forEach((chapter: any) => {
     if (!chapter) {
       return false;
     }
@@ -211,6 +211,7 @@ const checkPreviousTasks = (
       if (key == "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
           if (taskIdx != selectedTask.taskIdx) {
+            console.log(task);
             return;
           }
           if (selectedTask.chapterIdx == 0) {

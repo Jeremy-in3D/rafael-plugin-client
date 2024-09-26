@@ -30,6 +30,10 @@ export function Operational({ setTypeOfChecklist, pluginData }: any) {
     setSortedData(sortedData);
   }, [pluginData]);
 
+  if (false) {
+    console.log(currentQuestion);
+  }
+
   return (
     <div style={{ height: "100%" }}>
       {/* <h2>Operational Lists</h2> */}

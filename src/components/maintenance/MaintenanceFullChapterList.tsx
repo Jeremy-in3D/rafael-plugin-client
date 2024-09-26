@@ -128,7 +128,7 @@ export function MaintenanceFullChapterList({
                                                 testThing
                                               );
                                             } else {
-                                              console.log("OUT WE ARE!");
+                                              console.log("out");
                                             }
                                           }}
                                         />
@@ -162,7 +162,7 @@ export function MaintenanceFullChapterList({
 const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
   let testVal = true;
 
-  pluginData.forEach((chapter: any, chapterIdx: number) => {
+  pluginData.forEach((chapter: any) => {
     if (!chapter) {
       return false;
     }
@@ -171,6 +171,7 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
       if (key == "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
           if (taskIdx != selectedTask.taskIdx) {
+            console.log(task);
             return;
           }
           if (selectedTask.chapterIdx == 0) {
@@ -180,11 +181,14 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                   selectedTask.taskIdx
                 ].checkListData.length > 1
               ) {
-                console.log("WELL HOW BOUT THADY");
+                // console.log("WELL HOW BOUT THADY");
                 // logic here for chapter == 0 and task == 0 and multiple questions in task
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx
                 ].checkListData.map((question: any, questionIdx: number) => {
+                  if (false) {
+                    console.log(question);
+                  }
                   if (selectedTask.checklistIdx == 0) {
                     testVal = true;
                     return;
@@ -220,6 +224,9 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx
                 ].checkListData.map((question: any, questionIdx: number) => {
+                  if (false) {
+                    console.log(question);
+                  }
                   if (selectedTask.checklistIdx == 0) {
                     // new logic here
 
@@ -288,7 +295,7 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                   selectedTask.taskIdx
                 ].checkListData.length > 1
               ) {
-                console.log("WELL HOW BOUT THADY num 44");
+                // console.log("WELL HOW BOUT THADY num 44");
                 // logic here where chapter > 0 and task > 0 and multipl questions per task
               } else {
                 if (

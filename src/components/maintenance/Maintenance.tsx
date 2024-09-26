@@ -41,6 +41,10 @@ export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
     setTasksPerChapter(newTasksPerChapter);
   }, [sortedData]);
 
+  if (false) {
+    console.log(tasksPerChapter);
+  }
+
   return (
     <Chapters
       setTypeOfChecklist={setTypeOfChecklist}

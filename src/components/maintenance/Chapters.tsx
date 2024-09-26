@@ -160,8 +160,8 @@ export const ChapterList = ({
                       }}
                     >
                       <ChapterListItem
-                        setSelectedTask={setSelectedTask}
-                        selectedTask={selectedTask}
+                        // setSelectedTask={setSelectedTask}
+                        // selectedTask={selectedTask}
                         chapterIdx={idx}
                         selectedChapters={selectedChapters}
                         setSelectedChapters={setSelectedChapters}
@@ -201,8 +201,8 @@ type ChapterListItemProps = {
   selectedChapters: number[];
   setSelectedChapters: React.Dispatch<React.SetStateAction<number[]>>;
   element: any;
-  setSelectedTask: React.Dispatch<any>;
-  selectedTask: any;
+  // setSelectedTask: React.Dispatch<any>;
+  // selectedTask: any;
 };
 
 const ChapterListItem = ({
@@ -210,9 +210,9 @@ const ChapterListItem = ({
   selectedChapters,
   setSelectedChapters,
   element,
-  setSelectedTask,
-  selectedTask,
-}: ChapterListItemProps) => {
+}: // setSelectedTask,
+// selectedTask,
+ChapterListItemProps) => {
   // const adjustedChapter = chapter + 1;
   return (
     <div
