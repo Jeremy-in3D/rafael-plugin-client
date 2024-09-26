@@ -10,33 +10,33 @@ function App() {
   const isMaintenance = typeOfChecklist == "maintenance";
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   // const res = await fetch("http://192.168.1.224:3000/getData");
-    //   const res = await fetch(
-    //     "https://rafael-plugin-server.onrender.com/getData",
-    //     {
-    //       method: "GET",
-    //       headers: { "Content-Type": "application/json" },
-    //     }
-    //   );
-    //   console.log("yee idk");
-    //   const data = await res.json();
-    //   if (data && data.checklistData) {
-    //     // console.log(data.checklistData);
-    //     console.log("pap");
-    //     setPluginData(data.checklistData);
-    //   } else {
-    //     console.log("jip");
-    //     setPluginData(mockkDATA);
-    //   }
-    // };
+    const fetchData = async () => {
+      // const res = await fetch("http://192.168.1.224:3000/getData");
+      const res = await fetch(
+        "https://rafael-plugin-server.onrender.com/getData",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      // console.log("yee idk");
+      const data = await res.json();
+      if (data && data.checklistData) {
+        // console.log(data.checklistData);
+        console.log("pap");
+        // setPluginData(data.checklistData);
+      } else {
+        console.log("jip");
+        // setPluginData(mockkDATA);
+      }
+    };
 
-    // try {
-    //   fetchData();
-    // } catch (e) {
-    //   console.log("in the first catch", e);
-    //   setPluginData(mockkDATA);
-    // }
+    try {
+      fetchData();
+    } catch (e) {
+      console.log("in the first catch", e);
+      // setPluginData(mockkDATA);
+    }
     setPluginData(mockkDATA);
   }, []);
 
