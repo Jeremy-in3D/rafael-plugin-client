@@ -102,7 +102,7 @@ function App() {
       const res = await fetch("http://192.168.1.224:3000");
       const data = await res.json();
       if (data && data.checklistData) {
-        console.log(data.checklistData);
+        // console.log(data.checklistData);
         setPluginData(data.checklistData);
       } else {
         setPluginData([]);
@@ -144,7 +144,9 @@ type CheckListSelectProps = {
 
 const CheckListSelect = ({ setTypeOfChecklist }: CheckListSelectProps) => (
   <div style={{ height: "100%", width: "100%" }}>
-    <h1>Checklist</h1>
+    <div style={{ marginTop: "3em" }}>
+      <img src="/images/Rafael-2.png" />
+    </div>
     <div>
       <p>Please Select a category</p>
       <button onClick={() => setTypeOfChecklist("maintenance")}>

@@ -3,16 +3,20 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
-import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
+import { SearchChecklist } from "../search/SearchChecklist";
+// import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
 
-export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
+export function Chapters({
+  setTypeOfChecklist,
+  title,
+  pluginData,
+  currentQuestion,
+  setCurrentQuestion,
+}: any) {
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<any>(null);
-
-  if (title == "Maintenance") {
-    console.log({ checkedItems: countCheckedItems(pluginData) });
-  }
+  const [selectedChapters, setSelectedChapters] = useState<number[]>([]);
 
   return (
     <div
@@ -22,25 +26,44 @@ export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
         flexDirection: "column",
       }}
     >
-      <div>
-        <h1>{title}</h1>
-        <button onClick={() => setTypeOfChecklist("")}>back to home</button>
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+          }}
+        >
+          <div style={{ width: "50%" }}>
+            <img
+              style={{ width: "100%", marginTop: "0.5em" }}
+              src="/images/Rafael-2.png"
+            />
+          </div>
+        </div>
+        <div style={{ flex: 1 }}>
+          <h1>{title}</h1>
+        </div>
+
+        <div style={{ flex: 1 }}></div>
       </div>
 
       <div
         style={{
           display: "flex",
           flexGrow: 1,
-          // height: "100%",
           overflow: "hidden",
         }}
       >
         <div style={{ flex: "0 0 76%", height: "100%" }}>
           <Checklist
+            isMaintenance={title == "Maintenance"}
             pluginData={pluginData}
             selectedTask={selectedTask}
             searchData={searchData}
             setSearchData={setSearchData}
+            setCurrentQuestion={setCurrentQuestion}
+            currentQuestion={currentQuestion}
+            selectedChapters={selectedChapters}
           />
         </div>
         <div style={{ flex: 1 }}>
@@ -51,6 +74,9 @@ export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
             setSelectedTask={setSelectedTask}
             isSearchSelected={isSearchSelected}
             setIsSearchSelected={setIsSearchSelected}
+            setTypeOfChecklist={setTypeOfChecklist}
+            selectedChapters={selectedChapters}
+            setSelectedChapters={setSelectedChapters}
           />
         </div>
       </div>
@@ -65,9 +91,10 @@ export const ChapterList = ({
   setSelectedTask,
   isSearchSelected,
   setIsSearchSelected,
+  setTypeOfChecklist,
+  selectedChapters,
+  setSelectedChapters,
 }: any) => {
-  const [selectedChapters, setSelectedChapters] = useState<number[]>([]);
-
   const chaptersArr = pluginData; // new Array(5).fill(null);
 
   return (
@@ -76,22 +103,25 @@ export const ChapterList = ({
         <div className="content-navbar-holder">
           <SearchIcon
             fontSize="large"
-            sx={{ color: "black" }}
+            sx={{ color: "#2b4cd8" }}
             onClick={() => setIsSearchSelected(!isSearchSelected)}
           />
         </div>
         <div className="content-navbar-holder">
           <AssignmentIcon
             fontSize="large"
-            sx={{ color: "black" }}
+            sx={{ color: "#2b4cd8" }}
             onClick={() => setIsSearchSelected(false)}
           />
         </div>
         <div className="content-navbar-holder">
           <HomeIcon
             fontSize="large"
-            sx={{ color: "black" }}
-            onClick={() => setIsSearchSelected(false)}
+            sx={{ color: "#2b4cd8" }}
+            onClick={() => {
+              setIsSearchSelected(false);
+              setTypeOfChecklist("");
+            }}
           />
         </div>
       </div>
@@ -106,21 +136,33 @@ export const ChapterList = ({
               height: "90%",
               overflowY: "auto",
               overflowX: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
+              // display: "flex",
+              // flexDirection: "column",
+              // alignItems: "flex-end",
+              width: "90%",
             }}
           >
             {chaptersArr && chaptersArr.length
               ? chaptersArr.map((element: any, idx: number) => (
-                  <>
+                  <div
+                    key={`idx${idx}`}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-end",
+                    }}
+                  >
                     <div
-                      key={idx}
                       className="chapters-item"
-                      style={{ color: "white" }}
+                      style={{
+                        color: "white",
+                      }}
                     >
                       <ChapterListItem
-                        chapter={idx}
+                        setSelectedTask={setSelectedTask}
+                        selectedTask={selectedTask}
+                        chapterIdx={idx}
                         selectedChapters={selectedChapters}
                         setSelectedChapters={setSelectedChapters}
                         element={element}
@@ -143,7 +185,7 @@ export const ChapterList = ({
                           )
                         : null}
                     </div>
-                  </>
+                  </div>
                 ))
               : null}
             <div style={{ opacity: 0 }}>hello world</div>
@@ -155,31 +197,40 @@ export const ChapterList = ({
 };
 
 type ChapterListItemProps = {
-  chapter: number;
+  chapterIdx: number;
   selectedChapters: number[];
   setSelectedChapters: React.Dispatch<React.SetStateAction<number[]>>;
   element: any;
+  setSelectedTask: React.Dispatch<any>;
+  selectedTask: any;
 };
 
 const ChapterListItem = ({
-  chapter,
+  chapterIdx,
   selectedChapters,
   setSelectedChapters,
   element,
+  setSelectedTask,
+  selectedTask,
 }: ChapterListItemProps) => {
   // const adjustedChapter = chapter + 1;
   return (
     <div
       className="chapter-item-closed"
       style={{
-        fontWeight: selectedChapters.includes(chapter) ? "bold" : "",
+        fontWeight: selectedChapters.includes(chapterIdx) ? "bold" : "",
       }}
       onClick={() => {
-        if (selectedChapters.includes(chapter)) {
-          const newArr = selectedChapters.filter((item) => item != chapter);
+        // if (!selectedTask && !selectedTask?.chapterIdx) {
+        //   console.log("test baby");
+        //   setSelectedTask({ chapterIdx: chapter, taskIdx: null });
+        // }
+
+        if (selectedChapters.includes(chapterIdx)) {
+          const newArr = selectedChapters.filter((item) => item != chapterIdx);
           setSelectedChapters(newArr);
         } else {
-          const newArr = [...selectedChapters, chapter];
+          const newArr = [...selectedChapters, chapterIdx];
           setSelectedChapters(newArr);
         }
       }}
@@ -213,7 +264,7 @@ const TaskList = ({
     <div
       className="chapter-item-closed task-item"
       // key={idx}
-      style={{ marginTop: "0.5em" }}
+      style={{ marginTop: "0.5em", width: "90%" }}
       onClick={() => {
         setSelectedTask({ chapterIdx, taskIdx });
       }}
@@ -230,92 +281,6 @@ const TaskList = ({
       >
         {`${item.name}`} <AssignmentIcon fontSize="small" />
       </span>
-    </div>
-  );
-};
-
-const SearchChecklist = ({ pluginData, setSearchData, searchData }: any) => {
-  console.log({ pluginData, searchData });
-  return (
-    <div style={{ direction: "rtl" }}>
-      <h2>חיפוש</h2>
-      <div
-        style={{
-          borderBottom: "1px solid black",
-          padding: "3px",
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "1em",
-          fontWeight: "bold",
-          fontSize: "1.2em",
-        }}
-      >
-        <label htmlFor="dropdown1">דרג:</label>
-        <select className="dropdown-container" id="dropdown1">
-          <option className="search-dropdown-option" value="option1">
-            דרג א
-          </option>
-          {/* <option className="search-dropdown-option" value="option2">
-            דרג ב
-          </option> */}
-          <option className="search-dropdown-option" value="option3">
-            דרג ג
-          </option>
-        </select>
-      </div>
-
-      <div
-        style={{
-          borderBottom: "1px solid black",
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "1em",
-          fontWeight: "bold",
-          fontSize: "1.2em",
-          padding: "3px",
-        }}
-      >
-        <label htmlFor="dropdown2">פלטפורמה:</label>
-        <select className="dropdown-container" id="dropdown2">
-          <option className="search-dropdown-option" value="option1">
-            סופה
-          </option>
-          <option className="search-dropdown-option" value="option2">
-            רעם
-          </option>
-          <option className="search-dropdown-option" value="option3">
-            חד מושבי
-          </option>
-          <option className="search-dropdown-option" value="option4">
-            דו מושבי
-          </option>
-          <option className="search-dropdown-option" value="option5">
-            תלת מושבי
-          </option>
-        </select>
-      </div>
-
-      <div
-        style={{
-          borderBottom: "1px solid black",
-          padding: "3px",
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "1em",
-          fontWeight: "bold",
-          fontSize: "1.2em",
-        }}
-      >
-        <label htmlFor="dropdown3">מערכת:</label>
-        <select className="dropdown-container" id="dropdown3">
-          <option className="search-dropdown-option" value="option1">
-            מערכת א
-          </option>
-          <option className="search-dropdown-option" value="option2">
-            מערכת ב
-          </option>
-        </select>
-      </div>
     </div>
   );
 };
