@@ -227,9 +227,7 @@ ChapterListItemProps) => {
         //   console.log("test baby");
         //   setSelectedTask({ chapterIdx: chapter, taskIdx: null });
         // }
-        console.log("idk");
         if (selectedTask && selectedTask.taskIdx) {
-          console.log("UUUUUUUU");
           setSelectedTask(null);
         }
 

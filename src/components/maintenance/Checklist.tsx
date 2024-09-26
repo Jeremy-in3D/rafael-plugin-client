@@ -36,6 +36,12 @@ export function Checklist({
         const updatedArray = [...checkedItems].filter((item) => item != idx);
         setCheckedItems(updatedArray);
       }
+      // if (checkNextTasks(pluginData,)) {
+      //   console.log("GO HOME");
+      // } else {
+      //   console.log("STAY");
+      // }
+      console.log("should be for maintenance and specific items list");
     } else {
       if (checkPreviousTasks(pluginData, selectedTask)) {
         relevantTasks[idx].isChecked = true;
@@ -113,6 +119,7 @@ export function Checklist({
               selectedChapters={selectedChapters}
               selectedTask={selectedTask}
               isShowSoloChecklist={isShowSoloChecklist}
+              isEditMode={isEditMode}
             />
           ) : null}
           {selectedChapters?.length &&
@@ -122,6 +129,7 @@ export function Checklist({
               pluginData={pluginData}
               selectedChapters={selectedChapters}
               selectedTask={selectedTask}
+              isEditMode={isEditMode}
             />
           ) : null}
           {!isMaintenance ? (
@@ -419,7 +427,6 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                   selectedTask.taskIdx
                 ].checkListData.length > 1
               ) {
-                // console.log("WELL HOW BOUT THADY num 44");
                 // logic here where chapter > 0 and task > 0 and multipl questions per task
               } else {
                 if (
@@ -439,3 +446,64 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
   });
   return testVal;
 };
+
+// const checkNextTasks = (pluginData: any, selectedTask: any) => {
+//   let testVal = false;
+
+//   pluginData.forEach((chapter: any, chapterIdx: number) => {
+//     if (!chapter) {
+//       return false;
+//     }
+
+//     for (const [key, value] of Object.entries(chapter)) {
+//       if (key === "chapter") {
+//         (value as any).tasks.forEach((task: any, taskIdx: number) => {
+//           if (
+//             chapterIdx !== selectedTask.chapterIdx ||
+//             taskIdx !== selectedTask.taskIdx
+//           ) {
+//             // If it's not the current selected task, continue
+//             return;
+//           }
+
+//           // Check if it's the last checklist item in task
+//           if (selectedTask.checklistIdx < task.checkListData.length - 1) {
+//             // If not, check the next checklist item within the same task
+//             if (
+//               task.checkListData[selectedTask.checklistIdx + 1].isChecked ===
+//               true
+//             ) {
+//               testVal = true;
+//             }
+//             return;
+//           } else {
+//             // If it's the last checklist item in task, check the next task or the first task of the next chapter
+//             if (taskIdx < (value as any).tasks.length - 1) {
+//               // If not the last task in the current chapter, check the first checklist item of the next task
+//               if (
+//                 (value as any).tasks[taskIdx + 1].checkListData[0].isChecked ===
+//                 true
+//               ) {
+//                 testVal = true;
+//               }
+//               return;
+//             } else {
+//               // If it's the last task in the current chapter, check the first task in the next chapter
+//               if (chapterIdx < pluginData.length - 1) {
+//                 if (
+//                   pluginData[chapterIdx + 1].chapter.tasks[0].checkListData[0]
+//                     .isChecked === true
+//                 ) {
+//                   testVal = true;
+//                 }
+//                 return;
+//               }
+//             }
+//           }
+//         });
+//       }
+//     }
+//   });
+
+//   return testVal;
+// };

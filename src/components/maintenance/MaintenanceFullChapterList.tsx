@@ -6,12 +6,14 @@ type MaintenanceFullChapterListProps = {
   pluginData: any;
   selectedChapters: any[];
   selectedTask: any;
+  isEditMode: boolean;
 };
 
 export function MaintenanceFullChapterList({
   pluginData,
   selectedChapters,
   selectedTask,
+  isEditMode,
 }: MaintenanceFullChapterListProps) {
   const [openedChapterContent, setOpenedChatperContent] = useState([]);
 
@@ -90,8 +92,40 @@ export function MaintenanceFullChapterList({
                                     >
                                       {checkData.isChecked ? (
                                         <CheckIcon
-                                          sx={{ color: "#40e01f" }}
+                                          sx={{
+                                            color: isEditMode
+                                              ? "red"
+                                              : "#40e01f",
+                                          }}
                                           style={{ marginLeft: "2em" }}
+                                          onClick={() => {
+                                            if (isEditMode) {
+                                              const testThing = [
+                                                ...openedChapterContent,
+                                              ];
+                                              if (
+                                                !checkNextTasks(pluginData, {
+                                                  chapterIdx,
+                                                  taskIdx,
+                                                  checklistIdx,
+                                                })
+                                              ) {
+                                                (
+                                                  testThing[chapterIdx] as any
+                                                ).chapter.tasks[
+                                                  taskIdx
+                                                ].checkListData[
+                                                  checklistIdx
+                                                ].isChecked = false;
+                                                //   );
+                                                setOpenedChatperContent(
+                                                  testThing
+                                                );
+                                              } else {
+                                                console.log(". ");
+                                              }
+                                            }
+                                          }}
                                         />
                                       ) : (
                                         <GpsFixedIcon
@@ -313,5 +347,66 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
       }
     }
   });
+  return testVal;
+};
+
+const checkNextTasks = (pluginData: any, selectedTask: any) => {
+  let testVal = false;
+
+  pluginData.forEach((chapter: any, chapterIdx: number) => {
+    if (!chapter) {
+      return false;
+    }
+
+    for (const [key, value] of Object.entries(chapter)) {
+      if (key === "chapter") {
+        (value as any).tasks.forEach((task: any, taskIdx: number) => {
+          if (
+            chapterIdx !== selectedTask.chapterIdx ||
+            taskIdx !== selectedTask.taskIdx
+          ) {
+            // If it's not the current selected task, continue
+            return;
+          }
+
+          // Check if it's the last checklist item in task
+          if (selectedTask.checklistIdx < task.checkListData.length - 1) {
+            // If not, check the next checklist item within the same task
+            if (
+              task.checkListData[selectedTask.checklistIdx + 1].isChecked ===
+              true
+            ) {
+              testVal = true;
+            }
+            return;
+          } else {
+            // If it's the last checklist item in task, check the next task or the first task of the next chapter
+            if (taskIdx < (value as any).tasks.length - 1) {
+              // If not the last task in the current chapter, check the first checklist item of the next task
+              if (
+                (value as any).tasks[taskIdx + 1].checkListData[0].isChecked ===
+                true
+              ) {
+                testVal = true;
+              }
+              return;
+            } else {
+              // If it's the last task in the current chapter, check the first task in the next chapter
+              if (chapterIdx < pluginData.length - 1) {
+                if (
+                  pluginData[chapterIdx + 1].chapter.tasks[0].checkListData[0]
+                    .isChecked === true
+                ) {
+                  testVal = true;
+                }
+                return;
+              }
+            }
+          }
+        });
+      }
+    }
+  });
+
   return testVal;
 };

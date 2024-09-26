@@ -7,6 +7,7 @@ type OperationalFullChapterListProps = {
   selectedChapters: any[];
   selectedTask: any;
   isShowSoloChecklist: any;
+  isEditMode: boolean;
 };
 
 export function OperationalFullChapterList({
@@ -14,6 +15,7 @@ export function OperationalFullChapterList({
   selectedChapters,
   selectedTask,
   isShowSoloChecklist,
+  isEditMode,
 }: OperationalFullChapterListProps) {
   const [openedChapterContent, setOpenedChatperContent] = useState([]);
 
@@ -101,7 +103,33 @@ export function OperationalFullChapterList({
                               >
                                 <div style={{ marginLeft: "1em" }}>
                                   {task?.questions["question-2"]?.isChecked ? (
-                                    <CheckIcon sx={{ color: "#40e01f" }} />
+                                    <CheckIcon
+                                      sx={{
+                                        color: isEditMode ? "red" : "#40e01f",
+                                      }}
+                                      onClick={() => {
+                                        const testThing = [
+                                          ...openedChapterContent,
+                                        ];
+                                        if (isEditMode) {
+                                          if (
+                                            !checkNextTask(
+                                              testThing,
+                                              { chapterIdx: idx, taskIdx },
+                                              true
+                                            )
+                                          ) {
+                                            (
+                                              testThing[idx] as any
+                                            ).chapter.tasks[taskIdx].questions[
+                                              "question-2"
+                                            ].isChecked = false;
+                                            setOpenedChatperContent(testThing);
+                                          }
+                                        }
+                                        return;
+                                      }}
+                                    />
                                   ) : (
                                     <GpsFixedIcon
                                       onClick={() => {
@@ -140,7 +168,33 @@ export function OperationalFullChapterList({
                               <div style={{ display: "flex", flex: 1 }}>
                                 <div style={{ marginLeft: "1em" }}>
                                   {task?.questions["question-1"]?.isChecked ? (
-                                    <CheckIcon sx={{ color: "#40e01f" }} />
+                                    <CheckIcon
+                                      sx={{
+                                        color: isEditMode ? "red" : "#40e01f",
+                                      }}
+                                      onClick={() => {
+                                        const testThing = [
+                                          ...openedChapterContent,
+                                        ];
+                                        if (isEditMode) {
+                                          if (
+                                            !checkNextTask(
+                                              testThing,
+                                              { chapterIdx: idx, taskIdx },
+                                              true
+                                            )
+                                          ) {
+                                            (
+                                              testThing[idx] as any
+                                            ).chapter.tasks[taskIdx].questions[
+                                              "question-1"
+                                            ].isChecked = false;
+                                            setOpenedChatperContent(testThing);
+                                          }
+                                        }
+                                        return;
+                                      }}
+                                    />
                                   ) : (
                                     <GpsFixedIcon
                                       onClick={() => {
@@ -148,6 +202,7 @@ export function OperationalFullChapterList({
                                           ...openedChapterContent,
                                         ];
 
+                                        // return;
                                         if (
                                           checkPreviousTasks(
                                             testThing,
@@ -261,4 +316,42 @@ const checkPreviousTasks = (
     }
   });
   return testVal;
+};
+
+const checkNextTask = (
+  pluginData: any,
+  selectedTask: any,
+  isWorkerOne: boolean
+): boolean => {
+  const workerQuestion = isWorkerOne ? "question-1" : "question-2";
+
+  // Get the current and next task information
+  const currentChapterIdx = selectedTask.chapterIdx;
+  const currentTaskIdx = selectedTask.taskIdx;
+
+  // Check if it's the last task in the chapter
+  if (
+    currentTaskIdx ===
+    pluginData[currentChapterIdx].chapter.tasks.length - 1
+  ) {
+    // Then check if it's the last chapter or not
+    if (currentChapterIdx === pluginData.length - 1) {
+      // If it is, there's no next task
+      return false;
+    } else {
+      // If it's not the last chapter, get the first task of the next chapter
+      return (
+        pluginData[currentChapterIdx + 1].chapter.tasks[0].questions[
+          workerQuestion
+        ]?.isChecked === true
+      );
+    }
+  } else {
+    // If it's not the last task of the current chapter, get the next task in the same chapter
+    return (
+      pluginData[currentChapterIdx].chapter.tasks[currentTaskIdx + 1].questions[
+        workerQuestion
+      ]?.isChecked === true
+    );
+  }
 };

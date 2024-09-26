@@ -164,22 +164,51 @@ const IndividualChecklist = ({
                 //   isWorkerOne ? workerOneQuestions : workerTwoQuestion
                 // );
                 if (isEditMode) {
-                  if (selectedTask?.chapterIdx != 0) {
-                    if (
-                      pluginData[selectedTask?.chapterIdx - 1]?.chapter.tasks[0]
-                        .questions["question-1"].isChecked == false
-                    ) {
-                      return null;
+                  console.log(
+                    checkNextTask(
+                      pluginData,
+                      selectedTask,
+                      isWorkerOne ? true : false
+                    )
+                  );
+                  if (
+                    !checkNextTask(
+                      pluginData,
+                      selectedTask,
+                      isWorkerOne ? true : false
+                    )
+                  ) {
+                    if (selectedTask?.chapterIdx != 0) {
+                      if (
+                        pluginData[selectedTask?.chapterIdx - 1]?.chapter
+                          .tasks[0].questions["question-1"].isChecked == false
+                      ) {
+                        return null;
+                      }
                     }
+                    if (isWorkerOne) {
+                      workerOneQuestions.isChecked = false;
+                    } else {
+                      workerTwoQuestion.isChecked = false;
+                    }
+                    setTestState(!testState);
+                    return;
                   }
-                  if (isWorkerOne) {
-                    workerOneQuestions.isChecked = false;
-                  } else {
-                    workerTwoQuestion.isChecked = false;
-                  }
-                  setTestState(!testState);
-
-                  return;
+                  // if (selectedTask?.chapterIdx != 0) {
+                  //   if (
+                  //     pluginData[selectedTask?.chapterIdx - 1]?.chapter.tasks[0]
+                  //       .questions["question-1"].isChecked == false
+                  //   ) {
+                  //     return null;
+                  //   }
+                  // }
+                  // if (isWorkerOne) {
+                  //   workerOneQuestions.isChecked = false;
+                  // } else {
+                  //   workerTwoQuestion.isChecked = false;
+                  // }
+                  // setTestState(!testState);
+                  // return;
                 }
               }}
             />
@@ -272,4 +301,42 @@ const checkPreviousTasks = (
     }
   });
   return testVal;
+};
+
+const checkNextTask = (
+  pluginData: any,
+  selectedTask: any,
+  isWorkerOne: boolean
+): boolean => {
+  const workerQuestion = isWorkerOne ? "question-1" : "question-2";
+
+  // Get the current and next task information
+  const currentChapterIdx = selectedTask.chapterIdx;
+  const currentTaskIdx = selectedTask.taskIdx;
+
+  // Check if it's the last task in the chapter
+  if (
+    currentTaskIdx ===
+    pluginData[currentChapterIdx].chapter.tasks.length - 1
+  ) {
+    // Then check if it's the last chapter or not
+    if (currentChapterIdx === pluginData.length - 1) {
+      // If it is, there's no next task
+      return false;
+    } else {
+      // If it's not the last chapter, get the first task of the next chapter
+      return (
+        pluginData[currentChapterIdx + 1].chapter.tasks[0].questions[
+          workerQuestion
+        ]?.isChecked === true
+      );
+    }
+  } else {
+    // If it's not the last task of the current chapter, get the next task in the same chapter
+    return (
+      pluginData[currentChapterIdx].chapter.tasks[currentTaskIdx + 1].questions[
+        workerQuestion
+      ]?.isChecked === true
+    );
+  }
 };
