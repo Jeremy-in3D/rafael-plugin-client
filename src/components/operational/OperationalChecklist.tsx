@@ -236,6 +236,7 @@ const checkPreviousTasks = (
     for (const [key, value] of Object.entries(chapter)) {
       if (key == "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
+          if (false) console.log(task);
           if (taskIdx != selectedTask.taskIdx) {
             // console.log(task);
             return;

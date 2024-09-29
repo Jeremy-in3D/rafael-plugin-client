@@ -169,16 +169,16 @@ export function MaintenanceFullChapterList({
                                       ) : (
                                         <RadioButtonUncheckedIcon
                                           style={{ marginLeft: "2em" }}
-                                          onClick={(e) => {
-                                            console.log(
-                                              "THE FUNCTION: ",
-                                              checkPreviousTasks(pluginData, {
-                                                chapterIdx,
-                                                taskIdx,
-                                                checklistIdx,
-                                              })
-                                            );
-                                          }}
+                                          // onClick={() => {
+                                          //   console.log(
+                                          //     "THE FUNCTION: ",
+                                          //     checkPreviousTasks(pluginData, {
+                                          //       chapterIdx,
+                                          //       taskIdx,
+                                          //       checklistIdx,
+                                          //     })
+                                          //   );
+                                          // }}
                                         />
                                       )}
                                       <div
