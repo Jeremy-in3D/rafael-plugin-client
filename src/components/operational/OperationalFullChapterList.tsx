@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import CheckIcon from "@mui/icons-material/Check";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import { useAppContext } from "../../context/appContext";
 
 type OperationalFullChapterListProps = {
   pluginData: any;
@@ -26,6 +27,8 @@ export function OperationalFullChapterList({
   if (selectedTask && selectedTask.taskIdx) {
     return null;
   }
+
+  const { setIsOpen, setModalData } = useAppContext();
 
   useEffect(() => {
     if (!selectedChapters.length) {
@@ -86,6 +89,16 @@ export function OperationalFullChapterList({
                             style={{ fontWeight: "bold", fontSize: "1.2em" }}
                           >
                             {task.name}
+                          </div>
+                          <div style={{ width: "100%" }}>
+                            <img
+                              onClick={() => {
+                                setModalData("/images/camera.png");
+                                setIsOpen(true);
+                              }}
+                              style={{ width: "5%", marginTop: "0.5em" }}
+                              src="/images/camera.png"
+                            />
                           </div>
                           <div
                             style={{
@@ -279,7 +292,7 @@ const checkPreviousTasks = (
       if (key == "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
           if (taskIdx != selectedTask.taskIdx) {
-            console.log(task);
+            if (false) console.log(task);
             return;
           }
           if (selectedTask.chapterIdx == 0) {
@@ -314,6 +327,14 @@ const checkPreviousTasks = (
                 return;
               }
             } else {
+              if (selectedTask.chapterIdx == 2 && selectedTask.taskIdx == 3) {
+                console.log(
+                  "in the right condition ",
+                  pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
+                    selectedTask.taskIdx
+                  ]
+                );
+              }
               if (
                 pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
                   selectedTask?.taskIdx - 1

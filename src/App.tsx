@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Maintenance } from "./components/maintenance/Maintenance";
 import { Operational } from "./components/operational/Operational";
-
+import { ModalComponent } from "./common/Modal";
+import { useAppContext } from "./context/appContext";
 function App() {
   const [typeOfChecklist, setTypeOfChecklist] = useState("");
   const [pluginData, setPluginData] = useState<any>([]);
-
+  // const [modalIsOpen, setIsOpen] = React.useState(false);
   const isMaintenance = typeOfChecklist == "maintenance";
+
+  const { modalIsOpen, setIsOpen, modalData } = useAppContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +58,13 @@ function App() {
           pluginData={pluginData}
         />
       )}
+      {modalIsOpen ? (
+        <ModalComponent
+          modalIsOpen={modalIsOpen}
+          setIsOpen={setIsOpen}
+          modalData={modalData}
+        />
+      ) : null}
     </div>
   );
 }
@@ -336,6 +346,10 @@ const mockkDATA = [
           name: "משימה 3.3",
           questions: {
             "question-1": {
+              text: "פנה את הפסולת לפח הקרוב",
+              isChecked: false,
+            },
+            "question-2": {
               text: "פנה את הפסולת לפח הקרוב",
               isChecked: false,
             },

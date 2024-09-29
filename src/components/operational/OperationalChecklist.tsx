@@ -199,21 +199,6 @@ const IndividualChecklist = ({
                     setTestState(!testState);
                     return;
                   }
-                  // if (selectedTask?.chapterIdx != 0) {
-                  //   if (
-                  //     pluginData[selectedTask?.chapterIdx - 1]?.chapter.tasks[0]
-                  //       .questions["question-1"].isChecked == false
-                  //   ) {
-                  //     return null;
-                  //   }
-                  // }
-                  // if (isWorkerOne) {
-                  //   workerOneQuestions.isChecked = false;
-                  // } else {
-                  //   workerTwoQuestion.isChecked = false;
-                  // }
-                  // setTestState(!testState);
-                  // return;
                 }
               }}
             />
@@ -252,7 +237,7 @@ const checkPreviousTasks = (
       if (key == "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
           if (taskIdx != selectedTask.taskIdx) {
-            console.log(task);
+            // console.log(task);
             return;
           }
           if (selectedTask.chapterIdx == 0) {

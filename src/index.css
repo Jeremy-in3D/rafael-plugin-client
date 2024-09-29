@@ -43,11 +43,11 @@ h1 {
 }
 
 .bottom-actions-bar-container {
-  background: #dbd3d3;
-  height: 6em;
+  /* background: #dbd3d3; */
+  /* margin-top: 0.5em; */
   /* margin-bottom: 10em; */
   z-index: 2;
-  width: 100%;
+  width: 30%;
 }
 
 button {

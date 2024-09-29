@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import CheckIcon from "@mui/icons-material/Check";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+// import { CompareSharp } from "@mui/icons-material";
+import {
+  checkNextTasks,
+  checkPreviousTasks,
+} from "./logic/checkTasksForChecklist";
 
 type MaintenanceFullChapterListProps = {
   pluginData: any;
@@ -26,7 +31,6 @@ export function MaintenanceFullChapterList({
     if (!selectedChapters.length) {
       return;
     }
-    // console.log(selectedChapters);
     const chapterData: any = [];
     pluginData.forEach((chapter: any, idx: number) => {
       if (selectedChapters.includes(idx)) {
@@ -41,7 +45,6 @@ export function MaintenanceFullChapterList({
     return null;
   }
 
-  //   console.log({ openedChapterContent });
   return (
     <div>
       <div>
@@ -139,12 +142,7 @@ export function MaintenanceFullChapterList({
                                             const testThing = [
                                               ...openedChapterContent,
                                             ];
-                                            // console.log({ testThing });
-                                            // console.log({ checkData });
-                                            // console.log({
-                                            //   checkData,
-                                            //   checklistIdx,
-                                            // });
+
                                             if (
                                               checkPreviousTasks(testThing, {
                                                 chapterIdx,
@@ -152,9 +150,6 @@ export function MaintenanceFullChapterList({
                                                 checklistIdx,
                                               })
                                             ) {
-                                              // testThing[chapterIdx].chapter.tasks[taskIdx]
-                                              //   console.log(
-                                              //     "WE IN!",
                                               (
                                                 testThing[chapterIdx] as any
                                               ).chapter.tasks[
@@ -174,6 +169,16 @@ export function MaintenanceFullChapterList({
                                       ) : (
                                         <RadioButtonUncheckedIcon
                                           style={{ marginLeft: "2em" }}
+                                          onClick={(e) => {
+                                            console.log(
+                                              "THE FUNCTION: ",
+                                              checkPreviousTasks(pluginData, {
+                                                chapterIdx,
+                                                taskIdx,
+                                                checklistIdx,
+                                              })
+                                            );
+                                          }}
                                         />
                                       )}
                                       <div
@@ -201,221 +206,3 @@ export function MaintenanceFullChapterList({
     </div>
   );
 }
-
-const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
-  let testVal = true;
-
-  pluginData.forEach((chapter: any) => {
-    if (!chapter) {
-      return false;
-    }
-    // console.log({ chapter });
-    for (const [key, value] of Object.entries(chapter)) {
-      if (key == "chapter") {
-        (value as any).tasks.forEach((task: any, taskIdx: number) => {
-          if (taskIdx != selectedTask.taskIdx) {
-            console.log(task);
-            return;
-          }
-          if (selectedTask.chapterIdx == 0) {
-            if (selectedTask.taskIdx == 0) {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // console.log("WELL HOW BOUT THADY");
-                // logic here for chapter == 0 and task == 0 and multiple questions in task
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.map((question: any, questionIdx: number) => {
-                  if (false) {
-                    console.log(question);
-                  }
-                  if (selectedTask.checklistIdx == 0) {
-                    testVal = true;
-                    return;
-                  } else {
-                    if (
-                      pluginData[selectedTask.chapterIdx].chapter.tasks[
-                        selectedTask.taskIdx
-                      ].checkListData[questionIdx - 1] == false
-                    ) {
-                      testVal = false;
-                      return;
-                    }
-                  }
-                });
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    selectedTask.taskIdx
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = true;
-                  return;
-                }
-              }
-            } else {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // logic for chapter = 0, but task > 0 and multiple questions in task
-
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.map((question: any, questionIdx: number) => {
-                  if (false) {
-                    console.log(question);
-                  }
-                  if (selectedTask.checklistIdx == 0) {
-                    // new logic here
-
-                    // if (
-                    //   pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    //     pluginData[selectedTask.chapterIdx].chapter.tasks
-                    //       .length - 1
-                    //   ].checkListData[
-                    //     pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    //       pluginData[selectedTask.chapterIdx].chapter.tasks
-                    //         .length - 1
-                    //     ].checkListData.length - 1
-                    //   ].isChecked == false
-                    // ) {
-                    //   testVal = false;
-                    //   return;
-                    // }
-
-                    testVal = true;
-
-                    return;
-                  } else {
-                    if (
-                      pluginData[selectedTask.chapterIdx].chapter.tasks[
-                        selectedTask.taskIdx
-                      ].checkListData[questionIdx - 1] == false
-                    ) {
-                      testVal = false;
-                      return;
-                    }
-                  }
-                });
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    selectedTask.taskIdx - 1
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = false;
-                  return;
-                }
-              }
-            }
-          } else {
-            if (selectedTask.taskIdx == 0) {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // insert logic here for first task in chapter > 0 where multiple questions per task
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
-                    pluginData[selectedTask.chapterIdx - 1].chapter.tasks
-                      .length - 1
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = false;
-                  return;
-                }
-              }
-            } else {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // console.log("WELL HOW BOUT THADY num 44");
-                // logic here where chapter > 0 and task > 0 and multipl questions per task
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    selectedTask.taskIdx - 1
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = false;
-                  return;
-                }
-              }
-            }
-          }
-        });
-      }
-    }
-  });
-  return testVal;
-};
-
-const checkNextTasks = (pluginData: any, selectedTask: any) => {
-  let testVal = false;
-
-  pluginData.forEach((chapter: any, chapterIdx: number) => {
-    if (!chapter) {
-      return false;
-    }
-
-    for (const [key, value] of Object.entries(chapter)) {
-      if (key === "chapter") {
-        (value as any).tasks.forEach((task: any, taskIdx: number) => {
-          if (
-            chapterIdx !== selectedTask.chapterIdx ||
-            taskIdx !== selectedTask.taskIdx
-          ) {
-            // If it's not the current selected task, continue
-            return;
-          }
-
-          // Check if it's the last checklist item in task
-          if (selectedTask.checklistIdx < task.checkListData.length - 1) {
-            // If not, check the next checklist item within the same task
-            if (
-              task.checkListData[selectedTask.checklistIdx + 1].isChecked ===
-              true
-            ) {
-              testVal = true;
-            }
-            return;
-          } else {
-            // If it's the last checklist item in task, check the next task or the first task of the next chapter
-            if (taskIdx < (value as any).tasks.length - 1) {
-              // If not the last task in the current chapter, check the first checklist item of the next task
-              if (
-                (value as any).tasks[taskIdx + 1].checkListData[0].isChecked ===
-                true
-              ) {
-                testVal = true;
-              }
-              return;
-            } else {
-              // If it's the last task in the current chapter, check the first task in the next chapter
-              if (chapterIdx < pluginData.length - 1) {
-                if (
-                  pluginData[chapterIdx + 1].chapter.tasks[0].checkListData[0]
-                    .isChecked === true
-                ) {
-                  testVal = true;
-                }
-                return;
-              }
-            }
-          }
-        });
-      }
-    }
-  });
-
-  return testVal;
-};
