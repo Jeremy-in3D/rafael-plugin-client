@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 // import { OperationalFullChapterList } from "./OperationalFullChapterList";
 import { getOperationalChecklistData } from "./logic/getOperationalChecklistData";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import { useAppContext } from "../../context/appContext";
 
-export function OperationalChecklist({
+export function OperationalChecklistByTask({
   pluginData,
   selectedTask,
   isShowSoloChecklist,
@@ -61,6 +62,8 @@ const IndividualChecklist = ({
 }: any) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
+  const { setModalData, setIsOpen } = useAppContext();
+
   const {
     workerQuestion,
     workerOneQuestions,
@@ -89,8 +92,12 @@ const IndividualChecklist = ({
     ? workerOneQuestions.isChecked
     : workerTwoQuestion.isChecked;
 
+  const imgSrc = isWorkerOne
+    ? workerOneQuestions.image
+    : workerTwoQuestion.image;
+
   return (
-    <div style={{ height: "3.5em" }}>
+    <div style={{ height: "3.5em", marginTop: !imgSrc ? "3em" : "10em" }}>
       <div
         style={{
           color: "white",
@@ -133,7 +140,7 @@ const IndividualChecklist = ({
                   if (selectedTask?.chapterIdx != 0) {
                     if (
                       pluginData[selectedTask?.chapterIdx - 1]?.chapter.tasks[0]
-                        .questions[workerQuestion].isChecked == false
+                        .questions[workerQuestion]?.isChecked == false
                     ) {
                       return null;
                     }
@@ -142,7 +149,7 @@ const IndividualChecklist = ({
                       if (
                         pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[
                           selectedTask.taskIdx - 1
-                        ].questions[workerQuestion].isChecked == false
+                        ].questions[workerQuestion]?.isChecked == false
                       ) {
                         return null;
                       }
@@ -169,13 +176,13 @@ const IndividualChecklist = ({
                 //   isWorkerOne ? workerOneQuestions : workerTwoQuestion
                 // );
                 if (isEditMode) {
-                  console.log(
-                    checkNextTask(
-                      pluginData,
-                      selectedTask,
-                      isWorkerOne ? true : false
-                    )
-                  );
+                  // console.log(
+                  //   checkNextTask(
+                  //     pluginData,
+                  //     selectedTask,
+                  //     isWorkerOne ? true : false
+                  //   )
+                  // );
                   if (
                     !checkNextTask(
                       pluginData,
@@ -204,7 +211,23 @@ const IndividualChecklist = ({
             />
           )}
         </div>
-
+        {imgSrc ? (
+          <div
+            style={{
+              width: "100%",
+              marginBottom: "5em",
+            }}
+          >
+            <img
+              style={{ width: "50%" }}
+              onClick={() => {
+                setModalData(`images/${extractFileName(imgSrc)}`);
+                setIsOpen(true);
+              }}
+              src={`images/${extractFileName(imgSrc)}`}
+            />
+          </div>
+        ) : null}
         <div
           style={{
             color: "white",
@@ -247,7 +270,7 @@ const checkPreviousTasks = (
                 (selectedTask.taskIdx,
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx
-                ].questions[workerQuestion].isChecked === false)
+                ].questions[workerQuestion]?.isChecked === false)
               ) {
                 testVal = true;
                 return;
@@ -257,7 +280,7 @@ const checkPreviousTasks = (
                 (selectedTask.taskIdx,
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx - 1
-                ].questions[workerQuestion].isChecked === false)
+                ].questions[workerQuestion]?.isChecked === false)
               ) {
                 testVal = false;
                 return;
@@ -270,7 +293,7 @@ const checkPreviousTasks = (
                 pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
                   pluginData[selectedTask.chapterIdx - 1].chapter.tasks.length -
                     1
-                ].questions[workerQuestion].isChecked === false)
+                ].questions[workerQuestion]?.isChecked === false)
               ) {
                 testVal = false;
                 return;
@@ -280,7 +303,7 @@ const checkPreviousTasks = (
                 (selectedTask.taskIdx,
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx - 1
-                ].questions[workerQuestion].isChecked === false)
+                ].questions[workerQuestion]?.isChecked === false)
               ) {
                 testVal = false;
                 return;
@@ -331,3 +354,9 @@ const checkNextTask = (
     );
   }
 };
+
+function extractFileName(filePath: string) {
+  const regex = /([^\\]+\.png)$/;
+  const match = filePath.match(regex);
+  return match ? match[0] : null;
+}

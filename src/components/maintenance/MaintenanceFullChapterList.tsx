@@ -7,6 +7,7 @@ import {
   checkNextTasks,
   checkPreviousTasks,
 } from "./logic/checkTasksForChecklist";
+import { useAppContext } from "../../context/appContext";
 
 type MaintenanceFullChapterListProps = {
   pluginData: any;
@@ -26,20 +27,31 @@ export function MaintenanceFullChapterList({
   if (false) {
     console.log(pluginData, selectedTask, selectedChapters);
   }
+  const { searchOption, setModalData, setIsOpen } = useAppContext();
 
   useEffect(() => {
-    if (!selectedChapters.length) {
-      return;
-    }
     const chapterData: any = [];
-    pluginData.forEach((chapter: any, idx: number) => {
-      if (selectedChapters.includes(idx)) {
-        chapterData.push(chapter);
+
+    if (searchOption) {
+      pluginData.forEach((chapter: any, idx: number) => {
+        if (chapter.chapter.platform == searchOption) {
+          chapterData.push(chapter);
+        }
+      });
+    } else {
+      if (!selectedChapters.length) {
+        return;
       }
-    });
+
+      pluginData.forEach((chapter: any, idx: number) => {
+        if (selectedChapters.includes(idx)) {
+          chapterData.push(chapter);
+        }
+      });
+    }
 
     setOpenedChatperContent(chapterData);
-  }, [selectedChapters]);
+  }, [selectedChapters, searchOption]);
 
   if (selectedTask && (selectedTask?.taskIdx || selectedTask.taskIdx == 0)) {
     return null;
@@ -56,13 +68,20 @@ export function MaintenanceFullChapterList({
                   borderBottom: "1px solid white",
                   padding: "3px",
                   marginTop: chapterIdx == 0 ? "2em" : "1.5em",
+                  // background: "white",
                 }}
                 key={`chapter${chapterIdx}`}
               >
                 <div style={{ fontSize: "1.3em", fontWeight: "bold" }}>
-                  {chapter.chapter.name}
+                  {chapter.chapter?.name}
                 </div>
-                <div>
+                <div
+                  style={{
+                    background: "rgb(43, 83, 216, 0.5)",
+                    borderRadius: "20px",
+                    // marginTop: "50px",
+                  }}
+                >
                   {chapter.chapter.tasks.length
                     ? chapter.chapter.tasks.map((task: any, taskIdx: any) => (
                         <span key={`task${taskIdx}`}>
@@ -72,11 +91,12 @@ export function MaintenanceFullChapterList({
                               fontWeight: "bold",
                               marginTop: taskIdx == 0 ? "2em" : "0.5em",
                             }}
+                            onClick={() => console.log({ task })}
                           >
                             {task.name}
                           </div>
                           <div>
-                            {task.checkListData.length
+                            {task?.checkListData?.length
                               ? task.checkListData.map(
                                   (checkData: any, checklistIdx: any) => (
                                     <div
@@ -104,7 +124,7 @@ export function MaintenanceFullChapterList({
                                           style={{ marginLeft: "2em" }}
                                           onClick={() => {
                                             if (isEditMode) {
-                                              const testThing = [
+                                              const chapterArrCopy = [
                                                 ...openedChapterContent,
                                               ];
                                               if (
@@ -115,7 +135,9 @@ export function MaintenanceFullChapterList({
                                                 })
                                               ) {
                                                 (
-                                                  testThing[chapterIdx] as any
+                                                  chapterArrCopy[
+                                                    chapterIdx
+                                                  ] as any
                                                 ).chapter.tasks[
                                                   taskIdx
                                                 ].checkListData[
@@ -123,7 +145,7 @@ export function MaintenanceFullChapterList({
                                                 ].isChecked = false;
                                                 //   );
                                                 setOpenedChatperContent(
-                                                  testThing
+                                                  chapterArrCopy
                                                 );
                                               } else {
                                                 console.log(". ");
@@ -139,19 +161,27 @@ export function MaintenanceFullChapterList({
                                         <GpsFixedIcon
                                           style={{ marginLeft: "2em" }}
                                           onClick={() => {
-                                            const testThing = [
+                                            if (isEditMode) {
+                                              return;
+                                            }
+                                            const chapterArrCopy = [
                                               ...openedChapterContent,
                                             ];
 
                                             if (
-                                              checkPreviousTasks(testThing, {
-                                                chapterIdx,
-                                                taskIdx,
-                                                checklistIdx,
-                                              })
+                                              checkPreviousTasks(
+                                                chapterArrCopy,
+                                                {
+                                                  chapterIdx,
+                                                  taskIdx,
+                                                  checklistIdx,
+                                                }
+                                              )
                                             ) {
                                               (
-                                                testThing[chapterIdx] as any
+                                                chapterArrCopy[
+                                                  chapterIdx
+                                                ] as any
                                               ).chapter.tasks[
                                                 taskIdx
                                               ].checkListData[
@@ -159,7 +189,7 @@ export function MaintenanceFullChapterList({
                                               ].isChecked = true;
                                               //   );
                                               setOpenedChatperContent(
-                                                testThing
+                                                chapterArrCopy
                                               );
                                             } else {
                                               console.log("out");
@@ -181,10 +211,32 @@ export function MaintenanceFullChapterList({
                                           // }}
                                         />
                                       )}
+                                      {task.imageData ? (
+                                        <div
+                                          style={{
+                                            width: "15%",
+                                          }}
+                                        >
+                                          <img
+                                            onClick={() => {
+                                              setModalData(
+                                                `images/${extractFileName(
+                                                  task.imageData
+                                                )}`
+                                              );
+                                              setIsOpen(true);
+                                            }}
+                                            style={{ width: "50%" }}
+                                            src={`images/${extractFileName(
+                                              task.imageData
+                                            )}`}
+                                          />
+                                        </div>
+                                      ) : null}
                                       <div
                                         style={{
                                           marginRight: "3em",
-                                          fontSize: "1.1em",
+                                          fontSize: "1.2em",
                                         }}
                                       >
                                         {checkData.name}
@@ -205,4 +257,10 @@ export function MaintenanceFullChapterList({
       <div style={{ marginTop: "2em", opacity: 0 }}>hello world</div>
     </div>
   );
+}
+
+function extractFileName(filePath: string) {
+  const regex = /([^\\]+\.png)$/;
+  const match = filePath.match(regex);
+  return match ? match[0] : null;
 }

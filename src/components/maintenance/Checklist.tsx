@@ -5,16 +5,15 @@ import { useState } from "react";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 // import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 // import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
-import { OperationalChecklist } from "../operational/OperationalChecklist";
+import { OperationalChecklistByTask } from "../operational/OperationalChecklist";
 import { OperationalFullChapterList } from "../operational/OperationalFullChapterList";
 import { MaintenanceFullChapterList } from "./MaintenanceFullChapterList";
+import { useAppContext } from "../../context/appContext";
 
 export function Checklist({
   pluginData,
   selectedTask,
   isMaintenance,
-  // setCurrentQuestion,
-  // currentQuestion,
   selectedChapters,
 }: any) {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
@@ -23,25 +22,18 @@ export function Checklist({
   const [isShowSoloChecklist, setIsShowSoloChecklist] = useState<number | null>(
     null
   );
-  // const [totalItemsInChecklist, setTotalItemsInChecklist] = useState<number>(0);
+
+  const { searchOption } = useAppContext();
   const relevantTasks =
     pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask.taskIdx]
       .checkListData;
 
   const handleCheckBox = (idx: number) => {
-    // const isUserRecheckingPreviouslyEditedChecks = idx !== currentItem;
-
     if (isEditMode) {
       if (checkedItems.includes(idx)) {
         const updatedArray = [...checkedItems].filter((item) => item != idx);
         setCheckedItems(updatedArray);
       }
-      // if (checkNextTasks(pluginData,)) {
-      //   console.log("GO HOME");
-      // } else {
-      //   console.log("STAY");
-      // }
-      console.log("should be for maintenance and specific items list");
     } else {
       if (checkPreviousTasks(pluginData, selectedTask)) {
         relevantTasks[idx].isChecked = true;
@@ -56,22 +48,18 @@ export function Checklist({
       } else {
         console.log(" ");
       }
-      // relevantTasks[idx].isChecked = true;
-      // if (!checkedItems.includes(idx)) {
-      //   setCheckedItems([...checkedItems, idx]);
-      //   if (idx === currentItem) {
-      //     setCurrentItem(currentItem + 1);
-      //   }
-      // } else {
-      //   setCheckedItems(checkedItems.filter((item) => item !== idx));
-      // }
     }
-    // setCurrentQuestion(currentQuestion + 1);
   };
 
   const chapterName = pluginData[selectedTask?.chapterIdx]?.chapter?.name;
   const taskName =
     pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx];
+
+  const isOperationalFullChapterList =
+    selectedChapters?.length && !selectedTask?.taskIdx && !isMaintenance;
+  const isMaintenanceFullChapterList =
+    (selectedChapters?.length && isMaintenance && !selectedTask?.taskIdx) ||
+    (isMaintenance && searchOption);
 
   return (
     <>
@@ -119,9 +107,7 @@ export function Checklist({
           }}
         >
           <div className="checklist-content">
-            {selectedChapters?.length &&
-            !selectedTask?.taskIdx &&
-            !isMaintenance ? (
+            {isOperationalFullChapterList ? (
               <OperationalFullChapterList
                 pluginData={pluginData}
                 selectedChapters={selectedChapters}
@@ -130,9 +116,7 @@ export function Checklist({
                 isEditMode={isEditMode}
               />
             ) : null}
-            {selectedChapters?.length &&
-            isMaintenance &&
-            !selectedTask?.taskIdx ? (
+            {isMaintenanceFullChapterList || (isMaintenance && searchOption) ? (
               <MaintenanceFullChapterList
                 pluginData={pluginData}
                 selectedChapters={selectedChapters}
@@ -141,7 +125,7 @@ export function Checklist({
               />
             ) : null}
             {!isMaintenance ? (
-              <OperationalChecklist
+              <OperationalChecklistByTask
                 pluginData={pluginData}
                 selectedTask={selectedTask}
                 isShowSoloChecklist={isShowSoloChecklist}
@@ -153,7 +137,10 @@ export function Checklist({
                 <div
                   className="checklist-list-items"
                   key={idx}
-                  // onClick={() => console.log(checkedItems)}
+                  style={{
+                    background: "rgb(43, 83, 216, 0.4)",
+                    borderRadius: "20px",
+                  }}
                 >
                   <div
                     style={{
@@ -173,10 +160,6 @@ export function Checklist({
                           <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
                         ) : (
                           <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
-                          // <RadioButtonUncheckedIcon
-                          //   sx={isEditMode ? { color: "red" } : {}}
-                          //   // onClick={() => handleCheckBox(idx)}
-                          // />
                         )
                       ) : checkPreviousTasks(pluginData, selectedTask) ? (
                         <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
@@ -207,7 +190,7 @@ export function Checklist({
               ))
             ) : null}
           </div>
-          {isMaintenance ? null : selectedTask ? (
+          {/* {isMaintenance ? null : selectedTask ? (
             <div
               style={{
                 display: "flex",
@@ -218,17 +201,16 @@ export function Checklist({
                 src={
                   selectedTask?.chapterIdx == 0
                     ? "/images/test.png"
-                    : "/images/camera.png"
+                    : "http://localhost:3000/images/camera-image.png" //"/images/camera.png"
                 }
                 style={{
                   position: "absolute",
                   bottom: "10em",
-                  // left: selectedTask?.chapterIdx != 0 ? "31em" : "30em",
                   width: selectedTask?.chapterIdx != 0 ? "17em" : "",
                 }}
               />
             </div>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     </>
@@ -250,9 +232,7 @@ const BottomBar = ({
     <div
       style={{
         display: "flex",
-        // justifyContent: "space-evenly",
         justifyContent: "center",
-        // marginRight: "5em",
         alignItems: "flex-end",
         borderBottomLeftRadius: "12px",
       }}
@@ -261,22 +241,23 @@ const BottomBar = ({
         <div>
           <button
             onClick={() => {
-              setIsShowSoloChecklist(isShowSoloChecklist == 1 ? null : 1);
+              setIsShowSoloChecklist(isShowSoloChecklist == 2 ? null : 2);
             }}
             style={{ background: isShowSoloChecklist == 1 ? "grey" : "" }}
           >
-            Worker 2
+            {/* Worker 2 */}
+            מערכת ב
           </button>
           <button
             onClick={() => {
-              setIsShowSoloChecklist(isShowSoloChecklist == 2 ? null : 2);
+              setIsShowSoloChecklist(isShowSoloChecklist == 1 ? null : 1);
             }}
             style={{
               marginLeft: "2em",
               background: isShowSoloChecklist == 2 ? "grey" : "",
             }}
           >
-            Worker 1
+            מערכת א{/* Worker 1 */}
           </button>
         </div>
       ) : null}
@@ -302,7 +283,7 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
     if (!chapter) {
       return false;
     }
-    // console.log({ chapter });
+
     for (const [key, value] of Object.entries(chapter)) {
       if (key == "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
@@ -317,7 +298,6 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                   selectedTask.taskIdx
                 ].checkListData.length > 1
               ) {
-                // console.log("WELL HOW BOUT THADY");
                 // logic here for chapter == 0 and task == 0 and multiple questions in task
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx
@@ -450,64 +430,3 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
   });
   return testVal;
 };
-
-// const checkNextTasks = (pluginData: any, selectedTask: any) => {
-//   let testVal = false;
-
-//   pluginData.forEach((chapter: any, chapterIdx: number) => {
-//     if (!chapter) {
-//       return false;
-//     }
-
-//     for (const [key, value] of Object.entries(chapter)) {
-//       if (key === "chapter") {
-//         (value as any).tasks.forEach((task: any, taskIdx: number) => {
-//           if (
-//             chapterIdx !== selectedTask.chapterIdx ||
-//             taskIdx !== selectedTask.taskIdx
-//           ) {
-//             // If it's not the current selected task, continue
-//             return;
-//           }
-
-//           // Check if it's the last checklist item in task
-//           if (selectedTask.checklistIdx < task.checkListData.length - 1) {
-//             // If not, check the next checklist item within the same task
-//             if (
-//               task.checkListData[selectedTask.checklistIdx + 1].isChecked ===
-//               true
-//             ) {
-//               testVal = true;
-//             }
-//             return;
-//           } else {
-//             // If it's the last checklist item in task, check the next task or the first task of the next chapter
-//             if (taskIdx < (value as any).tasks.length - 1) {
-//               // If not the last task in the current chapter, check the first checklist item of the next task
-//               if (
-//                 (value as any).tasks[taskIdx + 1].checkListData[0].isChecked ===
-//                 true
-//               ) {
-//                 testVal = true;
-//               }
-//               return;
-//             } else {
-//               // If it's the last task in the current chapter, check the first task in the next chapter
-//               if (chapterIdx < pluginData.length - 1) {
-//                 if (
-//                   pluginData[chapterIdx + 1].chapter.tasks[0].checkListData[0]
-//                     .isChecked === true
-//                 ) {
-//                   testVal = true;
-//                 }
-//                 return;
-//               }
-//             }
-//           }
-//         });
-//       }
-//     }
-//   });
-
-//   return testVal;
-// };

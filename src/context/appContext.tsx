@@ -9,6 +9,12 @@ type Context = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalData: string;
   setModalData: React.Dispatch<React.SetStateAction<string>>;
+  searchOption: string;
+  setSearchOption: React.Dispatch<React.SetStateAction<string>>;
+  fullPluginData: any;
+  setFullPluginData: React.Dispatch<any>;
+  operationType: string;
+  setOperationType: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const AppContext = createContext<Context | null>(null);
@@ -16,8 +22,11 @@ export const AppContext = createContext<Context | null>(null);
 export default function AppContextProvider({
   children,
 }: AppContextProviderProps) {
-  const [modalIsOpen, setIsOpen] = useState<boolean>(true);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<string>("");
+  const [searchOption, setSearchOption] = useState<string>("");
+  const [fullPluginData, setFullPluginData] = useState<any>(null);
+  const [operationType, setOperationType] = useState<string>("Maintenance");
 
   return (
     <AppContext.Provider
@@ -26,6 +35,12 @@ export default function AppContextProvider({
         setIsOpen,
         modalData,
         setModalData,
+        searchOption,
+        setSearchOption,
+        fullPluginData,
+        setFullPluginData,
+        operationType,
+        setOperationType,
       }}
     >
       {children}
@@ -42,6 +57,12 @@ export function useAppContext() {
       setIsOpen: () => {},
       modalData: "",
       setModalData: () => {},
+      searchOption: "",
+      setSearchOption: () => {},
+      fullPluginData: "",
+      setFullPluginData: () => {},
+      operationType: "",
+      setOperationType: () => {},
     };
   }
 

@@ -1,9 +1,18 @@
+// import { useEffect } from "react";
+import { useAppContext } from "../../context/appContext";
+
 export const SearchChecklist = ({
   pluginData,
   // setSearchData,
   searchData,
 }: any) => {
   if (false) console.log({ pluginData, searchData });
+
+  const { setSearchOption, searchOption } = useAppContext();
+
+  // useEffect(() => {
+
+  // }, [searchOption])
 
   return (
     <div style={{ direction: "rtl" }}>
@@ -27,9 +36,9 @@ export const SearchChecklist = ({
           {/* <option className="search-dropdown-option" value="option2">
               דרג ב
             </option> */}
-          <option className="search-dropdown-option" value="option3">
+          {/* <option className="search-dropdown-option" value="option3">
             דרג ג
-          </option>
+          </option> */}
         </select>
       </div>
 
@@ -45,20 +54,27 @@ export const SearchChecklist = ({
         }}
       >
         <label htmlFor="dropdown2">פלטפורמה:</label>
-        <select className="dropdown-container" id="dropdown2">
-          <option className="search-dropdown-option" value="option1">
+        <select
+          className="dropdown-container"
+          id="dropdown2"
+          onChange={(e: any) => setSearchOption(e.target.value)}
+        >
+          <option value="" disabled selected hidden>
+            Select an option
+          </option>
+          <option className="search-dropdown-option" value="סופה">
             סופה
           </option>
-          <option className="search-dropdown-option" value="option2">
+          <option className="search-dropdown-option" value="רעם">
             רעם
           </option>
-          <option className="search-dropdown-option" value="option3">
+          <option className="search-dropdown-option" value="חד מושבי">
             חד מושבי
           </option>
-          <option className="search-dropdown-option" value="option4">
+          <option className="search-dropdown-option" value="דו מושבי">
             דו מושבי
           </option>
-          <option className="search-dropdown-option" value="option5">
+          <option className="search-dropdown-option" value="תלת מושבי">
             תלת מושבי
           </option>
         </select>

@@ -4,15 +4,11 @@ import { Checklist } from "./Checklist";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
 import { SearchChecklist } from "../search/SearchChecklist";
+import { useAppContext } from "../../context/appContext";
+// import { AppContext, useAppContext } from "../../context/appContext";
 // import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
 
-export function Chapters({
-  setTypeOfChecklist,
-  title,
-  pluginData,
-  currentQuestion,
-  setCurrentQuestion,
-}: any) {
+export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<any>(null);
@@ -61,8 +57,6 @@ export function Chapters({
             selectedTask={selectedTask}
             searchData={searchData}
             setSearchData={setSearchData}
-            setCurrentQuestion={setCurrentQuestion}
-            currentQuestion={currentQuestion}
             selectedChapters={selectedChapters}
           />
         </div>
@@ -96,31 +90,41 @@ export const ChapterList = ({
   setSelectedChapters,
 }: any) => {
   const chaptersArr = pluginData; // new Array(5).fill(null);
-
+  const { setSearchOption } = useAppContext();
   return (
     <div className="chapter-content-container">
       <div className="content-navbar">
         <div className="content-navbar-holder">
           <SearchIcon
             fontSize="large"
-            sx={{ color: "#2b4cd8" }}
-            onClick={() => setIsSearchSelected(!isSearchSelected)}
+            // sx={{ color: "#2b4cd8" }}
+            sx={{ color: "black" }}
+            onClick={() => {
+              setIsSearchSelected(!isSearchSelected);
+              setSearchOption("");
+            }}
           />
         </div>
         <div className="content-navbar-holder">
           <AssignmentIcon
             fontSize="large"
-            sx={{ color: "#2b4cd8" }}
-            onClick={() => setIsSearchSelected(false)}
+            // sx={{ color: "#2b4cd8" }}
+            sx={{ color: "black" }}
+            onClick={() => {
+              setIsSearchSelected(false);
+              setSearchOption("");
+            }}
           />
         </div>
         <div className="content-navbar-holder">
           <HomeIcon
             fontSize="large"
-            sx={{ color: "#2b4cd8" }}
+            // sx={{ color: "#2b4cd8" }}
+            sx={{ color: "black" }}
             onClick={() => {
               setIsSearchSelected(false);
               setTypeOfChecklist("");
+              setSearchOption("");
             }}
           />
         </div>

@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 
 export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
   const [tasksPerChapter, setTasksPerChapter] = useState<any>({});
-  // const [questionsPerTask, setQuestionsPerTask] = useState<any>({});
-  const [currentQuestion, setCurrentQuestion] = useState<number>(1);
   const [sortedData, setSortedData] = useState<any[]>([]);
 
   // Extract and sort the data only on the first render or when pluginData changes
@@ -13,18 +11,18 @@ export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
       (item: any) => item.name === "maintenance"
     );
 
-    function extractChapterNumber(chapterName: any) {
-      const match = chapterName.match(/פרק\s(\d+)/);
-      return match ? parseInt(match[1], 10) : Infinity;
-    }
+    // function extractChapterNumber(chapterName: any) {
+    //   const match = chapterName.match(/פרק\s(\d+)/);
+    //   return match ? parseInt(match[1], 10) : Infinity;
+    // }
 
-    const sortedData = maintenancePluginData.sort((a: any, b: any) => {
-      const numA = extractChapterNumber(a.chapter.name);
-      const numB = extractChapterNumber(b.chapter.name);
-      return numA - numB;
-    });
+    // const sortedData = maintenancePluginData.sort((a: any, b: any) => {
+    //   const numA = extractChapterNumber(a.chapter.name);
+    //   const numB = extractChapterNumber(b.chapter.name);
+    //   return numA - numB;
+    // });
 
-    setSortedData(sortedData);
+    setSortedData(maintenancePluginData);
   }, [pluginData]);
 
   useEffect(() => {
@@ -50,8 +48,6 @@ export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
       setTypeOfChecklist={setTypeOfChecklist}
       title={"Maintenance"}
       pluginData={sortedData}
-      currentQuestion={currentQuestion}
-      setCurrentQuestion={setCurrentQuestion}
     />
   );
 }

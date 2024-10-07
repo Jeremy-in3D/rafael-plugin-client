@@ -8,29 +8,34 @@ function App() {
   const [typeOfChecklist, setTypeOfChecklist] = useState("");
   const [pluginData, setPluginData] = useState<any>([]);
   // const [modalIsOpen, setIsOpen] = React.useState(false);
+
   const isMaintenance = typeOfChecklist == "maintenance";
 
-  const { modalIsOpen, setIsOpen, modalData } = useAppContext();
+  const { modalIsOpen, setIsOpen, modalData, setFullPluginData } =
+    useAppContext();
 
   useEffect(() => {
     const fetchData = async () => {
+      const res = await fetch("http://localhost:3000/getData");
       // const res = await fetch("http://192.168.1.224:3000/getData");
-      const res = await fetch(
-        "https://rafael-plugin-server.onrender.com/getData",
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      // const res = await fetch(
+      //   "https://rafael-plugin-server.onrender.com/getData",
+      //   {
+      //     method: "GET",
+      //     headers: { "Content-Type": "application/json" },
+      //   }
+      // );
       // console.log("yee idk");
       const data = await res.json();
       if (data && data.checklistData) {
+        console.log("FETCHED DATA: ");
+
         // console.log(data.checklistData);
-        console.log("pap");
-        // setPluginData(data.checklistData);
+        setPluginData(data.checklistData);
+        setFullPluginData(data.checklistData);
       } else {
-        console.log("jip");
-        // setPluginData(mockkDATA);
+        console.log("FAILED FETCHDATA");
+        setPluginData(mockkDATA);
       }
     };
 
@@ -40,7 +45,8 @@ function App() {
       console.log("in the first catch", e);
       // setPluginData(mockkDATA);
     }
-    setPluginData(mockkDATA);
+    // setPluginData(mockkDATA);
+    // setFullPluginData(mockkDATA);
   }, []);
 
   return (
@@ -83,13 +89,22 @@ const CheckListSelect = ({ setTypeOfChecklist }: CheckListSelectProps) => (
     <div>
       <p>Please Select a category</p>
       <button
-        style={{ border: "1px solid rgb(0,0,0,0.2)" }}
+        style={{
+          border: "1px solid rgb(0,0,0,0.2)",
+          height: "10em",
+          width: "10em",
+        }}
         onClick={() => setTypeOfChecklist("maintenance")}
       >
         Maintenance
       </button>
       <button
-        style={{ marginLeft: "2em", border: "1px solid rgb(0,0,0,0.2)" }}
+        style={{
+          marginLeft: "2em",
+          border: "1px solid rgb(0,0,0,0.2)",
+          height: "10em",
+          width: "10em",
+        }}
         onClick={() => setTypeOfChecklist("operational")}
       >
         Operational
@@ -112,6 +127,7 @@ const mockkDATA = [
               isChecked: false,
             },
           ],
+          imageData: null,
         },
         {
           name: "משימה 1.2",
@@ -121,60 +137,35 @@ const mockkDATA = [
               isChecked: false,
             },
           ],
+          imageData: null,
         },
       ],
+      platform: "סופה",
     },
   },
   {
-    name: "maintenance",
+    name: "operational",
     chapter: {
-      name: "פרק 5 - בדיקת תיבה",
+      name: "פרק 1 - הנחיות כלליות ",
       tasks: [
         {
-          name: "משימה 5.1",
-          checkListData: [
-            {
-              name: "חבר קונקטור",
+          task: "task-a",
+          name: "משימה 1.1",
+          questions: {
+            "question-1": {
+              text: "ודא שהנך לבוש בבגדי עבודה",
               isChecked: false,
+              image: null,
             },
-          ],
-        },
-        {
-          name: "משימה 5.2",
-          checkListData: [
-            {
-              name: "חבר כרטיס",
+            "question-2": {
+              text: "",
               isChecked: false,
+              image: null,
             },
-          ],
-        },
-        {
-          name: "משימה 5.3",
-          checkListData: [
-            {
-              name: "סגור ברגים של התיבה",
-              isChecked: false,
-            },
-          ],
+          },
         },
       ],
-    },
-  },
-  {
-    name: "maintenance",
-    chapter: {
-      name: "פרק 6 - סיום",
-      tasks: [
-        {
-          name: "משימה 6.1",
-          checkListData: [
-            {
-              name: "לך הביתה",
-              isChecked: false,
-            },
-          ],
-        },
-      ],
+      platform: "סופה",
     },
   },
   {
@@ -190,6 +181,8 @@ const mockkDATA = [
               isChecked: false,
             },
           ],
+          imageData:
+            "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Introduction.png",
         },
         {
           name: "משימה 2.2",
@@ -199,65 +192,85 @@ const mockkDATA = [
               isChecked: false,
             },
           ],
+          imageData:
+            "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Camera-Image.png",
         },
         {
           name: "משימה 2.3",
           checkListData: [
             {
-              name: "פרק כרטיס בקרה (ראה לינק )",
-              isChecked: false,
-            },
-            {
               name: 'ודא צבע חוטים לקונקטור לכרטיס עפ"י הטבלה:',
               isChecked: false,
             },
           ],
+          imageData:
+            "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Camera-Image.png",
         },
       ],
+      platform: "רעם",
     },
   },
   {
-    name: "maintenance",
+    name: "operational",
     chapter: {
-      name: "פרק 4 - בדיקת תיבה",
+      name: "פרק 2 - פתיחת דלתות משאית",
       tasks: [
         {
-          name: "משימה 4.1",
-          checkListData: [
-            {
-              name: 'הבא צב"ד לעמדת בדיקה',
+          task: "task-a",
+          name: "משימה 2.1",
+          questions: {
+            "question-1": {
+              text: "לבש כפפות אדומות לעבודה",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Red-Gloves.png",
             },
-          ],
+            "question-2": {
+              text: "לבש כפפות לבנות לעבודה",
+              isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\White-Gloves.png",
+            },
+          },
         },
         {
-          name: "משימה 4.2",
-          checkListData: [
-            {
-              name: "העבר את הפין למצב בדיקה",
+          task: "task-b",
+          name: "משימה 2.2",
+          questions: {
+            "question-1": {
+              text: "לך לדלת האחורית",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Warning-Sign.png",
             },
-          ],
+            "question-2": {
+              text: "לך לדלת האחורית",
+              isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Warning-Sign.png",
+            },
+          },
         },
         {
-          name: "משימה 4.3",
-          checkListData: [
-            {
-              name: 'חבר את התיבה לצב"ד',
+          task: "task-c",
+          name: "משימה 2.3",
+          questions: {
+            "question-1": {
+              text: "פתח דלת שמאל",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Camera-Image.png",
             },
-          ],
-        },
-        {
-          name: "משימה 4.4",
-          checkListData: [
-            {
-              name: 'פרק צ"בד',
+            "question-2": {
+              text: "פתח דלת ימין",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Camera-Image.png",
             },
-          ],
+          },
         },
       ],
+      platform: "סופה",
     },
   },
   {
@@ -273,6 +286,8 @@ const mockkDATA = [
               isChecked: false,
             },
           ],
+          imageData:
+            "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Camera-Image.png",
         },
         {
           name: "משימה 3.2",
@@ -282,30 +297,21 @@ const mockkDATA = [
               isChecked: false,
             },
           ],
+          imageData: null,
         },
-      ],
-    },
-  },
-  {
-    name: "operational",
-    chapter: {
-      name: "פרק 1 - הנחיות כלליות ",
-      tasks: [
         {
-          task: "task-a",
-          name: "משימה 1.1",
-          questions: {
-            "question-1": {
-              text: "ודא שהנך לבוש בבגדי עבודה",
+          name: "משימה 3.3.",
+          checkListData: [
+            {
+              name: "מריחת שמן יש לבצע בתנועה סיבובים עם כיון השעון",
               isChecked: false,
             },
-            "question-2": {
-              text: "ודא שהנך לבוש בבגדי עבודה",
-              isChecked: false,
-            },
-          },
+          ],
+          imageData:
+            "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\T-blue-square.png",
         },
       ],
+      platform: "חד מושבי",
     },
   },
   {
@@ -320,10 +326,14 @@ const mockkDATA = [
             "question-1": {
               text: "הבא מגב וסמרטוט",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Red-Gloves.png",
             },
             "question-2": {
               text: "הבא מטאטא",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\White-Gloves.png",
             },
           },
         },
@@ -334,10 +344,14 @@ const mockkDATA = [
             "question-1": {
               text: "קרצף גלגלים קדמיים ואחוריים",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Warning-Sign.png",
             },
             "question-2": {
               text: "נקה אבק וחול מפנים המשאית לכיוון דלתות ההעמסה",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Warning-Sign.png",
             },
           },
         },
@@ -348,10 +362,12 @@ const mockkDATA = [
             "question-1": {
               text: "פנה את הפסולת לפח הקרוב",
               isChecked: false,
+              image: null,
             },
             "question-2": {
-              text: "פנה את הפסולת לפח הקרוב",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
@@ -362,24 +378,29 @@ const mockkDATA = [
             "question-1": {
               text: "הבא מגב וסמרטוט ריצפה",
               isChecked: false,
+              image: null,
             },
             "question-2": {
-              text: "הבא מגב וסמרטוט ריצפה",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
         {
           task: "task-e",
-          name: "this is our example - 3.5",
+          name: "משימה 3.5",
           questions: {
             "question-1": {
               text: "מלא מים בדלי",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Warning-Sign.png",
             },
             "question-2": {
-              text: "מלא מים בדלי",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
@@ -390,10 +411,13 @@ const mockkDATA = [
             "question-1": {
               text: "שפוך נוזל ניקוי ריצפה על ריצפת המשאית",
               isChecked: false,
+              image:
+                "C:\\Users\\Eliya\\Desktop\\ReTeM\\Content\\Resources\\Images\\Camera-Image.png",
             },
             "question-2": {
-              text: "שפוך נוזל ניקוי ריצפה על ריצפת המשאית",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
@@ -404,10 +428,12 @@ const mockkDATA = [
             "question-1": {
               text: "השלם קירצוף בצורת שתי וערב",
               isChecked: false,
+              image: null,
             },
             "question-2": {
-              text: "השלם קירצוף בצורת שתי וערב",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
@@ -418,10 +444,12 @@ const mockkDATA = [
             "question-1": {
               text: "סחט את הסמרטוט",
               isChecked: false,
+              image: null,
             },
             "question-2": {
-              text: "סחט את הסמרטוט",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
@@ -432,62 +460,121 @@ const mockkDATA = [
             "question-1": {
               text: "עבור עם סמרטוט יבש בצורת שתי וערב",
               isChecked: false,
+              image: null,
             },
             "question-2": {
-              text: "עבור עם סמרטוט יבש בצורת שתי וערב",
+              text: "",
               isChecked: false,
+              image: null,
             },
           },
         },
       ],
+      platform: "סופה",
     },
   },
   {
-    name: "operational",
+    name: "maintenance",
     chapter: {
-      name: "פרק 2 - פתיחת דלתות משאית",
+      name: "פרק 4 - בדיקת תיבה",
       tasks: [
         {
-          task: "task-a",
-          name: "משימה 2.1",
-          questions: {
-            "question-1": {
-              text: "לבש כפפות אדומות לעבודה",
+          name: "משימה 4.1",
+          checkListData: [
+            {
+              name: 'הבא צב"ד לעמדת בדיקה',
               isChecked: false,
             },
-            "question-2": {
-              text: "לבש כפפות לבנות לעבודה",
-              isChecked: false,
-            },
-          },
+          ],
+          imageData: null,
         },
         {
-          task: "task-b",
-          name: "משימה 2.2",
-          questions: {
-            "question-1": {
-              text: "לך לדלת האחורית",
+          name: "משימה 4.2",
+          checkListData: [
+            {
+              name: "העבר את הפין למצב בדיקה",
               isChecked: false,
             },
-            "question-2": {
-              text: "לך לדלת האחורית",
-              isChecked: false,
-            },
-          },
+          ],
+          imageData: null,
         },
         {
-          task: "task-c",
-          name: "משימה 2.3",
-          questions: {
-            "question-1": {
-              text: "פתח דלת שמאל",
+          name: "משימה 4.3",
+          checkListData: [
+            {
+              name: 'חבר את התיבה לצב"ד',
               isChecked: false,
             },
-            "question-2": {
-              text: "פתח דלת ימין",
+          ],
+          imageData: null,
+        },
+        {
+          name: "משימה 4.4",
+          checkListData: [
+            {
+              name: 'פרק צ"בד',
               isChecked: false,
             },
-          },
+          ],
+          imageData: null,
+        },
+      ],
+      platform: "דו מושבי",
+    },
+  },
+  {
+    name: "maintenance",
+    chapter: {
+      name: "פרק 5 - בדיקת תיבה",
+      tasks: [
+        {
+          name: "משימה 5.1",
+          checkListData: [
+            {
+              name: "חבר קונקטור",
+              isChecked: false,
+            },
+          ],
+          imageData: null,
+        },
+        {
+          name: "משימה 5.2",
+          checkListData: [
+            {
+              name: "חבר כרטיס",
+              isChecked: false,
+            },
+          ],
+          imageData: null,
+        },
+        {
+          name: "משימה 5.3",
+          checkListData: [
+            {
+              name: "סגור ברגים של התיבה",
+              isChecked: false,
+            },
+          ],
+          imageData: null,
+        },
+      ],
+      platform: "תלת מושבי",
+    },
+  },
+  {
+    name: "maintenance",
+    chapter: {
+      name: "פרק 6 - סיום",
+      tasks: [
+        {
+          name: "משימה 6.1",
+          checkListData: [
+            {
+              name: "לך הביתה",
+              isChecked: false,
+            },
+          ],
+          imageData: null,
         },
       ],
     },

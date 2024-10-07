@@ -86,11 +86,12 @@ export function OperationalFullChapterList({
                           key={`chapter/${taskIdx}`}
                         >
                           <div
+                            onClick={() => console.log({ task })}
                             style={{ fontWeight: "bold", fontSize: "1.2em" }}
                           >
                             {task.name}
                           </div>
-                          <div style={{ width: "100%" }}>
+                          {/* <div style={{ width: "100%" }}>
                             <img
                               onClick={() => {
                                 setModalData("/images/camera.png");
@@ -99,12 +100,12 @@ export function OperationalFullChapterList({
                               style={{ width: "5%", marginTop: "0.5em" }}
                               src="/images/camera.png"
                             />
-                          </div>
+                          </div> */}
                           <div
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
-                              marginTop: "0.5em",
+                              marginTop: "2em",
                             }}
                           >
                             {isShouldShowWorkerOne ? null : (
@@ -116,7 +117,10 @@ export function OperationalFullChapterList({
                                 }}
                               >
                                 <div style={{ marginLeft: "1em" }}>
-                                  {task?.questions["question-2"]?.isChecked ? (
+                                  {task &&
+                                  task.questions &&
+                                  task.questions["question-2"] &&
+                                  task?.questions["question-2"]?.isChecked ? (
                                     <CheckIcon
                                       sx={{
                                         color: isEditMode ? "red" : "#40e01f",
@@ -151,21 +155,27 @@ export function OperationalFullChapterList({
                                     ) ? (
                                     <GpsFixedIcon
                                       onClick={() => {
-                                        const testThing = [
+                                        if (isEditMode) {
+                                          return;
+                                        }
+                                        const chapterArrCopy = [
                                           ...openedChapterContent,
                                         ];
                                         if (
                                           checkPreviousTasks(
-                                            testThing,
+                                            chapterArrCopy,
                                             { chapterIdx: idx, taskIdx },
                                             false
                                           )
                                         ) {
-                                          (testThing[idx] as any).chapter.tasks[
-                                            taskIdx
-                                          ].questions["question-2"].isChecked =
-                                            true;
-                                          setOpenedChatperContent(testThing);
+                                          (
+                                            chapterArrCopy[idx] as any
+                                          ).chapter.tasks[taskIdx].questions[
+                                            "question-2"
+                                          ].isChecked = true;
+                                          setOpenedChatperContent(
+                                            chapterArrCopy
+                                          );
                                         }
                                       }}
                                     />
@@ -173,13 +183,40 @@ export function OperationalFullChapterList({
                                     <RadioButtonUncheckedIcon />
                                   )}
                                 </div>
+                                {task?.questions["question-2"]?.image ? (
+                                  <div
+                                    style={{
+                                      width: "50%",
+                                    }}
+                                  >
+                                    <img
+                                      onClick={() => {
+                                        setModalData(
+                                          `images/${extractFileName(
+                                            task?.questions["question-2"]?.image
+                                          )}`
+                                        );
+                                        setIsOpen(true);
+                                      }}
+                                      style={{
+                                        width: "20%",
+                                        marginTop: "0.5em",
+                                      }}
+                                      src={`images/${extractFileName(
+                                        task?.questions["question-2"]?.image
+                                      )}`}
+                                    />
+                                  </div>
+                                ) : null}
                                 <div
                                   style={{
                                     width: "100%",
                                     fontSize: "1.2em",
                                   }}
                                 >
-                                  {task?.questions["question-2"]?.text}
+                                  {task?.questions["question-2"]?.text
+                                    ? task?.questions["question-2"]?.text
+                                    : task?.questions["question-1"]?.text}
                                 </div>
                               </div>
                             )}
@@ -193,23 +230,25 @@ export function OperationalFullChapterList({
                                         color: isEditMode ? "red" : "#40e01f",
                                       }}
                                       onClick={() => {
-                                        const testThing = [
+                                        const chapterArrCopy = [
                                           ...openedChapterContent,
                                         ];
                                         if (isEditMode) {
                                           if (
                                             !checkNextTask(
-                                              testThing,
+                                              chapterArrCopy,
                                               { chapterIdx: idx, taskIdx },
                                               true
                                             )
                                           ) {
                                             (
-                                              testThing[idx] as any
+                                              chapterArrCopy[idx] as any
                                             ).chapter.tasks[taskIdx].questions[
                                               "question-1"
                                             ].isChecked = false;
-                                            setOpenedChatperContent(testThing);
+                                            setOpenedChatperContent(
+                                              chapterArrCopy
+                                            );
                                           }
                                         }
                                         return;
@@ -222,23 +261,26 @@ export function OperationalFullChapterList({
                                     ) ? (
                                     <GpsFixedIcon
                                       onClick={() => {
-                                        const testThing = [
+                                        const chapterArrCopy = [
                                           ...openedChapterContent,
                                         ];
 
                                         // return;
                                         if (
                                           checkPreviousTasks(
-                                            testThing,
+                                            chapterArrCopy,
                                             { chapterIdx: idx, taskIdx },
                                             true
                                           )
                                         ) {
-                                          (testThing[idx] as any).chapter.tasks[
-                                            taskIdx
-                                          ].questions["question-1"].isChecked =
-                                            true;
-                                          setOpenedChatperContent(testThing);
+                                          (
+                                            chapterArrCopy[idx] as any
+                                          ).chapter.tasks[taskIdx].questions[
+                                            "question-1"
+                                          ].isChecked = true;
+                                          setOpenedChatperContent(
+                                            chapterArrCopy
+                                          );
                                         }
                                       }}
                                     />
@@ -246,6 +288,31 @@ export function OperationalFullChapterList({
                                     <RadioButtonUncheckedIcon />
                                   )}
                                 </div>
+                                {task?.questions["question-1"]?.image ? (
+                                  <div
+                                    style={{
+                                      width: "50%",
+                                    }}
+                                  >
+                                    <img
+                                      onClick={() => {
+                                        setModalData(
+                                          `images/${extractFileName(
+                                            task?.questions["question-1"]?.image
+                                          )}`
+                                        );
+                                        setIsOpen(true);
+                                      }}
+                                      style={{
+                                        width: "20%",
+                                        marginTop: "0.5em",
+                                      }}
+                                      src={`images/${extractFileName(
+                                        task?.questions["question-1"]?.image
+                                      )}`}
+                                    />
+                                  </div>
+                                ) : null}
                                 <div
                                   style={{
                                     width: "100%",
@@ -298,6 +365,9 @@ const checkPreviousTasks = (
           if (selectedTask.chapterIdx == 0) {
             if (selectedTask.taskIdx == 0) {
               if (
+                pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
+                  selectedTask.taskIdx
+                ]?.questions &&
                 pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
                   selectedTask.taskIdx
                 ]?.questions[workerQuestion]?.isChecked === false
@@ -389,3 +459,9 @@ const checkNextTask = (
     );
   }
 };
+
+function extractFileName(filePath: string) {
+  const regex = /([^\\]+\.png)$/;
+  const match = filePath.match(regex);
+  return match ? match[0] : null;
+}
