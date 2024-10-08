@@ -8,7 +8,12 @@ import { useAppContext } from "../../context/appContext";
 // import { AppContext, useAppContext } from "../../context/appContext";
 // import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
 
-export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
+export function Chapters({
+  setTypeOfChecklist,
+  title,
+  pluginData,
+  typeOfChecklist,
+}: any) {
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<any>(null);
@@ -40,7 +45,38 @@ export function Chapters({ setTypeOfChecklist, title, pluginData }: any) {
           <h1>{title}</h1>
         </div>
 
-        <div style={{ flex: 1 }}></div>
+        <div style={{ flex: 1 }}>
+          <button
+            style={
+              typeOfChecklist == "operational"
+                ? { background: "grey", opacity: "0.4" }
+                : { fontWeight: "bold" }
+            }
+            // disabled={typeOfChecklist == "operational" ? false : true}
+            className="temp-btn"
+            onClick={() => {
+              if (typeOfChecklist == "maintenance") return;
+              setTypeOfChecklist("maintenance");
+            }}
+          >
+            Maintenance
+          </button>
+          <button
+            style={
+              typeOfChecklist == "maintenance"
+                ? { background: "grey", opacity: "0.4" }
+                : { fontWeight: "bold" }
+            }
+            className="temp-btn"
+            onClick={() => {
+              if (typeOfChecklist == "operational") return;
+              setTypeOfChecklist("operational");
+            }}
+            // disabled={typeOfChecklist == "operational" ? true : false}
+          >
+            Operational
+          </button>
+        </div>
       </div>
 
       <div

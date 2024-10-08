@@ -9,6 +9,7 @@ import { OperationalChecklistByTask } from "../operational/OperationalChecklist"
 import { OperationalFullChapterList } from "../operational/OperationalFullChapterList";
 import { MaintenanceFullChapterList } from "./MaintenanceFullChapterList";
 import { useAppContext } from "../../context/appContext";
+import TableComponent from "./Table";
 
 export function Checklist({
   pluginData,
@@ -23,11 +24,17 @@ export function Checklist({
     null
   );
 
-  const { searchOption } = useAppContext();
+  const { searchOption, setModalData, setIsOpen } = useAppContext();
   const relevantTasks =
     pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask.taskIdx]
       .checkListData;
 
+  const isTable =
+    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx]
+      ?.table;
+  const checkImage =
+    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx]
+      ?.imageData;
   const handleCheckBox = (idx: number) => {
     if (isEditMode) {
       if (checkedItems.includes(idx)) {
@@ -175,7 +182,23 @@ export function Checklist({
                       />
                     )}
                   </div>
-
+                  {checkImage ? (
+                    <div
+                      style={{
+                        width: "20%",
+                        marginBottom: "5em",
+                      }}
+                    >
+                      <img
+                        style={{ width: "50%" }}
+                        onClick={() => {
+                          setModalData(`images/${extractFileName(checkImage)}`);
+                          setIsOpen(true);
+                        }}
+                        src={`images/${extractFileName(checkImage)}`}
+                      />
+                    </div>
+                  ) : null}
                   <div
                     style={{
                       color: "white",
@@ -183,9 +206,15 @@ export function Checklist({
                       fontSize: "1.2em",
                       fontWeight: "bold",
                     }}
+                    onClick={() => console.log({ checkImage })}
                   >
                     {item?.name}
                   </div>
+                  {isTable ? (
+                    <div>
+                      <TableComponent />
+                    </div>
+                  ) : null}
                 </div>
               ))
             ) : null}
@@ -430,3 +459,9 @@ const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
   });
   return testVal;
 };
+
+function extractFileName(filePath: string) {
+  const regex = /([^\\]+\.png)$/;
+  const match = filePath.match(regex);
+  return match ? match[0] : null;
+}

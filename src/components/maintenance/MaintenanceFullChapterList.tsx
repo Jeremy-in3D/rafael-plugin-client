@@ -8,6 +8,7 @@ import {
   checkPreviousTasks,
 } from "./logic/checkTasksForChecklist";
 import { useAppContext } from "../../context/appContext";
+import TableComponent from "./Table";
 
 type MaintenanceFullChapterListProps = {
   pluginData: any;
@@ -29,11 +30,20 @@ export function MaintenanceFullChapterList({
   }
   const { searchOption, setModalData, setIsOpen } = useAppContext();
 
+  console.log({ searchOption });
+
   useEffect(() => {
     const chapterData: any = [];
 
+    if (searchOption == "all") {
+      pluginData.forEach((chapter: any) => chapterData.push(chapter));
+      setOpenedChatperContent(chapterData);
+
+      return;
+    }
+
     if (searchOption) {
-      pluginData.forEach((chapter: any, idx: number) => {
+      pluginData.forEach((chapter: any) => {
         if (chapter.chapter.platform == searchOption) {
           chapterData.push(chapter);
         }
@@ -72,12 +82,20 @@ export function MaintenanceFullChapterList({
                 }}
                 key={`chapter${chapterIdx}`}
               >
-                <div style={{ fontSize: "1.3em", fontWeight: "bold" }}>
+                <div
+                  style={{
+                    fontSize: "1.3em",
+                    fontWeight: "bold",
+                    color: searchOption == "all" ? "	#32CD32" : "",
+                  }}
+                >
                   {chapter.chapter?.name}
                 </div>
                 <div
                   style={{
-                    background: "rgb(43, 83, 216, 0.5)",
+                    background: searchOption
+                      ? "rgb(211, 211, 211, 0.7)"
+                      : "rgb(43, 83, 216, 0.5)",
                     borderRadius: "20px",
                     // marginTop: "50px",
                   }}
@@ -87,7 +105,7 @@ export function MaintenanceFullChapterList({
                         <span key={`task${taskIdx}`}>
                           <div
                             style={{
-                              fontSize: "1.2em",
+                              fontSize: "1.3em",
                               fontWeight: "bold",
                               marginTop: taskIdx == 0 ? "2em" : "0.5em",
                             }}
@@ -111,7 +129,7 @@ export function MaintenanceFullChapterList({
                                         alignItems: "center",
                                         padding: "2px",
                                         marginTop:
-                                          checklistIdx > 0 ? "1em" : "0.5em",
+                                          checklistIdx > 0 ? "1em" : "1em",
                                       }}
                                     >
                                       {checkData.isChecked ? (
@@ -236,11 +254,24 @@ export function MaintenanceFullChapterList({
                                       <div
                                         style={{
                                           marginRight: "3em",
-                                          fontSize: "1.2em",
+                                          fontSize:
+                                            searchOption && chapterIdx > 2
+                                              ? "1.4em"
+                                              : "1.2em",
+                                          fontWeight: "600",
+                                          color:
+                                            searchOption && chapterIdx > 2
+                                              ? "#FF0000"
+                                              : "",
                                         }}
                                       >
                                         {checkData.name}
                                       </div>
+                                      {task.table ? (
+                                        <div>
+                                          <TableComponent />
+                                        </div>
+                                      ) : null}
                                     </div>
                                   )
                                 )

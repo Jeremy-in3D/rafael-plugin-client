@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { Chapters } from "../maintenance/Chapters";
 
-export function Operational({ setTypeOfChecklist, pluginData }: any) {
+export function Operational({
+  setTypeOfChecklist,
+  pluginData,
+  typeOfChecklist,
+}: any) {
   const [currentQuestion, setCurrentQuestion] = useState<number>(1);
   const [sortedData, setSortedData] = useState<any[]>([]);
 
@@ -36,6 +40,7 @@ export function Operational({ setTypeOfChecklist, pluginData }: any) {
         title={"Operational"}
         pluginData={sortedData}
         setCurrentQuestion={setCurrentQuestion}
+        typeOfChecklist={typeOfChecklist}
       />
     </div>
   );

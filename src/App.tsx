@@ -57,11 +57,13 @@ function App() {
         <Maintenance
           setTypeOfChecklist={setTypeOfChecklist}
           pluginData={pluginData}
+          typeOfChecklist={typeOfChecklist}
         />
       ) : (
         <Operational
           setTypeOfChecklist={setTypeOfChecklist}
           pluginData={pluginData}
+          typeOfChecklist={typeOfChecklist}
         />
       )}
       {modalIsOpen ? (
@@ -91,7 +93,7 @@ const CheckListSelect = ({ setTypeOfChecklist }: CheckListSelectProps) => (
       <button
         style={{
           border: "1px solid rgb(0,0,0,0.2)",
-          height: "10em",
+          height: "8em",
           width: "10em",
         }}
         onClick={() => setTypeOfChecklist("maintenance")}
@@ -102,7 +104,7 @@ const CheckListSelect = ({ setTypeOfChecklist }: CheckListSelectProps) => (
         style={{
           marginLeft: "2em",
           border: "1px solid rgb(0,0,0,0.2)",
-          height: "10em",
+          height: "8em",
           width: "10em",
         }}
         onClick={() => setTypeOfChecklist("operational")}

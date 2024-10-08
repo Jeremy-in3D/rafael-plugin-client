@@ -1,4 +1,4 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppContext } from "../../context/appContext";
 
 export const SearchChecklist = ({
@@ -8,11 +8,11 @@ export const SearchChecklist = ({
 }: any) => {
   if (false) console.log({ pluginData, searchData });
 
-  const { setSearchOption, searchOption } = useAppContext();
+  const { setSearchOption } = useAppContext();
 
-  // useEffect(() => {
-
-  // }, [searchOption])
+  useEffect(() => {
+    setSearchOption("all");
+  }, []);
 
   return (
     <div style={{ direction: "rtl" }}>

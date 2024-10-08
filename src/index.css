@@ -207,6 +207,11 @@ button:focus-visible {
   border: 1px solid rgba(0, 0, 0, 0.641);
 }
 
+.temp-btn {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  margin-left: 1em;
+}
+
 .vertical-align {
   display: flex;
   align-items: center;

@@ -1,7 +1,11 @@
 import { Chapters } from "./Chapters";
 import { useState, useEffect } from "react";
 
-export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
+export function Maintenance({
+  setTypeOfChecklist,
+  pluginData,
+  typeOfChecklist,
+}: any) {
   const [tasksPerChapter, setTasksPerChapter] = useState<any>({});
   const [sortedData, setSortedData] = useState<any[]>([]);
 
@@ -48,6 +52,7 @@ export function Maintenance({ setTypeOfChecklist, pluginData }: any) {
       setTypeOfChecklist={setTypeOfChecklist}
       title={"Maintenance"}
       pluginData={sortedData}
+      typeOfChecklist={typeOfChecklist}
     />
   );
 }
