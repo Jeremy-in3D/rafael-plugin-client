@@ -16,9 +16,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(
-        "https://rafael-plugin-server.onrender.com/getData"
-      ); // await fetch("http://localhost:3000/getData");
+      const res = await fetch("https://rafael-plugin-server.onrender.com"); // await fetch("http://localhost:3000/getData");
       // const res = await fetch("http://192.168.1.224:3000/getData");
       // const res = await fetch(
       //   "https://rafael-plugin-server.onrender.com/getData",
