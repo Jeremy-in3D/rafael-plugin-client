@@ -30,8 +30,6 @@ export function MaintenanceFullChapterList({
   }
   const { searchOption, setModalData, setIsOpen } = useAppContext();
 
-  console.log({ searchOption });
-
   useEffect(() => {
     const chapterData: any = [];
 
