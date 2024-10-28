@@ -41,7 +41,7 @@ export function Maintenance({
     });
 
     setTasksPerChapter(newTasksPerChapter);
-  }, [sortedData]);
+  }, [sortedData, pluginData]);
 
   if (false) {
     console.log(tasksPerChapter);

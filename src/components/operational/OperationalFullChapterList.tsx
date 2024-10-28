@@ -42,7 +42,7 @@ export function OperationalFullChapterList({
     });
 
     setOpenedChatperContent(chapterData);
-  }, [selectedChapters]);
+  }, [selectedChapters, pluginData]);
 
   if (selectedTask && (selectedTask?.taskIdx || selectedTask.taskIdx == 0)) {
     return null;

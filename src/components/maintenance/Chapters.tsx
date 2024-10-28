@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
-import AssignmentIcon from "@mui/icons-material/Assignment";
+// import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
 import { SearchChecklist } from "../search/SearchChecklist";
 import { useAppContext } from "../../context/appContext";
@@ -17,7 +17,13 @@ export function Chapters({
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<any>(null);
-  const [selectedChapters, setSelectedChapters] = useState<number[]>([]);
+  const [selectedChapters, setSelectedChapters] = useState<number[]>([0]);
+
+  const { triggerRerender } = useAppContext();
+
+  // useEffect(() => {
+  //   // console.log("does this go off every time?");
+  // }, [triggerRerender]);
 
   const selectedStyles = {
     backgroundColor: "#0F0032",
@@ -128,6 +134,7 @@ export function Chapters({
             setTypeOfChecklist={setTypeOfChecklist}
             selectedChapters={selectedChapters}
             setSelectedChapters={setSelectedChapters}
+            triggerRerender={triggerRerender}
           />
         </div>
       </div>
@@ -145,9 +152,9 @@ export const ChapterList = ({
   // setTypeOfChecklist,
   selectedChapters,
   setSelectedChapters,
+  triggerRerender,
 }: any) => {
   const chaptersArr = pluginData; // new Array(5).fill(null);
-  useEffect(() => console.log("sup"), [pluginData]);
 
   const { setSearchOption } = useAppContext();
   return (
@@ -225,6 +232,7 @@ export const ChapterList = ({
                         setSelectedChapters={setSelectedChapters}
                         element={element}
                         pluginData={pluginData}
+                        triggerRerender={triggerRerender}
                       />
                     </div>
                     <div className="tasks-container">
@@ -263,6 +271,7 @@ type ChapterListItemProps = {
   setSelectedTask: React.Dispatch<any>;
   selectedTask: any;
   pluginData: any;
+  triggerRerender: boolean;
 };
 
 const ChapterListItem = ({
@@ -272,35 +281,45 @@ const ChapterListItem = ({
   element,
   setSelectedTask,
   selectedTask,
+  triggerRerender,
 }: // setSelectedTask,
 // selectedTask,
 ChapterListItemProps) => {
   const [isEveryTaskInChapterComplete, setIsEveryTaskInChapterComplete] =
     useState<null | boolean>(null);
   // let isEveryTaskInChapterComplete;
-  if (element?.chapter.tasks?.length) {
-    element.chapter.tasks.map((task: any) => {
-      if (task.checkListData?.length) {
-        task.checkListData?.map((singleTask: any) => {
-          if (singleTask.isChecked) {
-            // return true;
-          } else {
-            if (isEveryTaskInChapterComplete !== false) {
-              setIsEveryTaskInChapterComplete(false);
+
+  useEffect(() => {
+    if (element?.chapter.tasks?.length) {
+      let numberOfTasksInChapter = 0;
+
+      element.chapter.tasks.map((task: any) => {
+        if (task.checkListData?.length) {
+          task.checkListData?.map((singleTask: any) => {
+            if (singleTask.isChecked) {
+              numberOfTasksInChapter = numberOfTasksInChapter + 1;
+
+              if (numberOfTasksInChapter == element?.chapter.tasks?.length) {
+                setIsEveryTaskInChapterComplete(true);
+              }
+            } else {
+              if (isEveryTaskInChapterComplete !== false) {
+                setIsEveryTaskInChapterComplete(false);
+              }
+              return;
             }
-            return;
-          }
-        });
-      }
-    });
-  }
+          });
+        }
+      });
+    }
+  }, [triggerRerender]);
 
   return (
     <div
       className="chapter-item-closed"
       style={{
         fontWeight: selectedChapters.includes(chapterIdx) ? "bold" : "",
-        color: isEveryTaskInChapterComplete === null ? "#66ff00" : "",
+        color: isEveryTaskInChapterComplete === true ? "#66ff00" : "",
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
@@ -361,6 +380,8 @@ const TaskList = ({
   const isSeletedTask =
     taskIdx == selectedTask?.taskIdx && chapterIdx == selectedTask.chapterIdx;
 
+  // console.log({ chapterIdx, taskIdx, item: item?.checkListData[0] });
+
   return (
     <div
       className="chapter-item-closed task-item"
@@ -388,7 +409,12 @@ const TaskList = ({
           fontWeight: isSeletedTask ? "bold" : "",
         }}
       >
-        {`${item.name}`} <AssignmentIcon fontSize="small" />
+        {/* {`${item.name}`} <AssignmentIcon fontSize="small" /> */}
+        {`${item.name}`}{" "}
+        <img
+          style={{ marginLeft: "0.6em" }}
+          src="/public/images/Checked-non-faded-4.png"
+        />
       </span>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import CheckIcon from "@mui/icons-material/Check";
+// import CheckIcon from "@mui/icons-material/Check";
 // import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 // import { CompareSharp } from "@mui/icons-material";
 import {
@@ -28,7 +28,8 @@ export function MaintenanceFullChapterList({
   if (false) {
     console.log(pluginData, selectedTask, selectedChapters);
   }
-  const { searchOption, setModalData, setIsOpen } = useAppContext();
+  const { searchOption, setModalData, setIsOpen, setTriggerRerender } =
+    useAppContext();
 
   useEffect(() => {
     const chapterData: any = [];
@@ -48,6 +49,7 @@ export function MaintenanceFullChapterList({
       });
     } else {
       if (!selectedChapters.length) {
+        // console.log("its cusof this isnt it");
         return;
       }
 
@@ -57,10 +59,9 @@ export function MaintenanceFullChapterList({
         }
       });
     }
-    // console.log({ chapterData });
 
     setOpenedChatperContent(chapterData);
-  }, [selectedChapters, searchOption]);
+  }, [selectedChapters, searchOption, pluginData]);
 
   if (selectedTask && (selectedTask?.taskIdx || selectedTask.taskIdx == 0)) {
     return null;
@@ -99,7 +100,7 @@ export function MaintenanceFullChapterList({
                     }
                   }
                 >
-                  {chapter.chapter.tasks.length
+                  {chapter?.chapter?.tasks.length
                     ? chapter.chapter.tasks.map((task: any, taskIdx: any) => (
                         <span key={`task${taskIdx}`}>
                           {/* <div
@@ -150,13 +151,12 @@ export function MaintenanceFullChapterList({
                                           {checkData.name}
                                         </div>
                                         {checkData.isChecked ? (
-                                          <CheckIcon
-                                            sx={{
-                                              color: isEditMode
-                                                ? "red"
-                                                : "#40e01f",
+                                          <img
+                                            style={{
+                                              width: "1.5em",
+                                              height: "1.5em",
                                             }}
-                                            style={{ marginLeft: "2em" }}
+                                            src="/images/Checked-faded-4.png"
                                             onClick={() => {
                                               if (isEditMode) {
                                                 const chapterArrCopy = [
@@ -182,13 +182,54 @@ export function MaintenanceFullChapterList({
                                                   setOpenedChatperContent(
                                                     chapterArrCopy
                                                   );
+                                                  setTriggerRerender(
+                                                    (prevState) => !prevState
+                                                  );
                                                 } else {
                                                   console.log(". ");
                                                 }
                                               }
                                             }}
                                           />
-                                        ) : checkPreviousTasks(pluginData, {
+                                        ) : // <CheckIcon
+                                        //   sx={{
+                                        //     color: isEditMode
+                                        //       ? "red"
+                                        //       : "#40e01f",
+                                        //   }}
+                                        //   style={{ marginLeft: "2em" }}
+                                        //   onClick={() => {
+                                        //     if (isEditMode) {
+                                        //       const chapterArrCopy = [
+                                        //         ...openedChapterContent,
+                                        //       ];
+                                        //       if (
+                                        //         !checkNextTasks(pluginData, {
+                                        //           chapterIdx,
+                                        //           taskIdx,
+                                        //           checklistIdx,
+                                        //         })
+                                        //       ) {
+                                        //         (
+                                        //           chapterArrCopy[
+                                        //             chapterIdx
+                                        //           ] as any
+                                        //         ).chapter.tasks[
+                                        //           taskIdx
+                                        //         ].checkListData[
+                                        //           checklistIdx
+                                        //         ].isChecked = false;
+                                        //         //   );
+                                        //         setOpenedChatperContent(
+                                        //           chapterArrCopy
+                                        //         );
+                                        //       } else {
+                                        //         console.log(". ");
+                                        //       }
+                                        //     }
+                                        //   }}
+                                        // />
+                                        checkPreviousTasks(pluginData, {
                                             chapterIdx,
                                             taskIdx,
                                             checklistIdx,
@@ -233,8 +274,8 @@ export function MaintenanceFullChapterList({
                                           // />
                                           <img
                                             style={{
-                                              width: "1em",
-                                              height: "1em",
+                                              width: "1.5em",
+                                              height: "1.5em",
                                             }}
                                             onClick={() => {
                                               if (isEditMode) {
@@ -267,11 +308,14 @@ export function MaintenanceFullChapterList({
                                                 setOpenedChatperContent(
                                                   chapterArrCopy
                                                 );
+                                                setTriggerRerender(
+                                                  (prevState) => !prevState
+                                                );
                                               } else {
                                                 console.log("out");
                                               }
                                             }}
-                                            src="/public/images/Checkbox-1.png"
+                                            src="/public/images/Check-4.png"
                                           />
                                         ) : (
                                           // <RadioButtonUncheckedIcon
@@ -279,10 +323,10 @@ export function MaintenanceFullChapterList({
                                           // />
                                           <img
                                             style={{
-                                              width: "1em",
-                                              height: "1em",
+                                              width: "1.5em",
+                                              height: "1.5em",
                                             }}
-                                            src="/public/images/Checkbox-1.png"
+                                            src="/public/images/Check-4.png"
                                           />
                                         )}
                                       </div>

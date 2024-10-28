@@ -15,6 +15,8 @@ type Context = {
   setFullPluginData: React.Dispatch<any>;
   operationType: string;
   setOperationType: React.Dispatch<React.SetStateAction<string>>;
+  triggerRerender: boolean;
+  setTriggerRerender: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AppContext = createContext<Context | null>(null);
@@ -27,6 +29,7 @@ export default function AppContextProvider({
   const [searchOption, setSearchOption] = useState<string>("");
   const [fullPluginData, setFullPluginData] = useState<any>(null);
   const [operationType, setOperationType] = useState<string>("Maintenance");
+  const [triggerRerender, setTriggerRerender] = useState<boolean>(false);
 
   return (
     <AppContext.Provider
@@ -41,6 +44,8 @@ export default function AppContextProvider({
         setFullPluginData,
         operationType,
         setOperationType,
+        triggerRerender,
+        setTriggerRerender,
       }}
     >
       {children}
@@ -63,6 +68,8 @@ export function useAppContext() {
       setFullPluginData: () => {},
       operationType: "",
       setOperationType: () => {},
+      triggerRerender: false,
+      setTriggerRerender: () => {},
     };
   }
 
