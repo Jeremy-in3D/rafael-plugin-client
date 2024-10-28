@@ -245,7 +245,6 @@ export const ChapterList = ({
                                 key={taskIdx}
                                 selectedChapters={selectedChapters}
                                 item={item}
-                                setSelectedTask={setSelectedTask}
                                 selectedTask={selectedTask}
                               />
                             )
@@ -364,7 +363,6 @@ type TaskListProps = {
   selectedChapters: number[];
   taskIdx: number;
   item: any;
-  setSelectedTask: React.Dispatch<React.SetStateAction<any>>;
   chapterIdx: number;
   selectedTask: any;
 };
@@ -372,32 +370,32 @@ type TaskListProps = {
 const TaskList = ({
   taskIdx,
   item,
-  setSelectedTask,
   selectedTask,
-
   chapterIdx,
 }: TaskListProps) => {
+  let areAllTasksComplete;
   const isSeletedTask =
     taskIdx == selectedTask?.taskIdx && chapterIdx == selectedTask.chapterIdx;
 
-  // console.log({ chapterIdx, taskIdx, item: item?.checkListData[0] });
+  if (item?.checkListData?.length)
+    areAllTasksComplete = item?.checkListData[0]?.isChecked;
 
   return (
     <div
       className="chapter-item-closed task-item"
       // key={idx}
       style={{ marginTop: "0.5em", width: "90%" }}
-      onClick={() => {
-        if (selectedTask?.taskIdx == taskIdx) {
-          if (!selectedTask) {
-            setSelectedTask({ chapterIdx, taskIdx });
-          } else {
-            setSelectedTask(null);
-          }
-        } else {
-          setSelectedTask({ chapterIdx, taskIdx });
-        }
-      }}
+      // onClick={() => {
+      //   if (selectedTask?.taskIdx == taskIdx) {
+      //     if (!selectedTask) {
+      //       setSelectedTask({ chapterIdx, taskIdx });
+      //     } else {
+      //       setSelectedTask(null);
+      //     }
+      //   } else {
+      //     setSelectedTask({ chapterIdx, taskIdx });
+      //   }
+      // }}
     >
       <span
         style={{
@@ -413,7 +411,11 @@ const TaskList = ({
         {`${item.name}`}{" "}
         <img
           style={{ marginLeft: "0.6em" }}
-          src="/public/images/Checked-non-faded-4.png"
+          src={
+            areAllTasksComplete
+              ? "/images/Checked-non-faded-4.png"
+              : "/images/Check-4.png"
+          }
         />
       </span>
     </div>

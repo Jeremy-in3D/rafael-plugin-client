@@ -315,7 +315,7 @@ export function MaintenanceFullChapterList({
                                                 console.log("out");
                                               }
                                             }}
-                                            src="/public/images/Check-4.png"
+                                            src="/images/Check-4.png"
                                           />
                                         ) : (
                                           // <RadioButtonUncheckedIcon
@@ -326,7 +326,7 @@ export function MaintenanceFullChapterList({
                                               width: "1.5em",
                                               height: "1.5em",
                                             }}
-                                            src="/public/images/Check-4.png"
+                                            src="/images/Check-4.png"
                                           />
                                         )}
                                       </div>
