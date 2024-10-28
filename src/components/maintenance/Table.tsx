@@ -1,9 +1,9 @@
 const TableComponent = () => {
   const titles = ["חוט A", "חוט B", "חוט C"];
-  const titles2 = ["חוט C", "חוט B", "חוט A"];
+  // const titles2 = ["חוט C", "חוט B", "חוט A"];
 
   const item = ["green", "red", "blue"];
-  const item2 = ["blue", "red", "green"];
+  // const item2 = ["blue", "red", "green"];
   // Function to generate a random color
   // const getRandomColor = () => {
   //   const colors = ["red", "green", "orange", "blue", "purple"];

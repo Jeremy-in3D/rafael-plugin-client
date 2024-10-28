@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import HomeIcon from "@mui/icons-material/Home";
+// import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
@@ -137,12 +137,12 @@ export function Chapters({
 
 export const ChapterList = ({
   pluginData,
-  title,
+  // title,
   selectedTask,
   setSelectedTask,
   isSearchSelected,
   setIsSearchSelected,
-  setTypeOfChecklist,
+  // setTypeOfChecklist,
   selectedChapters,
   setSelectedChapters,
 }: any) => {
