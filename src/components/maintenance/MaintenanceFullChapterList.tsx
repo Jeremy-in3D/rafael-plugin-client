@@ -89,17 +89,7 @@ export function MaintenanceFullChapterList({
                 >
                   {/* {chapter.chapter?.name} */}
                 </div>
-                <div
-                  style={
-                    {
-                      // background: searchOption
-                      //   ? "rgb(211, 211, 211, 0.7)"
-                      //   : "rgb(43, 83, 216, 0.5)",
-                      // borderRadius: "20px",
-                      // marginTop: "50px",
-                    }
-                  }
-                >
+                <div>
                   {chapter?.chapter?.tasks.length
                     ? chapter.chapter.tasks.map((task: any, taskIdx: any) => (
                         <span key={`task${taskIdx}`}>
@@ -191,87 +181,11 @@ export function MaintenanceFullChapterList({
                                               }
                                             }}
                                           />
-                                        ) : // <CheckIcon
-                                        //   sx={{
-                                        //     color: isEditMode
-                                        //       ? "red"
-                                        //       : "#40e01f",
-                                        //   }}
-                                        //   style={{ marginLeft: "2em" }}
-                                        //   onClick={() => {
-                                        //     if (isEditMode) {
-                                        //       const chapterArrCopy = [
-                                        //         ...openedChapterContent,
-                                        //       ];
-                                        //       if (
-                                        //         !checkNextTasks(pluginData, {
-                                        //           chapterIdx,
-                                        //           taskIdx,
-                                        //           checklistIdx,
-                                        //         })
-                                        //       ) {
-                                        //         (
-                                        //           chapterArrCopy[
-                                        //             chapterIdx
-                                        //           ] as any
-                                        //         ).chapter.tasks[
-                                        //           taskIdx
-                                        //         ].checkListData[
-                                        //           checklistIdx
-                                        //         ].isChecked = false;
-                                        //         //   );
-                                        //         setOpenedChatperContent(
-                                        //           chapterArrCopy
-                                        //         );
-                                        //       } else {
-                                        //         console.log(". ");
-                                        //       }
-                                        //     }
-                                        //   }}
-                                        // />
-                                        checkPreviousTasks(pluginData, {
+                                        ) : checkPreviousTasks(pluginData, {
                                             chapterIdx,
                                             taskIdx,
                                             checklistIdx,
                                           }) ? (
-                                          // <GpsFixedIcon
-                                          //   style={{ marginLeft: "2em" }}
-                                          //   onClick={() => {
-                                          //     if (isEditMode) {
-                                          //       return;
-                                          //     }
-                                          //     const chapterArrCopy = [
-                                          //       ...openedChapterContent,
-                                          //     ];
-
-                                          //     if (
-                                          //       checkPreviousTasks(
-                                          //         chapterArrCopy,
-                                          //         {
-                                          //           chapterIdx,
-                                          //           taskIdx,
-                                          //           checklistIdx,
-                                          //         }
-                                          //       )
-                                          //     ) {
-                                          //       (
-                                          //         chapterArrCopy[
-                                          //           chapterIdx
-                                          //         ] as any
-                                          //       ).chapter.tasks[
-                                          //         taskIdx
-                                          //       ].checkListData[
-                                          //         checklistIdx
-                                          //       ].isChecked = true;
-                                          //       //   );
-                                          //       setOpenedChatperContent(
-                                          //         chapterArrCopy
-                                          //       );
-                                          //     } else {
-                                          //       console.log("out");
-                                          //     }
-                                          //   }}
-                                          // />
                                           <img
                                             style={{
                                               width: "1.5em",

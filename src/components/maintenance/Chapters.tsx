@@ -125,6 +125,7 @@ export function Chapters({
         </div>
         <div style={{ flex: 1 }}>
           <ChapterList
+            isMaintenance={title == "Maintenance"}
             pluginData={pluginData}
             title={title}
             selectedTask={selectedTask}
@@ -153,6 +154,7 @@ export const ChapterList = ({
   selectedChapters,
   setSelectedChapters,
   triggerRerender,
+  isMaintenance,
 }: any) => {
   const chaptersArr = pluginData; // new Array(5).fill(null);
 
@@ -233,6 +235,7 @@ export const ChapterList = ({
                         element={element}
                         pluginData={pluginData}
                         triggerRerender={triggerRerender}
+                        isMaintenance={isMaintenance}
                       />
                     </div>
                     <div className="tasks-container">
@@ -271,6 +274,7 @@ type ChapterListItemProps = {
   selectedTask: any;
   pluginData: any;
   triggerRerender: boolean;
+  isMaintenance: boolean;
 };
 
 const ChapterListItem = ({
@@ -281,6 +285,7 @@ const ChapterListItem = ({
   setSelectedTask,
   selectedTask,
   triggerRerender,
+  isMaintenance,
 }: // setSelectedTask,
 // selectedTask,
 ChapterListItemProps) => {
@@ -294,20 +299,22 @@ ChapterListItemProps) => {
 
       element.chapter.tasks.map((task: any) => {
         if (task.checkListData?.length) {
-          task.checkListData?.map((singleTask: any) => {
-            if (singleTask.isChecked) {
-              numberOfTasksInChapter = numberOfTasksInChapter + 1;
+          if (isMaintenance) {
+            task.checkListData?.map((singleTask: any) => {
+              if (singleTask.isChecked) {
+                numberOfTasksInChapter = numberOfTasksInChapter + 1;
 
-              if (numberOfTasksInChapter == element?.chapter.tasks?.length) {
-                setIsEveryTaskInChapterComplete(true);
+                if (numberOfTasksInChapter == element?.chapter.tasks?.length) {
+                  setIsEveryTaskInChapterComplete(true);
+                }
+              } else {
+                if (isEveryTaskInChapterComplete !== false) {
+                  setIsEveryTaskInChapterComplete(false);
+                }
+                return;
               }
-            } else {
-              if (isEveryTaskInChapterComplete !== false) {
-                setIsEveryTaskInChapterComplete(false);
-              }
-              return;
-            }
-          });
+            });
+          }
         }
       });
     }
@@ -318,7 +325,7 @@ ChapterListItemProps) => {
       className="chapter-item-closed"
       style={{
         fontWeight: selectedChapters.includes(chapterIdx) ? "bold" : "",
-        color: isEveryTaskInChapterComplete === true ? "#66ff00" : "",
+        color: isEveryTaskInChapterComplete === true ? "#0fd125" : "",
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
