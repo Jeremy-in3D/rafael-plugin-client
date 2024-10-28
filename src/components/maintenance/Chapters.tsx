@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -19,6 +19,20 @@ export function Chapters({
   const [searchData, setSearchData] = useState<any>(null);
   const [selectedChapters, setSelectedChapters] = useState<number[]>([]);
 
+  const selectedStyles = {
+    backgroundColor: "#0F0032",
+    color: "#FFFFFF",
+    height: "42%",
+    width: "22%",
+  };
+
+  const unselectedStyles = {
+    backgroundColor: "none",
+    color: "#D0D5DD",
+    height: "42%",
+    width: "22%",
+  };
+
   return (
     <div
       style={{
@@ -36,36 +50,28 @@ export function Chapters({
         >
           <div style={{ width: "50%" }}>
             <img
-              style={{ width: "100%", marginTop: "0.5em" }}
-              src="/images/Rafael-2.png"
+              style={{ width: "90%", marginTop: "0.5em" }}
+              src="/images/rafael-logo-hebrew.png"
             />
           </div>
         </div>
         <div style={{ flex: 1 }}>
-          <h1>{title}</h1>
+          <h1 style={{ opacity: 0 }}>{title}</h1>
         </div>
 
-        <div style={{ flex: 1 }}>
-          <button
-            style={
-              typeOfChecklist == "operational"
-                ? { background: "grey", opacity: "0.4" }
-                : { fontWeight: "bold" }
-            }
-            // disabled={typeOfChecklist == "operational" ? false : true}
-            className="temp-btn"
-            onClick={() => {
-              if (typeOfChecklist == "maintenance") return;
-              setTypeOfChecklist("maintenance");
-            }}
-          >
-            Maintenance
-          </button>
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <button
             style={
               typeOfChecklist == "maintenance"
-                ? { background: "grey", opacity: "0.4" }
-                : { fontWeight: "bold" }
+                ? unselectedStyles
+                : selectedStyles
             }
             className="temp-btn"
             onClick={() => {
@@ -74,7 +80,22 @@ export function Chapters({
             }}
             // disabled={typeOfChecklist == "operational" ? true : false}
           >
-            Operational
+            אחזקה
+          </button>
+          <button
+            style={
+              typeOfChecklist == "operational"
+                ? unselectedStyles
+                : selectedStyles
+            }
+            // disabled={typeOfChecklist == "" ? false : true}
+            className="temp-btn"
+            onClick={() => {
+              if (typeOfChecklist == "maintenance") return;
+              setTypeOfChecklist("maintenance");
+            }}
+          >
+            מבצעי
           </button>
         </div>
       </div>
@@ -126,6 +147,8 @@ export const ChapterList = ({
   setSelectedChapters,
 }: any) => {
   const chaptersArr = pluginData; // new Array(5).fill(null);
+  useEffect(() => console.log("sup"), [pluginData]);
+
   const { setSearchOption } = useAppContext();
   return (
     <div className="chapter-content-container">
@@ -141,7 +164,7 @@ export const ChapterList = ({
             }}
           />
         </div>
-        <div className="content-navbar-holder">
+        {/* <div className="content-navbar-holder">
           <AssignmentIcon
             fontSize="large"
             // sx={{ color: "#2b4cd8" }}
@@ -151,8 +174,8 @@ export const ChapterList = ({
               setSearchOption("");
             }}
           />
-        </div>
-        <div className="content-navbar-holder">
+        </div> */}
+        {/* <div className="content-navbar-holder">
           <HomeIcon
             fontSize="large"
             // sx={{ color: "#2b4cd8" }}
@@ -163,14 +186,14 @@ export const ChapterList = ({
               setSearchOption("");
             }}
           />
-        </div>
+        </div> */}
       </div>
 
       {isSearchSelected ? (
         <SearchChecklist pluginData={pluginData} />
       ) : (
         <div className="content-list">
-          <div className="chapter-title">{title}</div>
+          {/* <div className="chapter-title">{title}</div> */}
           <div
             style={{
               height: "90%",
@@ -193,12 +216,7 @@ export const ChapterList = ({
                       alignItems: "flex-end",
                     }}
                   >
-                    <div
-                      className="chapters-item"
-                      style={{
-                        color: "white",
-                      }}
-                    >
+                    <div className="chapters-item">
                       <ChapterListItem
                         setSelectedTask={setSelectedTask}
                         selectedTask={selectedTask}
@@ -206,6 +224,7 @@ export const ChapterList = ({
                         selectedChapters={selectedChapters}
                         setSelectedChapters={setSelectedChapters}
                         element={element}
+                        pluginData={pluginData}
                       />
                     </div>
                     <div className="tasks-container">
@@ -243,6 +262,7 @@ type ChapterListItemProps = {
   element: any;
   setSelectedTask: React.Dispatch<any>;
   selectedTask: any;
+  pluginData: any;
 };
 
 const ChapterListItem = ({
@@ -255,12 +275,37 @@ const ChapterListItem = ({
 }: // setSelectedTask,
 // selectedTask,
 ChapterListItemProps) => {
-  // const adjustedChapter = chapter + 1;
+  const [isEveryTaskInChapterComplete, setIsEveryTaskInChapterComplete] =
+    useState<null | boolean>(null);
+  // let isEveryTaskInChapterComplete;
+  if (element?.chapter.tasks?.length) {
+    element.chapter.tasks.map((task: any) => {
+      if (task.checkListData?.length) {
+        task.checkListData?.map((singleTask: any) => {
+          if (singleTask.isChecked) {
+            // return true;
+          } else {
+            if (isEveryTaskInChapterComplete !== false) {
+              setIsEveryTaskInChapterComplete(false);
+            }
+            return;
+          }
+        });
+      }
+    });
+  }
+
   return (
     <div
       className="chapter-item-closed"
       style={{
         fontWeight: selectedChapters.includes(chapterIdx) ? "bold" : "",
+        color: isEveryTaskInChapterComplete === null ? "#66ff00" : "",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        background: "#EEF0F2",
+        borderRadius: "20px",
       }}
       onClick={() => {
         // if (!selectedTask && !selectedTask?.chapterIdx) {
@@ -280,7 +325,18 @@ ChapterListItemProps) => {
         }
       }}
     >
-      {`${element?.chapter?.name}`}
+      <div> {`${element?.chapter?.name}`}</div>
+
+      {/* <div style={{ border: "1px solid red" }}> */}
+      <img
+        style={{
+          transform: selectedChapters.includes(chapterIdx)
+            ? "rotate(-90deg)"
+            : "",
+        }}
+        src="/images/chapters-chevron.png"
+      />
+      {/* </div> */}
     </div>
   );
 };

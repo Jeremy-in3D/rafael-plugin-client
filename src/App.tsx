@@ -18,6 +18,7 @@ function App() {
     const fetchData = async () => {
       const res = await fetch(
         "https://rafael-plugin-server.onrender.com/getData"
+        // "http://localhost:3000/getData"
       ); // await fetch("http://localhost:3000/getData");
       // const res = await fetch("http://192.168.1.224:3000/getData");
       // const res = await fetch(
@@ -88,30 +89,48 @@ type CheckListSelectProps = {
 const CheckListSelect = ({ setTypeOfChecklist }: CheckListSelectProps) => (
   <div style={{ height: "100%", width: "100%" }}>
     <div style={{ marginTop: "3em" }}>
-      <img src="/images/Rafael-2.png" />
+      <img src="/images/rafael-logo-hebrew.png" />
     </div>
     <div>
-      <p>Please Select a category</p>
+      <h1>שלום ישראל ישראלי</h1>
+    </div>
+    <div>
+      <p style={{ fontSize: "2em" }}>בחר קטגוריה</p>
+    </div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "2em",
+        height: "10em",
+      }}
+    >
       <button
         style={{
-          border: "1px solid rgb(0,0,0,0.2)",
-          height: "8em",
-          width: "10em",
-        }}
-        onClick={() => setTypeOfChecklist("maintenance")}
-      >
-        Maintenance
-      </button>
-      <button
-        style={{
-          marginLeft: "2em",
-          border: "1px solid rgb(0,0,0,0.2)",
-          height: "8em",
-          width: "10em",
+          // marginLeft: "2em",
+          // border: "1px solid rgb(0,0,0,0.2)",
+          background: "none",
+          height: "9em",
+          width: "11em",
         }}
         onClick={() => setTypeOfChecklist("operational")}
       >
-        Operational
+        <img src="/images/op-1.png" />
+        <span style={{ fontSize: "1.6em" }}>תחזוקה</span>
+      </button>
+
+      <div style={{ borderLeft: "1px solid rgb(0,0,0,0.4)" }}></div>
+      <button
+        style={{
+          // border: "1px solid rgb(0,0,0,0.2)",
+          background: "none",
+          height: "9em",
+          width: "11em",
+        }}
+        onClick={() => setTypeOfChecklist("maintenance")}
+      >
+        <img src="/images/maint-icon.png" />
+        <span style={{ fontSize: "1.6em" }}>מבצעי</span>
       </button>
     </div>
   </div>

@@ -7,6 +7,10 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
+  --primary-text-blue: #000032;
+  --secondary-grey: #eef0f2;
+  --list-item-color: #5b6871;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -78,13 +82,14 @@ button:focus-visible {
   align-items: center;
   overflow-y: auto;
   height: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  background: #f6f8f9;
   overflow-x: hidden;
 }
 
 .chapters-item {
   margin-top: 1em;
-  background: grey;
+  background: var(--secondary-grey);
   width: 80%;
   border-radius: 12px;
   margin-right: 1em;
@@ -94,6 +99,8 @@ button:focus-visible {
   text-align: right;
   margin-right: 1em;
   font-size: 1.1em;
+  color: var(--primary-text-blue);
+  /* background: var(--secondary-grey); */
 }
 
 .chapter-title {
@@ -111,26 +118,30 @@ button:focus-visible {
 }
 
 .checklist-container {
-  background: rgba(55, 11, 11, 0.168);
+  /* background: rgba(55, 11, 11, 0.168); */
   /* background: #2b4cd8; */
   height: 100%;
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
-  border-top-left-radius: 12px;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
   /* overflow: scroll; */
 }
 
 .checklist-content {
-  background: rgba(0, 0, 0, 0.745);
-  /* background: rgb(248, 224, 224); */
-  /* flex: 6; */
-  /* height: 20em; */
+  /* background: rgba(0, 0, 0, 0.745); */
+
   height: 100%;
   margin-top: 1em;
   border-bottom-left-radius: 12px;
   padding: 3px;
   overflow-y: scroll;
+}
+
+.checklist-full-item {
+  /* border-bottom: 1px solid black; */
+  color: var(--list-item-color);
+  padding: 3px;
 }
 
 .checklist-list-items {
@@ -146,12 +157,12 @@ button:focus-visible {
   margin-top: 2em;
   display: flex;
   flex-direction: column;
-  color: white;
+  color: var(--list-item-color);
 }
 
 .content-list {
-  border-top: 1px solid black;
-
+  /* border-top: 1px solid black; */
+  background: #f6f8f9;
   /* max-height: 100%; */
   height: 80%;
   width: 100%;
@@ -170,7 +181,7 @@ button:focus-visible {
   display: flex;
   width: 100%;
   justify-content: space-evenly;
-  background: rgba(128, 128, 128, 0.645);
+  /* background: rgba(128, 128, 128, 0.645); */
   /* flex: 1; */
 }
 
@@ -194,22 +205,25 @@ button:focus-visible {
 }
 
 .tasks-container {
-  width: 74%;
+  width: 100%;
   /* margin-right: 5em; */
-  margin-right: 1.5em;
+  /* margin-right: 1.5em; */
+  /* border: 2px solid orange; */
 }
 
 .task-item {
-  background: rgba(48, 47, 47, 0.168);
-  border-radius: 12px;
+  /* background: rgba(48, 47, 47, 0.168); */
+  /* border-radius: 12px; */
   margin-right: 0em;
   color: black;
-  border: 1px solid rgba(0, 0, 0, 0.641);
+  /* border: 1px solid rgba(0, 0, 0, 0.641); */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .temp-btn {
   border: 1px solid rgba(0, 0, 0, 0.6);
   margin-left: 1em;
+  font-size: 1.2em;
 }
 
 .vertical-align {

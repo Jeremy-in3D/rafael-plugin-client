@@ -81,7 +81,7 @@ export function OperationalFullChapterList({
                         <div
                           className="checklist-full-chapter-wrapper"
                           style={{
-                            borderBottom: "1px solid white",
+                            borderBottom: "1px solid black",
                           }}
                           key={`chapter/${taskIdx}`}
                         >

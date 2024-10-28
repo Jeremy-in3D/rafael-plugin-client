@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+// import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import CheckIcon from "@mui/icons-material/Check";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+// import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 // import { CompareSharp } from "@mui/icons-material";
 import {
   checkNextTasks,
@@ -57,6 +57,7 @@ export function MaintenanceFullChapterList({
         }
       });
     }
+    // console.log({ chapterData });
 
     setOpenedChatperContent(chapterData);
   }, [selectedChapters, searchOption]);
@@ -71,10 +72,8 @@ export function MaintenanceFullChapterList({
         {openedChapterContent.length
           ? openedChapterContent.map((chapter: any, chapterIdx: number) => (
               <div
+                className="checklist-full-item"
                 style={{
-                  color: "white",
-                  borderBottom: "1px solid white",
-                  padding: "3px",
                   marginTop: chapterIdx == 0 ? "2em" : "1.5em",
                   // background: "white",
                 }}
@@ -87,21 +86,23 @@ export function MaintenanceFullChapterList({
                     color: searchOption == "all" ? "	#32CD32" : "",
                   }}
                 >
-                  {chapter.chapter?.name}
+                  {/* {chapter.chapter?.name} */}
                 </div>
                 <div
-                  style={{
-                    background: searchOption
-                      ? "rgb(211, 211, 211, 0.7)"
-                      : "rgb(43, 83, 216, 0.5)",
-                    borderRadius: "20px",
-                    // marginTop: "50px",
-                  }}
+                  style={
+                    {
+                      // background: searchOption
+                      //   ? "rgb(211, 211, 211, 0.7)"
+                      //   : "rgb(43, 83, 216, 0.5)",
+                      // borderRadius: "20px",
+                      // marginTop: "50px",
+                    }
+                  }
                 >
                   {chapter.chapter.tasks.length
                     ? chapter.chapter.tasks.map((task: any, taskIdx: any) => (
                         <span key={`task${taskIdx}`}>
-                          <div
+                          {/* <div
                             style={{
                               fontSize: "1.3em",
                               fontWeight: "bold",
@@ -110,7 +111,7 @@ export function MaintenanceFullChapterList({
                             onClick={() => console.log({ task })}
                           >
                             {task.name}
-                          </div>
+                          </div> */}
                           <div>
                             {task?.checkListData?.length
                               ? task.checkListData.map(
@@ -121,34 +122,137 @@ export function MaintenanceFullChapterList({
                                         // width: "80%",
                                         // marginTop: "0.5em",
                                         display: "flex",
+                                        flexDirection: "row-reverse",
                                         justifyContent: "space-between",
                                         borderBottom:
-                                          "1px solid rgb(255,255,255,0.4)",
+                                          "1px solid rgb(0,0,0,0.4)",
                                         alignItems: "center",
                                         padding: "2px",
                                         marginTop:
                                           checklistIdx > 0 ? "1em" : "1em",
                                       }}
                                     >
-                                      {checkData.isChecked ? (
-                                        <CheckIcon
-                                          sx={{
-                                            color: isEditMode
-                                              ? "red"
-                                              : "#40e01f",
+                                      <div style={{ display: "flex" }}>
+                                        <div
+                                          style={{
+                                            marginRight: "3em",
+                                            fontSize:
+                                              searchOption && chapterIdx > 2
+                                                ? "1.4em"
+                                                : "1.2em",
+                                            fontWeight: "600",
+                                            color:
+                                              searchOption && chapterIdx > 2
+                                                ? "#FF0000"
+                                                : "",
                                           }}
-                                          style={{ marginLeft: "2em" }}
-                                          onClick={() => {
-                                            if (isEditMode) {
+                                        >
+                                          {checkData.name}
+                                        </div>
+                                        {checkData.isChecked ? (
+                                          <CheckIcon
+                                            sx={{
+                                              color: isEditMode
+                                                ? "red"
+                                                : "#40e01f",
+                                            }}
+                                            style={{ marginLeft: "2em" }}
+                                            onClick={() => {
+                                              if (isEditMode) {
+                                                const chapterArrCopy = [
+                                                  ...openedChapterContent,
+                                                ];
+                                                if (
+                                                  !checkNextTasks(pluginData, {
+                                                    chapterIdx,
+                                                    taskIdx,
+                                                    checklistIdx,
+                                                  })
+                                                ) {
+                                                  (
+                                                    chapterArrCopy[
+                                                      chapterIdx
+                                                    ] as any
+                                                  ).chapter.tasks[
+                                                    taskIdx
+                                                  ].checkListData[
+                                                    checklistIdx
+                                                  ].isChecked = false;
+                                                  //   );
+                                                  setOpenedChatperContent(
+                                                    chapterArrCopy
+                                                  );
+                                                } else {
+                                                  console.log(". ");
+                                                }
+                                              }
+                                            }}
+                                          />
+                                        ) : checkPreviousTasks(pluginData, {
+                                            chapterIdx,
+                                            taskIdx,
+                                            checklistIdx,
+                                          }) ? (
+                                          // <GpsFixedIcon
+                                          //   style={{ marginLeft: "2em" }}
+                                          //   onClick={() => {
+                                          //     if (isEditMode) {
+                                          //       return;
+                                          //     }
+                                          //     const chapterArrCopy = [
+                                          //       ...openedChapterContent,
+                                          //     ];
+
+                                          //     if (
+                                          //       checkPreviousTasks(
+                                          //         chapterArrCopy,
+                                          //         {
+                                          //           chapterIdx,
+                                          //           taskIdx,
+                                          //           checklistIdx,
+                                          //         }
+                                          //       )
+                                          //     ) {
+                                          //       (
+                                          //         chapterArrCopy[
+                                          //           chapterIdx
+                                          //         ] as any
+                                          //       ).chapter.tasks[
+                                          //         taskIdx
+                                          //       ].checkListData[
+                                          //         checklistIdx
+                                          //       ].isChecked = true;
+                                          //       //   );
+                                          //       setOpenedChatperContent(
+                                          //         chapterArrCopy
+                                          //       );
+                                          //     } else {
+                                          //       console.log("out");
+                                          //     }
+                                          //   }}
+                                          // />
+                                          <img
+                                            style={{
+                                              width: "1em",
+                                              height: "1em",
+                                            }}
+                                            onClick={() => {
+                                              if (isEditMode) {
+                                                return;
+                                              }
                                               const chapterArrCopy = [
                                                 ...openedChapterContent,
                                               ];
+
                                               if (
-                                                !checkNextTasks(pluginData, {
-                                                  chapterIdx,
-                                                  taskIdx,
-                                                  checklistIdx,
-                                                })
+                                                checkPreviousTasks(
+                                                  chapterArrCopy,
+                                                  {
+                                                    chapterIdx,
+                                                    taskIdx,
+                                                    checklistIdx,
+                                                  }
+                                                )
                                               ) {
                                                 (
                                                   chapterArrCopy[
@@ -158,118 +262,59 @@ export function MaintenanceFullChapterList({
                                                   taskIdx
                                                 ].checkListData[
                                                   checklistIdx
-                                                ].isChecked = false;
+                                                ].isChecked = true;
                                                 //   );
                                                 setOpenedChatperContent(
                                                   chapterArrCopy
                                                 );
                                               } else {
-                                                console.log(". ");
+                                                console.log("out");
                                               }
-                                            }
-                                          }}
-                                        />
-                                      ) : checkPreviousTasks(pluginData, {
-                                          chapterIdx,
-                                          taskIdx,
-                                          checklistIdx,
-                                        }) ? (
-                                        <GpsFixedIcon
-                                          style={{ marginLeft: "2em" }}
-                                          onClick={() => {
-                                            if (isEditMode) {
-                                              return;
-                                            }
-                                            const chapterArrCopy = [
-                                              ...openedChapterContent,
-                                            ];
-
-                                            if (
-                                              checkPreviousTasks(
-                                                chapterArrCopy,
-                                                {
-                                                  chapterIdx,
-                                                  taskIdx,
-                                                  checklistIdx,
-                                                }
-                                              )
-                                            ) {
-                                              (
-                                                chapterArrCopy[
-                                                  chapterIdx
-                                                ] as any
-                                              ).chapter.tasks[
-                                                taskIdx
-                                              ].checkListData[
-                                                checklistIdx
-                                              ].isChecked = true;
-                                              //   );
-                                              setOpenedChatperContent(
-                                                chapterArrCopy
-                                              );
-                                            } else {
-                                              console.log("out");
-                                            }
-                                          }}
-                                        />
-                                      ) : (
-                                        <RadioButtonUncheckedIcon
-                                          style={{ marginLeft: "2em" }}
-                                          // onClick={() => {
-                                          //   console.log(
-                                          //     "THE FUNCTION: ",
-                                          //     checkPreviousTasks(pluginData, {
-                                          //       chapterIdx,
-                                          //       taskIdx,
-                                          //       checklistIdx,
-                                          //     })
-                                          //   );
-                                          // }}
-                                        />
-                                      )}
-                                      {task.imageData ? (
-                                        <div
-                                          style={{
-                                            width: "15%",
-                                          }}
-                                        >
-                                          <img
-                                            onClick={() => {
-                                              setModalData(
-                                                `images/${extractFileName(
-                                                  task.imageData
-                                                )}`
-                                              );
-                                              setIsOpen(true);
                                             }}
-                                            style={{ width: "50%" }}
-                                            src={`images/${extractFileName(
-                                              task.imageData
-                                            )}`}
+                                            src="/public/images/Checkbox-1.png"
                                           />
-                                        </div>
-                                      ) : null}
-                                      <div
-                                        style={{
-                                          marginRight: "3em",
-                                          fontSize:
-                                            searchOption && chapterIdx > 2
-                                              ? "1.4em"
-                                              : "1.2em",
-                                          fontWeight: "600",
-                                          color:
-                                            searchOption && chapterIdx > 2
-                                              ? "#FF0000"
-                                              : "",
-                                        }}
-                                      >
-                                        {checkData.name}
+                                        ) : (
+                                          // <RadioButtonUncheckedIcon
+                                          //   style={{ marginLeft: "2em" }}
+                                          // />
+                                          <img
+                                            style={{
+                                              width: "1em",
+                                              height: "1em",
+                                            }}
+                                            src="/public/images/Checkbox-1.png"
+                                          />
+                                        )}
                                       </div>
                                       {task.table ? (
                                         <div>
                                           <TableComponent />
                                         </div>
                                       ) : null}
+                                      <div>
+                                        {task.imageData ? (
+                                          <div
+                                            style={{
+                                              width: "15%",
+                                            }}
+                                          >
+                                            <img
+                                              onClick={() => {
+                                                setModalData(
+                                                  `images/${extractFileName(
+                                                    task.imageData
+                                                  )}`
+                                                );
+                                                setIsOpen(true);
+                                              }}
+                                              style={{ width: "50%" }}
+                                              src={`images/${extractFileName(
+                                                task.imageData
+                                              )}`}
+                                            />
+                                          </div>
+                                        ) : null}
+                                      </div>
                                     </div>
                                   )
                                 )

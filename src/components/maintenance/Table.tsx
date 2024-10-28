@@ -21,7 +21,7 @@ const TableComponent = () => {
                 border: "1px solid black",
                 padding: "10px",
                 textAlign: "center",
-                color: "white",
+                color: "black",
               }}
             >
               <div>{title}</div>
@@ -31,7 +31,7 @@ const TableComponent = () => {
             </td>
           ))}
         </tr>
-        <tr>
+        {/* <tr>
           {titles2.map((title, index) => (
             <td
               key={index}
@@ -48,7 +48,7 @@ const TableComponent = () => {
               </div>
             </td>
           ))}
-        </tr>
+        </tr> */}
       </tbody>
     </table>
   );

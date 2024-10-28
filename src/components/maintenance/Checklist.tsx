@@ -1,15 +1,16 @@
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import CheckIcon from "@mui/icons-material/Check";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+// import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+// import CheckIcon from "@mui/icons-material/Check";
+// import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import { useState } from "react";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 // import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 // import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl";
-import { OperationalChecklistByTask } from "../operational/OperationalChecklist";
+// import { OperationalChecklistByTask } from "../operational/OperationalChecklist";
 import { OperationalFullChapterList } from "../operational/OperationalFullChapterList";
 import { MaintenanceFullChapterList } from "./MaintenanceFullChapterList";
 import { useAppContext } from "../../context/appContext";
-import TableComponent from "./Table";
+// import TableComponent from "./Table";
+// import { MaintenanceChecklistByItem } from "./MaintenanceChecklistByItem";
 
 export function Checklist({
   pluginData,
@@ -17,46 +18,49 @@ export function Checklist({
   isMaintenance,
   selectedChapters,
 }: any) {
-  const [checkedItems, setCheckedItems] = useState<number[]>([]);
-  const [currentItem, setCurrentItem] = useState<number>(0);
+  // const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  // const [currentItem, setCurrentItem] = useState<number>(0);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isShowSoloChecklist, setIsShowSoloChecklist] = useState<number | null>(
     null
   );
 
-  const { searchOption, setModalData, setIsOpen } = useAppContext();
-  const relevantTasks =
-    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask.taskIdx]
-      .checkListData;
+  const { searchOption } = useAppContext();
 
-  const isTable =
-    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx]
-      ?.table;
-  const checkImage =
-    pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx]
-      ?.imageData;
-  const handleCheckBox = (idx: number) => {
-    if (isEditMode) {
-      if (checkedItems.includes(idx)) {
-        const updatedArray = [...checkedItems].filter((item) => item != idx);
-        setCheckedItems(updatedArray);
-      }
-    } else {
-      if (checkPreviousTasks(pluginData, selectedTask)) {
-        relevantTasks[idx].isChecked = true;
-        if (!checkedItems.includes(idx)) {
-          setCheckedItems([...checkedItems, idx]);
-          if (idx === currentItem) {
-            setCurrentItem(currentItem + 1);
-          }
-        } else {
-          setCheckedItems(checkedItems.filter((item) => item !== idx));
-        }
-      } else {
-        console.log(" ");
-      }
-    }
-  };
+  // const relevantTasks =
+  //   pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask.taskIdx]
+  //     .checkListData;
+  // const isTable =
+  //   pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx]
+  //     ?.table;
+  // const checkImage =
+  //   pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask?.taskIdx]
+  //     ?.imageData;
+
+  // const handleCheckBox = (idx: number) => {
+  //   console.log({ relevantTasks });
+  //   if (isEditMode) {
+  //     if (checkedItems.includes(idx)) {
+  //       const updatedArray = [...checkedItems].filter((item) => item != idx);
+  //       setCheckedItems(updatedArray);
+  //     }
+  //   } else {
+  //     console.log("supppy");
+  //     if (checkPreviousTasks(pluginData, selectedTask)) {
+  //       relevantTasks[idx].isChecked = true;
+  //       if (!checkedItems.includes(idx)) {
+  //         setCheckedItems([...checkedItems, idx]);
+  //         if (idx === currentItem) {
+  //           setCurrentItem(currentItem + 1);
+  //         }
+  //       } else {
+  //         setCheckedItems(checkedItems.filter((item) => item !== idx));
+  //       }
+  //     } else {
+  //       console.log(" ");
+  //     }
+  //   }
+  // };
 
   const chapterName = pluginData[selectedTask?.chapterIdx]?.chapter?.name;
   const taskName =
@@ -91,7 +95,7 @@ export function Checklist({
               sx={isEditMode ? { color: "red" } : {}}
               fontSize="large"
             />
-            <span style={isEditMode ? { color: "red" } : {}}>Edit</span>
+            <span style={isEditMode ? { color: "red" } : {}}>Undo</span>
           </div>
 
           <div className="bottom-actions-bar-container">
@@ -131,7 +135,7 @@ export function Checklist({
                 isEditMode={isEditMode}
               />
             ) : null}
-            {!isMaintenance ? (
+            {/* {!isMaintenance ? (
               <OperationalChecklistByTask
                 pluginData={pluginData}
                 selectedTask={selectedTask}
@@ -140,106 +144,20 @@ export function Checklist({
                 isEditMode={isEditMode}
               />
             ) : relevantTasks ? (
-              relevantTasks.map((item: any, idx: number) => (
-                <div
-                  className="checklist-list-items"
-                  key={idx}
-                  style={{
-                    background: "rgb(43, 83, 216, 0.4)",
-                    borderRadius: "20px",
-                  }}
-                >
-                  <div
-                    style={{
-                      color: "white",
-                      marginLeft: "1em",
-                    }}
-                  >
-                    {relevantTasks[idx].isChecked == false ? (
-                      idx > 0 ? (
-                        relevantTasks[idx - 1].isChecked == false ? (
-                          <RadioButtonUncheckedIcon
-                            sx={isEditMode ? { color: "red" } : {}}
-                            // onClick={() => handleCheckBox(idx)}
-                          />
-                        ) : relevantTasks[idx > 0 ? idx - 1 : 0].isChecked ==
-                          false ? (
-                          <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
-                        ) : (
-                          <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
-                        )
-                      ) : checkPreviousTasks(pluginData, selectedTask) ? (
-                        <GpsFixedIcon onClick={() => handleCheckBox(idx)} />
-                      ) : (
-                        <RadioButtonUncheckedIcon />
-                      )
-                    ) : (
-                      <CheckIcon
-                        sx={
-                          isEditMode ? { color: "red" } : { color: "#40e01f" }
-                        }
-                        onClick={() => handleCheckBox(idx)}
-                      />
-                    )}
-                  </div>
-                  {checkImage ? (
-                    <div
-                      style={{
-                        width: "20%",
-                        marginBottom: "5em",
-                      }}
-                    >
-                      <img
-                        style={{ width: "50%" }}
-                        onClick={() => {
-                          setModalData(`images/${extractFileName(checkImage)}`);
-                          setIsOpen(true);
-                        }}
-                        src={`images/${extractFileName(checkImage)}`}
-                      />
-                    </div>
-                  ) : null}
-                  <div
-                    style={{
-                      color: "white",
-                      marginRight: "1em",
-                      fontSize: "1.2em",
-                      fontWeight: "bold",
-                    }}
-                    onClick={() => console.log({ checkImage })}
-                  >
-                    {item?.name}
-                  </div>
-                  {isTable ? (
-                    <div>
-                      <TableComponent />
-                    </div>
-                  ) : null}
-                </div>
-              ))
-            ) : null}
-          </div>
-          {/* {isMaintenance ? null : selectedTask ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                src={
-                  selectedTask?.chapterIdx == 0
-                    ? "/images/test.png"
-                    : "http://localhost:3000/images/camera-image.png" //"/images/camera.png"
-                }
-                style={{
-                  position: "absolute",
-                  bottom: "10em",
-                  width: selectedTask?.chapterIdx != 0 ? "17em" : "",
-                }}
+              <MaintenanceChecklistByItem
+                setIsOpen={setIsOpen}
+                setModalData={setModalData}
+                selectedTask={selectedTask}
+                pluginData={pluginData}
+                checkPreviousTasks={checkPreviousTasks}
+                handleCheckBox={handleCheckBox}
+                isEditMode={isEditMode}
+                checkImage={checkImage}
+                relevantTasks={relevantTasks}
+                isTable={isTable}
               />
-            </div>
-          ) : null} */}
+            ) : null} */}
+          </div>
         </div>
       </div>
     </>
@@ -305,163 +223,157 @@ const BottomBar = ({
   );
 };
 
-const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
-  let testVal = true;
+// const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
+//   let testVal = true;
 
-  pluginData.forEach((chapter: any) => {
-    if (!chapter) {
-      return false;
-    }
+//   pluginData.forEach((chapter: any) => {
+//     if (!chapter) {
+//       return false;
+//     }
 
-    for (const [key, value] of Object.entries(chapter)) {
-      if (key == "chapter") {
-        (value as any).tasks.forEach((task: any, taskIdx: number) => {
-          if (taskIdx != selectedTask.taskIdx) {
-            console.log(task);
-            return;
-          }
-          if (selectedTask.chapterIdx == 0) {
-            if (selectedTask.taskIdx == 0) {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // logic here for chapter == 0 and task == 0 and multiple questions in task
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.map((question: any, questionIdx: number) => {
-                  if (false) {
-                    console.log(question);
-                  }
-                  if (selectedTask.checklistIdx == 0) {
-                    testVal = true;
-                    return;
-                  } else {
-                    if (
-                      pluginData[selectedTask.chapterIdx].chapter.tasks[
-                        selectedTask.taskIdx
-                      ].checkListData[questionIdx - 1] == false
-                    ) {
-                      testVal = false;
-                      return;
-                    }
-                  }
-                });
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    selectedTask.taskIdx
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = true;
-                  return;
-                }
-              }
-            } else {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // logic for chapter = 0, but task > 0 and multiple questions in task
+//     for (const [key, value] of Object.entries(chapter)) {
+//       if (key == "chapter") {
+//         (value as any).tasks.forEach((task: any, taskIdx: number) => {
+//           if (taskIdx != selectedTask.taskIdx) {
+//             // console.log("dont wabt tio kig gere/: ", task);
+//             return;
+//           }
+//           if (selectedTask.chapterIdx == 0) {
+//             if (selectedTask.taskIdx == 0) {
+//               if (
+//                 pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                   selectedTask.taskIdx
+//                 ].checkListData.length > 1
+//               ) {
+//                 // logic here for chapter == 0 and task == 0 and multiple questions in task
+//                 pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                   selectedTask.taskIdx
+//                 ].checkListData.map((question: any, questionIdx: number) => {
+//                   if (false) {
+//                     console.log(question);
+//                   }
+//                   if (selectedTask.checklistIdx == 0) {
+//                     testVal = true;
+//                     return;
+//                   } else {
+//                     if (
+//                       pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                         selectedTask.taskIdx
+//                       ].checkListData[questionIdx - 1] == false
+//                     ) {
+//                       testVal = false;
+//                       return;
+//                     }
+//                   }
+//                 });
+//               } else {
+//                 if (
+//                   pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                     selectedTask.taskIdx
+//                   ].checkListData[0].isChecked == false
+//                 ) {
+//                   testVal = true;
+//                   return;
+//                 }
+//               }
+//             } else {
+//               if (
+//                 pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                   selectedTask.taskIdx
+//                 ].checkListData.length > 1
+//               ) {
+//                 // logic for chapter = 0, but task > 0 and multiple questions in task
 
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.map((question: any, questionIdx: number) => {
-                  if (false) {
-                    console.log(question);
-                  }
-                  if (selectedTask.checklistIdx == 0) {
-                    // new logic here
+//                 pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                   selectedTask.taskIdx
+//                 ].checkListData.map((question: any, questionIdx: number) => {
+//                   if (false) {
+//                     console.log(question);
+//                   }
+//                   if (selectedTask.checklistIdx == 0) {
+//                     // new logic here
 
-                    // if (
-                    //   pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    //     pluginData[selectedTask.chapterIdx].chapter.tasks
-                    //       .length - 1
-                    //   ].checkListData[
-                    //     pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    //       pluginData[selectedTask.chapterIdx].chapter.tasks
-                    //         .length - 1
-                    //     ].checkListData.length - 1
-                    //   ].isChecked == false
-                    // ) {
-                    //   testVal = false;
-                    //   return;
-                    // }
+//                     // if (
+//                     //   pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                     //     pluginData[selectedTask.chapterIdx].chapter.tasks
+//                     //       .length - 1
+//                     //   ].checkListData[
+//                     //     pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                     //       pluginData[selectedTask.chapterIdx].chapter.tasks
+//                     //         .length - 1
+//                     //     ].checkListData.length - 1
+//                     //   ].isChecked == false
+//                     // ) {
+//                     //   testVal = false;
+//                     //   return;
+//                     // }
 
-                    testVal = true;
+//                     testVal = true;
 
-                    return;
-                  } else {
-                    if (
-                      pluginData[selectedTask.chapterIdx].chapter.tasks[
-                        selectedTask.taskIdx
-                      ].checkListData[questionIdx - 1] == false
-                    ) {
-                      testVal = false;
-                      return;
-                    }
-                  }
-                });
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    selectedTask.taskIdx - 1
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = false;
-                  return;
-                }
-              }
-            }
-          } else {
-            if (selectedTask.taskIdx == 0) {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // insert logic here for first task in chapter > 0 where multiple questions per task
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
-                    pluginData[selectedTask.chapterIdx - 1].chapter.tasks
-                      .length - 1
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = false;
-                  return;
-                }
-              }
-            } else {
-              if (
-                pluginData[selectedTask.chapterIdx].chapter.tasks[
-                  selectedTask.taskIdx
-                ].checkListData.length > 1
-              ) {
-                // logic here where chapter > 0 and task > 0 and multipl questions per task
-              } else {
-                if (
-                  pluginData[selectedTask.chapterIdx].chapter.tasks[
-                    selectedTask.taskIdx - 1
-                  ].checkListData[0].isChecked == false
-                ) {
-                  testVal = false;
-                  return;
-                }
-              }
-            }
-          }
-        });
-      }
-    }
-  });
-  return testVal;
-};
-
-function extractFileName(filePath: string) {
-  const regex = /([^\\]+\.png)$/;
-  const match = filePath.match(regex);
-  return match ? match[0] : null;
-}
+//                     return;
+//                   } else {
+//                     if (
+//                       pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                         selectedTask.taskIdx
+//                       ].checkListData[questionIdx - 1] == false
+//                     ) {
+//                       testVal = false;
+//                       return;
+//                     }
+//                   }
+//                 });
+//               } else {
+//                 if (
+//                   pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                     selectedTask.taskIdx - 1
+//                   ].checkListData[0].isChecked == false
+//                 ) {
+//                   testVal = false;
+//                   return;
+//                 }
+//               }
+//             }
+//           } else {
+//             if (selectedTask.taskIdx == 0) {
+//               if (
+//                 pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                   selectedTask.taskIdx
+//                 ].checkListData.length > 1
+//               ) {
+//                 // insert logic here for first task in chapter > 0 where multiple questions per task
+//               } else {
+//                 if (
+//                   pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
+//                     pluginData[selectedTask.chapterIdx - 1].chapter.tasks
+//                       .length - 1
+//                   ].checkListData[0].isChecked == false
+//                 ) {
+//                   testVal = false;
+//                   return;
+//                 }
+//               }
+//             } else {
+//               if (
+//                 pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                   selectedTask.taskIdx
+//                 ].checkListData.length > 1
+//               ) {
+//                 // logic here where chapter > 0 and task > 0 and multipl questions per task
+//               } else {
+//                 if (
+//                   pluginData[selectedTask.chapterIdx].chapter.tasks[
+//                     selectedTask.taskIdx - 1
+//                   ].checkListData[0].isChecked == false
+//                 ) {
+//                   testVal = false;
+//                   return;
+//                 }
+//               }
+//             }
+//           }
+//         });
+//       }
+//     }
+//   });
+//   return testVal;
+// };
