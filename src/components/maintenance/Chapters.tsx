@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 // import HomeIcon from "@mui/icons-material/Home";
 import { Checklist } from "./Checklist";
 // import AssignmentIcon from "@mui/icons-material/Assignment";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import { SearchChecklist } from "../search/SearchChecklist";
 import { useAppContext } from "../../context/appContext";
+import { TopBar } from "./TopBar";
 // import { AppContext, useAppContext } from "../../context/appContext";
 // import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
 
@@ -25,20 +26,6 @@ export function Chapters({
   //   // console.log("does this go off every time?");
   // }, [triggerRerender]);
 
-  const selectedStyles = {
-    backgroundColor: "#0F0032",
-    color: "#FFFFFF",
-    height: "42%",
-    width: "22%",
-  };
-
-  const unselectedStyles = {
-    backgroundColor: "none",
-    color: "#D0D5DD",
-    height: "42%",
-    width: "22%",
-  };
-
   return (
     <div
       style={{
@@ -47,65 +34,11 @@ export function Chapters({
         flexDirection: "column",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-          }}
-        >
-          <div style={{ width: "50%" }}>
-            <img
-              style={{ width: "90%", marginTop: "0.5em" }}
-              src="/images/rafael-logo-hebrew.png"
-            />
-          </div>
-        </div>
-        <div style={{ flex: 1 }}>
-          <h1 style={{ opacity: 0 }}>{title}</h1>
-        </div>
-
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <button
-            style={
-              typeOfChecklist == "maintenance"
-                ? unselectedStyles
-                : selectedStyles
-            }
-            className="temp-btn"
-            onClick={() => {
-              if (typeOfChecklist == "operational") return;
-              setTypeOfChecklist("operational");
-            }}
-            // disabled={typeOfChecklist == "operational" ? true : false}
-          >
-            אחזקה
-          </button>
-          <button
-            style={
-              typeOfChecklist == "operational"
-                ? unselectedStyles
-                : selectedStyles
-            }
-            // disabled={typeOfChecklist == "" ? false : true}
-            className="temp-btn"
-            onClick={() => {
-              if (typeOfChecklist == "maintenance") return;
-              setTypeOfChecklist("maintenance");
-            }}
-          >
-            מבצעי
-          </button>
-        </div>
-      </div>
-
+      <TopBar
+        title={title}
+        typeOfChecklist={typeOfChecklist}
+        setTypeOfChecklist={setTypeOfChecklist}
+      />
       <div
         style={{
           display: "flex",
@@ -163,7 +96,7 @@ export const ChapterList = ({
     <div className="chapter-content-container">
       <div className="content-navbar">
         <div className="content-navbar-holder">
-          <SearchIcon
+          {/* <SearchIcon
             fontSize="large"
             // sx={{ color: "#2b4cd8" }}
             sx={{ color: "black" }}
@@ -171,6 +104,15 @@ export const ChapterList = ({
               setIsSearchSelected(!isSearchSelected);
               setSearchOption("");
             }}
+          /> */}
+          סינון{" "}
+          <img
+            onClick={() => {
+              setIsSearchSelected(!isSearchSelected);
+              setSearchOption("");
+            }}
+            src="/images/search-1.png"
+            style={{ width: "3em" }}
           />
         </div>
         {/* <div className="content-navbar-holder">
