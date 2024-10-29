@@ -281,13 +281,13 @@ export const checkNextTasks = (pluginData: any, selectedTask: any) => {
   return testVal;
 };
 
-function isSequential(arr: any) {
-  // Sort the array and check each element is the previous one + 1
-  const sorted = [...arr].sort((a, b) => a - b);
-  for (let i = 1; i < sorted.length; i++) {
-    if (sorted[i] !== sorted[i - 1] + 1) {
-      return false;
-    }
-  }
-  return true;
-}
+// function isSequential(arr: any) {
+//   // Sort the array and check each element is the previous one + 1
+//   const sorted = [...arr].sort((a, b) => a - b);
+//   for (let i = 1; i < sorted.length; i++) {
+//     if (sorted[i] !== sorted[i - 1] + 1) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
