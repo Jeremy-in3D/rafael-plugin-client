@@ -4,8 +4,15 @@
 // for example: first category, if chapter is 0 or not ( if (selectedTask.chapterIdx == 0) ):
 // second is if chapter is not 0, check last question of last task of the previous chapter.
 
-export const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
+export const checkPreviousTasks = (
+  pluginData: any,
+  selectedTask: any,
+  maintenanceCompletedChapters: any,
+  selectedChapters: any
+) => {
   let testVal = true;
+
+  // console.log({c})
 
   pluginData.forEach((chapter: any) => {
     if (!chapter) {
@@ -120,11 +127,28 @@ export const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                   return;
                 }
               } else {
+                // login for task == 0 and chapter > 0 (and only 1 question per task)
+
+                // const testVal = '
+                if (
+                  !selectedChapters?.length &&
+                  !maintenanceCompletedChapters?.length
+                ) {
+                  testVal = false;
+                  return;
+                }
+
                 if (
                   pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
                     pluginData[selectedTask.chapterIdx - 1].chapter.tasks
                       .length - 1
-                  ]?.checkListData[0]?.isChecked == false
+                  ]?.checkListData[0]?.isChecked == false ||
+                  // !isSequential(selectedChapters)
+                  !selectedChapters.includes(
+                    maintenanceCompletedChapters[
+                      maintenanceCompletedChapters.length - 1
+                    ] + 1
+                  )
                 ) {
                   testVal = false;
                   return;
@@ -136,6 +160,7 @@ export const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                   selectedTask.taskIdx
                 ]?.checkListData.length > 1
               ) {
+                // console.log("HOW DO I CHECK THIS?>?");
                 pluginData[selectedTask.chapterIdx]?.chapter?.tasks[
                   selectedTask.taskIdx
                 ]?.checkListData?.forEach((item: any, idx: number) => {
@@ -145,6 +170,7 @@ export const checkPreviousTasks = (pluginData: any, selectedTask: any) => {
                     return;
                   }
                   if (idx == 0) {
+                    // console.log("ANNND THIS?????!!");
                     if (
                       pluginData[selectedTask.chapterIdx].chapter.tasks[
                         selectedTask?.taskIdx - 1
@@ -254,3 +280,14 @@ export const checkNextTasks = (pluginData: any, selectedTask: any) => {
 
   return testVal;
 };
+
+function isSequential(arr: any) {
+  // Sort the array and check each element is the previous one + 1
+  const sorted = [...arr].sort((a, b) => a - b);
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i] !== sorted[i - 1] + 1) {
+      return false;
+    }
+  }
+  return true;
+}

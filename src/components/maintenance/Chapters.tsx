@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { Checklist } from "./Checklist";
 // import AssignmentIcon from "@mui/icons-material/Assignment";
 // import SearchIcon from "@mui/icons-material/Search";
-import { SearchChecklist } from "../search/SearchChecklist";
+// import { SearchChecklist } from "../search/SearchChecklist";
 import { useAppContext } from "../../context/appContext";
 import { TopBar } from "./TopBar";
+import { Search } from "../search/Search";
 // import { AppContext, useAppContext } from "../../context/appContext";
 // import { countCheckedItems } from "../../common/getNumberOfCheckableItems";
 
@@ -54,6 +55,7 @@ export function Chapters({
             searchData={searchData}
             setSearchData={setSearchData}
             selectedChapters={selectedChapters}
+            setSelectedChapters={setSelectedChapters}
           />
         </div>
         <div style={{ flex: 1 }}>
@@ -140,69 +142,66 @@ export const ChapterList = ({
         </div> */}
       </div>
 
-      {isSearchSelected ? (
-        <SearchChecklist pluginData={pluginData} />
-      ) : (
-        <div className="content-list">
-          {/* <div className="chapter-title">{title}</div> */}
-          <div
-            style={{
-              height: "90%",
-              overflowY: "auto",
-              overflowX: "hidden",
-              // display: "flex",
-              // flexDirection: "column",
-              // alignItems: "flex-end",
-              width: "90%",
-            }}
-          >
-            {chaptersArr && chaptersArr.length
-              ? chaptersArr.map((element: any, idx: number) => (
-                  <div
-                    key={`idx${idx}`}
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <div className="chapters-item">
-                      <ChapterListItem
-                        setSelectedTask={setSelectedTask}
-                        selectedTask={selectedTask}
-                        chapterIdx={idx}
-                        selectedChapters={selectedChapters}
-                        setSelectedChapters={setSelectedChapters}
-                        element={element}
-                        pluginData={pluginData}
-                        triggerRerender={triggerRerender}
-                        isMaintenance={isMaintenance}
-                      />
-                    </div>
-                    <div className="tasks-container">
-                      {selectedChapters.includes(idx)
-                        ? element?.chapter?.tasks?.map(
-                            (item: any, taskIdx: number) => (
-                              <TaskList
-                                chapterIdx={idx}
-                                taskIdx={taskIdx}
-                                key={taskIdx}
-                                selectedChapters={selectedChapters}
-                                item={item}
-                                selectedTask={selectedTask}
-                              />
-                            )
-                          )
-                        : null}
-                    </div>
+      <div className="content-list">
+        {/* <div className="chapter-title">{title}</div> */}
+        <div
+          style={{
+            height: "90%",
+            overflowY: "auto",
+            overflowX: "hidden",
+            // display: "flex",
+            // flexDirection: "column",
+            // alignItems: "flex-end",
+            width: "90%",
+          }}
+        >
+          {isSearchSelected ? <Search /> : null}
+          {chaptersArr && chaptersArr.length
+            ? chaptersArr.map((element: any, idx: number) => (
+                <div
+                  key={`idx${idx}`}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <div className="chapters-item">
+                    <ChapterListItem
+                      setSelectedTask={setSelectedTask}
+                      selectedTask={selectedTask}
+                      chapterIdx={idx}
+                      selectedChapters={selectedChapters}
+                      setSelectedChapters={setSelectedChapters}
+                      element={element}
+                      pluginData={pluginData}
+                      triggerRerender={triggerRerender}
+                      isMaintenance={isMaintenance}
+                    />
                   </div>
-                ))
-              : null}
-            <div style={{ opacity: 0 }}>hello world</div>
-          </div>
+                  <div className="tasks-container">
+                    {selectedChapters.includes(idx)
+                      ? element?.chapter?.tasks?.map(
+                          (item: any, taskIdx: number) => (
+                            <TaskList
+                              chapterIdx={idx}
+                              taskIdx={taskIdx}
+                              key={taskIdx}
+                              selectedChapters={selectedChapters}
+                              item={item}
+                              selectedTask={selectedTask}
+                            />
+                          )
+                        )
+                      : null}
+                  </div>
+                </div>
+              ))
+            : null}
+          <div style={{ opacity: 0 }}>hello world</div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -235,6 +234,9 @@ ChapterListItemProps) => {
     useState<null | boolean>(null);
   // let isEveryTaskInChapterComplete;
 
+  const { maintenanceCompletedChapters, setMaintenanceCompletedChapters } =
+    useAppContext();
+
   useEffect(() => {
     if (element?.chapter.tasks?.length) {
       let numberOfTasksInChapter = 0;
@@ -248,6 +250,13 @@ ChapterListItemProps) => {
 
                 if (numberOfTasksInChapter == element?.chapter.tasks?.length) {
                   setIsEveryTaskInChapterComplete(true);
+                  if (!maintenanceCompletedChapters.includes(chapterIdx)) {
+                    const completeChptrsArrCopy = [
+                      ...maintenanceCompletedChapters,
+                      chapterIdx,
+                    ];
+                    setMaintenanceCompletedChapters(completeChptrsArrCopy);
+                  }
                 }
               } else {
                 if (isEveryTaskInChapterComplete !== false) {

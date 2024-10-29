@@ -17,6 +17,8 @@ type Context = {
   setOperationType: React.Dispatch<React.SetStateAction<string>>;
   triggerRerender: boolean;
   setTriggerRerender: React.Dispatch<React.SetStateAction<boolean>>;
+  maintenanceCompletedChapters: any[];
+  setMaintenanceCompletedChapters: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export const AppContext = createContext<Context | null>(null);
@@ -30,6 +32,8 @@ export default function AppContextProvider({
   const [fullPluginData, setFullPluginData] = useState<any>(null);
   const [operationType, setOperationType] = useState<string>("Maintenance");
   const [triggerRerender, setTriggerRerender] = useState<boolean>(false);
+  const [maintenanceCompletedChapters, setMaintenanceCompletedChapters] =
+    useState<any[]>([]);
 
   return (
     <AppContext.Provider
@@ -46,6 +50,8 @@ export default function AppContextProvider({
         setOperationType,
         triggerRerender,
         setTriggerRerender,
+        maintenanceCompletedChapters,
+        setMaintenanceCompletedChapters,
       }}
     >
       {children}
@@ -70,6 +76,8 @@ export function useAppContext() {
       setOperationType: () => {},
       triggerRerender: false,
       setTriggerRerender: () => {},
+      maintenanceCompletedChapters: [],
+      setMaintenanceCompletedChapters: () => {},
     };
   }
 

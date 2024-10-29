@@ -17,6 +17,7 @@ export function Checklist({
   selectedTask,
   isMaintenance,
   selectedChapters,
+  setSelectedChapters,
 }: any) {
   // const [checkedItems, setCheckedItems] = useState<number[]>([]);
   // const [currentItem, setCurrentItem] = useState<number>(0);
@@ -25,7 +26,9 @@ export function Checklist({
     null
   );
 
-  const { searchOption } = useAppContext();
+  const { searchOption, maintenanceCompletedChapters } = useAppContext();
+
+  // console.log({ selectedChapters });
 
   // const relevantTasks =
   //   pluginData[selectedTask?.chapterIdx]?.chapter?.tasks[selectedTask.taskIdx]
@@ -72,6 +75,11 @@ export function Checklist({
     (selectedChapters?.length && isMaintenance && !selectedTask?.taskIdx) ||
     (isMaintenance && searchOption);
 
+  const nextChapterBtnText =
+    maintenanceCompletedChapters.length == 6
+      ? "סיום"
+      : `${maintenanceCompletedChapters.length + 1} מעבר לפרק`;
+
   return (
     <>
       <div className="checklist-container">
@@ -114,7 +122,7 @@ export function Checklist({
           style={{
             display: "flex",
             flexDirection: "column",
-            height: "100%",
+            height: "80%",
           }}
         >
           <div className="checklist-content">
@@ -158,6 +166,51 @@ export function Checklist({
               />
             ) : null} */}
           </div>
+        </div>
+        <div
+          style={{
+            height: "4em",
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <button
+            style={{ marginLeft: "3em", border: "1px solid rgb(0,0,0,0.6)" }}
+            onClick={() => {
+              // const checkTasksThing = () => {
+              //   let val = true;
+              //   const test = pluginData[
+              //     maintenanceCompletedChapters[
+              //       maintenanceCompletedChapters.length - 1
+              //     ] + 1
+              //   ]?.chapter?.tasks.map((task: any) => {
+              //     console.log({ task });
+              //     if (task.checkListData[0].isChecked == false) {
+              //       val = false;
+              //     }
+              //   });
+
+              //   return val;
+              // };
+              // console.log(checkTasksThing());
+              // if (!checkTasksThing() && maintenanceCompletedChapters.length) {
+              //   return;
+              // }
+
+              // console.log("yep");
+              const completedChaptersArr = [...maintenanceCompletedChapters];
+              const openedChaptersArr = [...selectedChapters];
+              completedChaptersArr.forEach((chapter: number) => {
+                if (!openedChaptersArr.includes(chapter + 1)) {
+                  setSelectedChapters([...openedChaptersArr, chapter + 1]);
+                }
+              });
+            }}
+          >
+            {nextChapterBtnText}
+          </button>
         </div>
       </div>
     </>

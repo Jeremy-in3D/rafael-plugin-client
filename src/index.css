@@ -90,7 +90,7 @@ button:focus-visible {
 .chapters-item {
   margin-top: 1em;
   background: var(--secondary-grey);
-  width: 80%;
+  width: 96%;
   border-radius: 12px;
   margin-right: 1em;
 }
@@ -190,6 +190,12 @@ button:focus-visible {
   display: flex;
   align-items: center;
   height: 100%;
+}
+
+.dereg-btns {
+  border: 1px solid black;
+  height: 100%;
+  width: 5%;
 }
 
 .dropdown-container {

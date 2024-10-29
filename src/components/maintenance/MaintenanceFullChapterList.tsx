@@ -24,12 +24,64 @@ export function MaintenanceFullChapterList({
   isEditMode,
 }: MaintenanceFullChapterListProps) {
   const [openedChapterContent, setOpenedChatperContent] = useState([]);
+  // const [completedChapters, setCompletedChapters] = useState<any[]>([]);
 
   if (false) {
     console.log(pluginData, selectedTask, selectedChapters);
   }
-  const { searchOption, setModalData, setIsOpen, setTriggerRerender } =
-    useAppContext();
+
+  const {
+    searchOption,
+    setModalData,
+    setIsOpen,
+    setTriggerRerender,
+    maintenanceCompletedChapters,
+    // setMaintenanceCompletedChapters,
+    // triggerRerender,
+  } = useAppContext();
+
+  // console.log({ maintenanceCompletedChapters });
+
+  // useEffect(() => {
+  //   console.log("so this log shouhld be happening");
+  //   pluginData.map((chapter: any, idx: number) => {
+  //     // console.log("ITS FINALLY TIME");
+  //     if (chapter?.chapter.tasks?.length) {
+  //       let numberOfTasksInChapter = 0;
+  //       chapter.chapter.tasks.map((task: any) => {
+  //         if (task.checkListData?.length) {
+  //           task.checkListData?.map((singleTask: any) => {
+  //             // console.log("in here yo: ", singleTask);
+
+  //             if (singleTask.isChecked) {
+  //               numberOfTasksInChapter = numberOfTasksInChapter + 1;
+  //               console.log("this actually makes sense?");
+  //               if (numberOfTasksInChapter == chapter?.chapter.tasks?.length) {
+  //                 if (!maintenanceCompletedChapters.includes(idx)) {
+  //                   console.log(
+  //                     "in here for some reason which is where I want to be"
+  //                   );
+  //                   console.log({ maintenanceCompletedChapters });
+  //                   const completeChptrsArrCopy = [
+  //                     ...maintenanceCompletedChapters,
+  //                     idx,
+  //                   ];
+  //                   setMaintenanceCompletedChapters(completeChptrsArrCopy);
+  //                 }
+  //               }
+  //             } else {
+  //               // if (isEveryTaskInChapterComplete !== false) {
+  //               //   // setIsEveryTaskInChapterComplete(false);
+  //               // }
+  //               return;
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  //   console.log("SECOND COMING: ", { maintenanceCompletedChapters });
+  // }, [pluginData, triggerRerender]);
 
   useEffect(() => {
     const chapterData: any = [];
@@ -136,6 +188,9 @@ export function MaintenanceFullChapterList({
                                               searchOption && chapterIdx > 2
                                                 ? "#FF0000"
                                                 : "",
+                                            opacity: checkData.isChecked
+                                              ? 0.6
+                                              : 1,
                                           }}
                                         >
                                           {checkData.name}
@@ -181,11 +236,16 @@ export function MaintenanceFullChapterList({
                                               }
                                             }}
                                           />
-                                        ) : checkPreviousTasks(pluginData, {
-                                            chapterIdx,
-                                            taskIdx,
-                                            checklistIdx,
-                                          }) ? (
+                                        ) : checkPreviousTasks(
+                                            pluginData,
+                                            {
+                                              chapterIdx,
+                                              taskIdx,
+                                              checklistIdx,
+                                            },
+                                            maintenanceCompletedChapters,
+                                            selectedChapters
+                                          ) ? (
                                           <img
                                             style={{
                                               width: "1.5em",
@@ -206,7 +266,9 @@ export function MaintenanceFullChapterList({
                                                     chapterIdx,
                                                     taskIdx,
                                                     checklistIdx,
-                                                  }
+                                                  },
+                                                  maintenanceCompletedChapters,
+                                                  selectedChapters
                                                 )
                                               ) {
                                                 (

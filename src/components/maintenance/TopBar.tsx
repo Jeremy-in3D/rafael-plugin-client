@@ -44,7 +44,7 @@ export function TopBar({
           />
         </div>
       </div>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1.5 }}>
         <h1 style={{ opacity: 0 }}>{title}</h1>
       </div>
 

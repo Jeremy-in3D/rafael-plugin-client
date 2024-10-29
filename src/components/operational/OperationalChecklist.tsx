@@ -119,13 +119,11 @@ const IndividualChecklist = ({
             checkPreviousTasks(pluginData, selectedTask, isWorkerOne) ? (
               <GpsFixedIcon
                 onClick={() => {
-                  // console.log({ pluginData, selectedTask });
                   const testValue = checkPreviousTasks(
                     pluginData,
                     selectedTask,
                     isWorkerOne
                   );
-                  // console.log({ testValue });
                   if (!testValue) {
                     return;
                   }
@@ -172,17 +170,7 @@ const IndividualChecklist = ({
               // sx={{ color: "#40e01f" }}
               sx={isEditMode ? { color: "red" } : { color: "#40e01f" }}
               onClick={() => {
-                // console.log(
-                //   isWorkerOne ? workerOneQuestions : workerTwoQuestion
-                // );
                 if (isEditMode) {
-                  // console.log(
-                  //   checkNextTask(
-                  //     pluginData,
-                  //     selectedTask,
-                  //     isWorkerOne ? true : false
-                  //   )
-                  // );
                   if (
                     !checkNextTask(
                       pluginData,
