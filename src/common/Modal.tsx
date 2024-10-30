@@ -18,12 +18,14 @@ type ModalComponentProps = {
   modalIsOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalData: string;
+  modalText: string;
 };
 
 export function ModalComponent({
   modalIsOpen,
   setIsOpen,
   modalData,
+  modalText,
 }: ModalComponentProps) {
   //   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -38,6 +40,7 @@ export function ModalComponent({
   function closeModal() {
     setIsOpen(false);
   }
+  console.log({ modalData });
 
   return (
     <div>
@@ -50,8 +53,30 @@ export function ModalComponent({
         contentLabel="Example Modal"
       >
         {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
-        <button onClick={closeModal}>close</button>
-        {modalData ? <img src={modalData} /> : null}
+        <div style={{ height: "100%", width: "100%" }}>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button style={{ fontSize: "1em" }} onClick={closeModal}>
+              x
+            </button>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {modalData && modalData != "images/null" ? (
+              <img src={modalData} />
+            ) : null}
+            {modalData === "images/null" ? (
+              <video playsInline controls style={{ width: "20%" }}>
+                <source
+                  src={"/images/3195394-uhd_3840_2160_25fps.mp4"}
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+            ) : null}
+          </div>
+          <div style={{ textAlign: "center" }}>
+            {modalText ? <p>{modalText}</p> : null}
+          </div>
+        </div>
       </Modal>
     </div>
   );

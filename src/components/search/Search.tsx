@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useAppContext } from "../../context/appContext";
 
 export function Search() {
   const options = ["סופה", "רעם", "חד מושבי", "דו מושבי", "תלת מושבי"];
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isDeregOpen, setIsDeregOpen] = useState(true);
   const [isMaarachetOpen, setIsMaarechetOpen] = useState(true);
   const [dereg, setDereg] = useState(false);
@@ -12,6 +13,8 @@ export function Search() {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const { setSearchOption } = useAppContext();
 
   const handleOptionChange = (value: any) => {
     setSelectedOption(value);
@@ -206,7 +209,10 @@ export function Search() {
                 type="radio"
                 name="dropdownOptions"
                 checked={selectedOption === option}
-                onChange={() => handleOptionChange(option)}
+                onChange={() => {
+                  handleOptionChange(option);
+                  setSearchOption(option);
+                }}
                 style={{ marginLeft: "0.5em" }} // Radio button on the right side
               />
             </label>

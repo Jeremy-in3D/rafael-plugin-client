@@ -8,9 +8,15 @@ export const checkPreviousTasks = (
   pluginData: any,
   selectedTask: any,
   maintenanceCompletedChapters: any,
-  selectedChapters: any
+  selectedChapters: any,
+  isRelevantTask?: any
+  // setCurrentQuestionHeaderText?: any
 ) => {
   let testVal = true;
+
+  if (isRelevantTask) {
+    console.log({ selectedTask, selectedChapters });
+  }
 
   // console.log({c})
 

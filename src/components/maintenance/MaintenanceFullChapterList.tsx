@@ -38,6 +38,8 @@ export function MaintenanceFullChapterList({
     maintenanceCompletedChapters,
     // setMaintenanceCompletedChapters,
     // triggerRerender,
+    setModalText,
+    // setCurrentQuestionHeaderText,
   } = useAppContext();
 
   // console.log({ maintenanceCompletedChapters });
@@ -244,7 +246,9 @@ export function MaintenanceFullChapterList({
                                               checklistIdx,
                                             },
                                             maintenanceCompletedChapters,
-                                            selectedChapters
+                                            selectedChapters,
+                                            true
+                                            // setCurrentQuestionHeaderText
                                           ) ? (
                                           <img
                                             style={{
@@ -315,11 +319,15 @@ export function MaintenanceFullChapterList({
                                         {task.imageData ? (
                                           <div
                                             style={{
-                                              width: "15%",
+                                              width: "4em",
+                                              marginLeft: "2em",
                                             }}
                                           >
                                             <img
                                               onClick={() => {
+                                                setModalText(
+                                                  task.checkListData[0].name
+                                                );
                                                 setModalData(
                                                   `images/${extractFileName(
                                                     task.imageData
@@ -327,7 +335,7 @@ export function MaintenanceFullChapterList({
                                                 );
                                                 setIsOpen(true);
                                               }}
-                                              style={{ width: "50%" }}
+                                              style={{ width: "100%" }}
                                               src={`images/${extractFileName(
                                                 task.imageData
                                               )}`}

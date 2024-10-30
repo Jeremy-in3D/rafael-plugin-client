@@ -11,7 +11,7 @@ function App() {
 
   const isMaintenance = typeOfChecklist == "maintenance";
 
-  const { modalIsOpen, setIsOpen, modalData, setFullPluginData } =
+  const { modalIsOpen, setIsOpen, modalData, setFullPluginData, modalText } =
     useAppContext();
 
   useEffect(() => {
@@ -74,6 +74,7 @@ function App() {
           modalIsOpen={modalIsOpen}
           setIsOpen={setIsOpen}
           modalData={modalData}
+          modalText={modalText}
         />
       ) : null}
     </div>
@@ -220,6 +221,7 @@ const mockkDATA = [
         },
         {
           name: "משימה 2.3",
+          table: true,
           checkListData: [
             {
               name: 'ודא צבע חוטים לקונקטור לכרטיס עפ"י הטבלה:',

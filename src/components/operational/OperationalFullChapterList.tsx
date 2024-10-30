@@ -28,7 +28,7 @@ export function OperationalFullChapterList({
     return null;
   }
 
-  const { setIsOpen, setModalData } = useAppContext();
+  const { setIsOpen, setModalData, setModalText } = useAppContext();
 
   useEffect(() => {
     if (!selectedChapters.length) {
@@ -191,6 +191,9 @@ export function OperationalFullChapterList({
                                   >
                                     <img
                                       onClick={() => {
+                                        setModalText(
+                                          task?.questions["question-2"]?.text
+                                        );
                                         setModalData(
                                           `images/${extractFileName(
                                             task?.questions["question-2"]?.image
@@ -296,6 +299,9 @@ export function OperationalFullChapterList({
                                   >
                                     <img
                                       onClick={() => {
+                                        setModalText(
+                                          task.questions["question-1"].text
+                                        );
                                         setModalData(
                                           `images/${extractFileName(
                                             task?.questions["question-1"]?.image
