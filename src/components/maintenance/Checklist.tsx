@@ -179,6 +179,17 @@ export function Checklist({
           <button
             style={{ marginLeft: "3em", border: "1px solid rgb(0,0,0,0.6)" }}
             onClick={() => {
+              if (nextChapterBtnText === "סיום") {
+                confirm("בטוח שתרצה לסיים?");
+              } else {
+                const completedChaptersArr = [...maintenanceCompletedChapters];
+                const openedChaptersArr = [...selectedChapters];
+                completedChaptersArr.forEach((chapter: number) => {
+                  if (!openedChaptersArr.includes(chapter + 1)) {
+                    setSelectedChapters([...openedChaptersArr, chapter + 1]);
+                  }
+                });
+              }
               // const checkTasksThing = () => {
               //   let val = true;
               //   const test = pluginData[
@@ -200,13 +211,6 @@ export function Checklist({
               // }
 
               // console.log("yep");
-              const completedChaptersArr = [...maintenanceCompletedChapters];
-              const openedChaptersArr = [...selectedChapters];
-              completedChaptersArr.forEach((chapter: number) => {
-                if (!openedChaptersArr.includes(chapter + 1)) {
-                  setSelectedChapters([...openedChaptersArr, chapter + 1]);
-                }
-              });
             }}
           >
             {nextChapterBtnText}
