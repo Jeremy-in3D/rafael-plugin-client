@@ -1,3 +1,4 @@
+// import { useAppContext } from "../../context/appContext";
 import { Chapters } from "./Chapters";
 import { useState, useEffect } from "react";
 
@@ -8,6 +9,9 @@ export function Maintenance({
 }: any) {
   const [tasksPerChapter, setTasksPerChapter] = useState<any>({});
   const [sortedData, setSortedData] = useState<any[]>([]);
+
+  // const { firstChecklistItemText, setFirstChecklistItemText }: any =
+  //   useAppContext();
 
   // Extract and sort the data only on the first render or when pluginData changes
   useEffect(() => {
@@ -41,6 +45,12 @@ export function Maintenance({
     });
 
     setTasksPerChapter(newTasksPerChapter);
+
+    // if(!firstChecklistItemText.maintenance)
+    // if (firstChecklistItemText && !firstChecklistItemText.maintenance) {
+    //   // setFirstChecklistItemText.maintenance
+    //   console.log(pluginData[0].chapter.tasks[0]);
+    // }
   }, [sortedData, pluginData]);
 
   if (false) {

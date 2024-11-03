@@ -4,6 +4,7 @@ import { Maintenance } from "./components/maintenance/Maintenance";
 import { Operational } from "./components/operational/Operational";
 import { ModalComponent } from "./common/Modal";
 import { useAppContext } from "./context/appContext";
+import { Error } from "./components/Error";
 function App() {
   const [typeOfChecklist, setTypeOfChecklist] = useState("");
   const [pluginData, setPluginData] = useState<any>([]);
@@ -11,44 +12,55 @@ function App() {
 
   const isMaintenance = typeOfChecklist == "maintenance";
 
-  const { modalIsOpen, setIsOpen, modalData, setFullPluginData, modalText } =
-    useAppContext();
+  const {
+    modalIsOpen,
+    setIsOpen,
+    modalData,
+    // setFullPluginData,
+    modalText,
+    errorMsg,
+    setErrorMsg,
+  } = useAppContext();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(
-        "https://rafael-plugin-server.onrender.com/getData"
-        // "http://localhost:3000/getData"
-      ); // await fetch("http://localhost:3000/getData");
-      // const res = await fetch("http://192.168.1.224:3000/getData");
-      // const res = await fetch(
-      //   "https://rafael-plugin-server.onrender.com/getData",
-      //   {
-      //     method: "GET",
-      //     headers: { "Content-Type": "application/json" },
-      //   }
-      // );
-      // console.log("yee idk");
-      const data = await res.json();
-      if (data && data.checklistData) {
-        console.log("FETCHED DATA: ");
+    setTimeout(() => setErrorMsg(""), 2000);
+  }, [errorMsg]);
 
-        // console.log(data.checklistData);
-        setPluginData(data.checklistData);
-        setFullPluginData(data.checklistData);
-      } else {
-        console.log("FAILED FETCHDATA");
-        setPluginData(mockkDATA);
-      }
-    };
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   const res = await fetch(
+    //     "https://rafael-plugin-server.onrender.com/getData"
+    //     // "http://localhost:3000/getData"
+    //   ); // await fetch("http://localhost:3000/getData");
+    //   // const res = await fetch("http://192.168.1.224:3000/getData");
+    //   // const res = await fetch(
+    //   //   "https://rafael-plugin-server.onrender.com/getData",
+    //   //   {
+    //   //     method: "GET",
+    //   //     headers: { "Content-Type": "application/json" },
+    //   //   }
+    //   // );
+    //   // console.log("yee idk");
+    //   const data = await res.json();
+    //   if (data && data.checklistData) {
+    //     console.log("FETCHED DATA: ");
 
-    try {
-      fetchData();
-    } catch (e) {
-      console.log("in the first catch", e);
-      // setPluginData(mockkDATA);
-    }
-    // setPluginData(mockkDATA);
+    //     // console.log(data.checklistData);
+    //     setPluginData(data.checklistData);
+    //     setFullPluginData(data.checklistData);
+    //   } else {
+    //     console.log("FAILED FETCHDATA");
+    //     setPluginData(mockkDATA);
+    //   }
+    // };
+
+    // try {
+    //   fetchData();
+    // } catch (e) {
+    //   console.log("in the first catch", e);
+    //   // setPluginData(mockkDATA);
+    // }
+    setPluginData(mockkDATA);
     // setFullPluginData(mockkDATA);
   }, []);
 
@@ -77,6 +89,7 @@ function App() {
           modalText={modalText}
         />
       ) : null}
+      {errorMsg ? <Error errorMsg={errorMsg} /> : null}
     </div>
   );
 }

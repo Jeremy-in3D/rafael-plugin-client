@@ -9,6 +9,10 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import { OperationalFullChapterList } from "../operational/OperationalFullChapterList";
 import { MaintenanceFullChapterList } from "./MaintenanceFullChapterList";
 import { useAppContext } from "../../context/appContext";
+import {
+  findFirstUncheckedTask,
+  isReadyToStartNewChapter,
+} from "../../common/findLastCheckedValueInData";
 // import TableComponent from "./Table";
 // import { MaintenanceChecklistByItem } from "./MaintenanceChecklistByItem";
 
@@ -64,6 +68,17 @@ export function Checklist({
   //     }
   //   }
   // };
+  // console.log("yes");
+  // console.log({ selectedChapters });
+  const firstUncheckedTaskData = isMaintenance
+    ? findFirstUncheckedTask(pluginData)
+    : null;
+  const isCurrentChapterTasksComplete = isMaintenance
+    ? isReadyToStartNewChapter(pluginData)
+    : false;
+  // const isReadyToStartNewChapter = isReadyToStartNewChapter(pluginData);
+  // console.log({ firstUncheckedTaskData });
+  // console.log(pluginData);
 
   const chapterName = pluginData[selectedTask?.chapterIdx]?.chapter?.name;
   const taskName =
@@ -94,6 +109,11 @@ export function Checklist({
             width: "90%",
           }}
         >
+          {selectedChapters.length && firstUncheckedTaskData ? (
+            <div style={{ position: "absolute", right: "30%" }}>
+              {`${firstUncheckedTaskData.chapterName} - ${firstUncheckedTaskData.task?.name}`}
+            </div>
+          ) : null}
           <div
             className="vertical-align"
             style={{ marginLeft: "0.5em" }}
@@ -177,7 +197,13 @@ export function Checklist({
           }}
         >
           <button
-            style={{ marginLeft: "3em", border: "1px solid rgb(0,0,0,0.6)" }}
+            style={{
+              background: isCurrentChapterTasksComplete ? "#000032" : "grey",
+              opacity: isCurrentChapterTasksComplete ? 1 : 0.4,
+              marginLeft: "3em",
+              color: "white",
+              border: "1px solid rgb(0,0,0,0.6)",
+            }}
             onClick={() => {
               if (nextChapterBtnText === "סיום") {
                 confirm("בטוח שתרצה לסיים?");

@@ -23,9 +23,26 @@ type Context = {
   setModalText: React.Dispatch<React.SetStateAction<string>>;
   currentQuestionHeaderText: string;
   setCurrentQuestionHeaderText: React.Dispatch<React.SetStateAction<string>>;
+  errorMsg: string;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
+  firstChecklistItemText: {
+    maintenance: string;
+    operational: string;
+  };
+  setFirstChecklistItemText: React.Dispatch<
+    React.SetStateAction<{
+      maintenance: string;
+      operational: string;
+    }>
+  >;
 };
 
 export const AppContext = createContext<Context | null>(null);
+
+type FirstCheckItem = {
+  maintenance: string;
+  operational: string;
+};
 
 export default function AppContextProvider({
   children,
@@ -41,6 +58,9 @@ export default function AppContextProvider({
   const [modalText, setModalText] = useState<string>("");
   const [currentQuestionHeaderText, setCurrentQuestionHeaderText] =
     useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [firstChecklistItemText, setFirstChecklistItemText] =
+    useState<FirstCheckItem>({ maintenance: "", operational: "" });
 
   return (
     <AppContext.Provider
@@ -63,6 +83,10 @@ export default function AppContextProvider({
         setModalText,
         currentQuestionHeaderText,
         setCurrentQuestionHeaderText,
+        errorMsg,
+        setErrorMsg,
+        firstChecklistItemText,
+        setFirstChecklistItemText,
       }}
     >
       {children}
@@ -93,6 +117,10 @@ export function useAppContext() {
       setModalText: () => {},
       currentQuestionHeaderText: "",
       setCurrentQuestionHeaderText: () => {},
+      errorMsg: "",
+      setErrorMsg: () => {},
+      firstChecklistItemText: { maintenance: "", operational: "" },
+      setFirstChecklistItemText: () => {},
     };
   }
 

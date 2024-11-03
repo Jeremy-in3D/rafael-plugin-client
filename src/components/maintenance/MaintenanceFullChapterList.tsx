@@ -24,10 +24,18 @@ export function MaintenanceFullChapterList({
   isEditMode,
 }: MaintenanceFullChapterListProps) {
   const [openedChapterContent, setOpenedChatperContent] = useState([]);
+  const [copiedPluginData, setCopiedPluginData] = useState<any>(null);
   // const [completedChapters, setCompletedChapters] = useState<any[]>([]);
 
   if (false) {
     console.log(pluginData, selectedTask, selectedChapters);
+  }
+
+  if (!copiedPluginData) {
+    if (pluginData?.length) {
+      const pluginCopy = [...pluginData];
+      setCopiedPluginData(pluginCopy);
+    }
   }
 
   const {
@@ -200,6 +208,7 @@ export function MaintenanceFullChapterList({
                                         {checkData.isChecked ? (
                                           <img
                                             style={{
+                                              border: "1px solid  blue",
                                               width: "1.5em",
                                               height: "1.5em",
                                             }}
@@ -254,6 +263,7 @@ export function MaintenanceFullChapterList({
                                             style={{
                                               width: "1.5em",
                                               height: "1.5em",
+                                              border: "1px solid green",
                                             }}
                                             onClick={() => {
                                               if (isEditMode) {
@@ -272,7 +282,10 @@ export function MaintenanceFullChapterList({
                                                     checklistIdx,
                                                   },
                                                   maintenanceCompletedChapters,
-                                                  selectedChapters
+                                                  selectedChapters,
+                                                  null,
+                                                  true,
+                                                  copiedPluginData
                                                 )
                                               ) {
                                                 (
@@ -305,6 +318,7 @@ export function MaintenanceFullChapterList({
                                             style={{
                                               width: "1.5em",
                                               height: "1.5em",
+                                              border: "1px solid red",
                                             }}
                                             src="/images/Check-4.png"
                                           />

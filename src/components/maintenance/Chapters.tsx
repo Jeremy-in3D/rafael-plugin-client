@@ -234,7 +234,7 @@ ChapterListItemProps) => {
     useState<null | boolean>(null);
   // let isEveryTaskInChapterComplete;
 
-  const { maintenanceCompletedChapters, setMaintenanceCompletedChapters } =
+  const { maintenanceCompletedChapters, setMaintenanceCompletedChapters }: any =
     useAppContext();
 
   useEffect(() => {

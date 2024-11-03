@@ -9,13 +9,15 @@ export const checkPreviousTasks = (
   selectedTask: any,
   maintenanceCompletedChapters: any,
   selectedChapters: any,
-  isRelevantTask?: any
+  isRelevantTask?: any,
+  isOnClick?: any,
+  copiedPluginData?: any
   // setCurrentQuestionHeaderText?: any
 ) => {
   let testVal = true;
 
   if (isRelevantTask) {
-    console.log({ selectedTask, selectedChapters });
+    // console.log({ selectedTask, selectedChapters });
   }
 
   // console.log({c})
@@ -39,6 +41,8 @@ export const checkPreviousTasks = (
                 ].checkListData.length > 1
               ) {
                 // logic here for chapter == 0 and task == 0 and multiple questions in task
+                if (isOnClick)
+                  console.log("first case where chapter = 0 and task = 0");
                 pluginData[selectedTask.chapterIdx].chapter.tasks[
                   selectedTask.taskIdx
                 ]?.checkListData?.map((question: any, questionIdx: number) => {
@@ -60,6 +64,76 @@ export const checkPreviousTasks = (
                   }
                 });
               } else {
+                if (isOnClick) {
+                  // console.log({ pluginData });
+                  console.log(" well this is getting weird");
+                  // console.log({ selectedTask });
+                  // console.log({ selectedChapters });
+                  // console.log({ maintenanceCompletedChapters });
+                  // console.log({ copiedPluginData });
+
+                  if (
+                    selectedChapters.length == 1 &&
+                    selectedChapters[0] != 0
+                  ) {
+                    const lastQuestionInPreviousChapterData =
+                      copiedPluginData[selectedChapters[0] - 1]?.chapter?.tasks[
+                        copiedPluginData[selectedChapters[0] - 1]?.chapter
+                          ?.tasks.length - 1
+                      ].checkListData;
+
+                    if (
+                      lastQuestionInPreviousChapterData[
+                        copiedPluginData[selectedChapters[0] - 1]?.chapter
+                          ?.tasks[
+                          copiedPluginData[selectedChapters[0] - 1]?.chapter
+                            ?.tasks.length - 1
+                        ].checkListData.length - 1
+                      ].isChecked == false
+                    ) {
+                      testVal = false;
+                      return;
+                    }
+                  } else if (selectedChapters.length > 1) {
+                    if (selectedChapters.includes(0)) {
+                      // console.log(
+                      //   pluginData[0].chapter.tasks[0].checkListData[0]
+                      //     .isChecked
+                      // );
+                      const firstChapterTaskIsChecked =
+                        pluginData[0].chapter.tasks[0].checkListData[0]
+                          .isChecked;
+                      if (!firstChapterTaskIsChecked) {
+                        testVal = true;
+                        return;
+                      }
+                    }
+
+                    const firtChapterInOpenedChapters = Math.min(
+                      ...selectedChapters
+                    );
+                    const lastQuestionInPreviousChapterData =
+                      copiedPluginData[firtChapterInOpenedChapters - 1]?.chapter
+                        ?.tasks[
+                        copiedPluginData[firtChapterInOpenedChapters - 1]
+                          ?.chapter?.tasks.length - 1
+                      ].checkListData[
+                        copiedPluginData[firtChapterInOpenedChapters - 1]
+                          ?.chapter?.tasks[
+                          copiedPluginData[firtChapterInOpenedChapters - 1]
+                            ?.chapter?.tasks.length - 1
+                        ].checkListData.length - 1
+                      ].isChecked;
+
+                    // console.log("HOLOLO: ", lastQuestionInPreviousChapterData);
+
+                    if (!lastQuestionInPreviousChapterData) {
+                      testVal = false;
+                      return;
+                    }
+                  }
+                }
+
                 if (
                   pluginData[selectedTask.chapterIdx]?.chapter.tasks[
                     selectedTask.taskIdx
@@ -70,6 +144,7 @@ export const checkPreviousTasks = (
                 }
               }
             } else {
+              // if (isOnClick) console.log("now this is getting super weird");
               if (
                 pluginData[selectedTask.chapterIdx].chapter?.tasks[
                   selectedTask.taskIdx
@@ -117,6 +192,7 @@ export const checkPreviousTasks = (
                     1
                 ]?.checkListData.length > 1;
               //  logic here for first task in chapter > 0, task == 0 and where multiple questions per task
+              // console.log("other case where chapter > 0 but task is === 0");
               if (chapterNotZeroTaskIsZeroAndMultipleQuestionsTask) {
                 if (
                   pluginData[selectedTask.chapterIdx - 1].chapter.tasks[
@@ -229,12 +305,17 @@ export const checkPreviousTasks = (
 export const checkNextTasks = (pluginData: any, selectedTask: any) => {
   let testVal = false;
 
+  console.log("in checkNextTask function in edit mode");
+
   pluginData.forEach((chapter: any, chapterIdx: number) => {
     if (!chapter) {
       return false;
     }
 
     for (const [key, value] of Object.entries(chapter)) {
+      // if ((testVal = true)) {
+      //   return;
+      // }
       if (key === "chapter") {
         (value as any).tasks.forEach((task: any, taskIdx: number) => {
           if (
@@ -242,11 +323,13 @@ export const checkNextTasks = (pluginData: any, selectedTask: any) => {
             taskIdx !== selectedTask.taskIdx
           ) {
             // If it's not the current selected task, continue
+            console.log("in 1");
             return;
           }
 
           // Check if it's the last checklist item in task
           if (selectedTask.checklistIdx < task.checkListData.length - 1) {
+            console.log("in 2");
             // If not, check the next checklist item within the same task
             if (
               task.checkListData[selectedTask.checklistIdx + 1].isChecked ===
@@ -258,15 +341,20 @@ export const checkNextTasks = (pluginData: any, selectedTask: any) => {
           } else {
             // If it's the last checklist item in task, check the next task or the first task of the next chapter
             if (taskIdx < (value as any).tasks.length - 1) {
+              console.log("in 3");
               // If not the last task in the current chapter, check the first checklist item of the next task
               if (
                 (value as any).tasks[taskIdx + 1].checkListData[0].isChecked ===
                 true
               ) {
-                testVal = true;
+                console.log((value as any).tasks[taskIdx + 1].checkListData[0]);
+                console.log("in 3.4");
+                testVal = false;
+                return;
               }
-              return;
+              console.log("in 3.8");
             } else {
+              console.log("in 4");
               // If it's the last task in the current chapter, check the first task in the next chapter
               if (chapterIdx < pluginData.length - 1) {
                 if (
