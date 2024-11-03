@@ -34,9 +34,18 @@ export function MaintenanceFullChapterList({
   if (!copiedPluginData) {
     if (pluginData?.length) {
       const pluginCopy = [...pluginData];
+      // console.log("THIS IS COPING PLUGINCOPY: ", pluginCopy);
       setCopiedPluginData(pluginCopy);
     }
   }
+
+  // useEffect(() => {
+  //   if (pluginData?.length) {
+  //     const pluginCopy = [...pluginData];
+  //     console.log("THIS IS COPING PLUGINCOPY: ", pluginCopy);
+  //     setCopiedPluginData(pluginCopy);
+  //   }
+  // }, [copiedPluginData]);
 
   const {
     searchOption,
@@ -208,7 +217,6 @@ export function MaintenanceFullChapterList({
                                         {checkData.isChecked ? (
                                           <img
                                             style={{
-                                              border: "1px solid  blue",
                                               width: "1.5em",
                                               height: "1.5em",
                                             }}
@@ -218,12 +226,58 @@ export function MaintenanceFullChapterList({
                                                 const chapterArrCopy = [
                                                   ...openedChapterContent,
                                                 ];
+                                                console.log(
+                                                  "is edit mode check: "
+                                                );
+                                                // console.log(
+                                                //   checkNextTasks(
+                                                //     pluginData,
+                                                //     {
+                                                //       chapterIdx,
+                                                //       taskIdx,
+                                                //       checklistIdx,
+                                                //     },
+                                                //     selectedChapters,
+                                                //     copiedPluginData,
+                                                //     chapter.chapter.tasks,
+                                                //     { task, taskIdx },
+                                                //     checkData.name,
+                                                //     true,
+                                                //     {
+                                                //       isLastTaskInChapter:
+                                                //         chapter.chapter.tasks
+                                                //           .length -
+                                                //           1 ==
+                                                //         taskIdx,
+
+                                                //     }
+                                                //   )
+                                                // );
                                                 if (
-                                                  !checkNextTasks(pluginData, {
-                                                    chapterIdx,
-                                                    taskIdx,
-                                                    checklistIdx,
-                                                  })
+                                                  !checkNextTasks(
+                                                    pluginData,
+                                                    {
+                                                      chapterIdx,
+                                                      taskIdx,
+                                                      checklistIdx,
+                                                    },
+                                                    selectedChapters,
+                                                    copiedPluginData,
+                                                    // chapter.chapter.tasks,
+                                                    // { task, taskIdx },
+                                                    checkData.name,
+                                                    true,
+                                                    {
+                                                      isLastTaskInChapter:
+                                                        chapter.chapter.tasks
+                                                          .length -
+                                                          1 ==
+                                                        taskIdx,
+                                                      // isLastTaskInChapter:
+                                                      //   chapter.chapter.tasks
+                                                      //     .length - 1,
+                                                    }
+                                                  )
                                                 ) {
                                                   (
                                                     chapterArrCopy[
@@ -241,6 +295,9 @@ export function MaintenanceFullChapterList({
                                                   setTriggerRerender(
                                                     (prevState) => !prevState
                                                   );
+                                                  console.log(
+                                                    "it was correctly incorrectly false!"
+                                                  );
                                                 } else {
                                                   console.log(". ");
                                                 }
@@ -256,14 +313,16 @@ export function MaintenanceFullChapterList({
                                             },
                                             maintenanceCompletedChapters,
                                             selectedChapters,
-                                            true
+                                            true,
+                                            false,
+                                            copiedPluginData,
+                                            checkData.name
                                             // setCurrentQuestionHeaderText
                                           ) ? (
                                           <img
                                             style={{
                                               width: "1.5em",
                                               height: "1.5em",
-                                              border: "1px solid green",
                                             }}
                                             onClick={() => {
                                               if (isEditMode) {
@@ -285,7 +344,8 @@ export function MaintenanceFullChapterList({
                                                   selectedChapters,
                                                   null,
                                                   true,
-                                                  copiedPluginData
+                                                  copiedPluginData,
+                                                  checkData.name
                                                 )
                                               ) {
                                                 (
@@ -318,7 +378,6 @@ export function MaintenanceFullChapterList({
                                             style={{
                                               width: "1.5em",
                                               height: "1.5em",
-                                              border: "1px solid red",
                                             }}
                                             src="/images/Check-4.png"
                                           />

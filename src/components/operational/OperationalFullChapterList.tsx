@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import CheckIcon from "@mui/icons-material/Check";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+// import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+// import CheckIcon from "@mui/icons-material/Check";
+// import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { useAppContext } from "../../context/appContext";
 
 type OperationalFullChapterListProps = {

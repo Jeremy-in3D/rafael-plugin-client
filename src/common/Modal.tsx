@@ -54,12 +54,46 @@ export function ModalComponent({
       >
         {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
         <div style={{ height: "100%", width: "100%" }}>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button style={{ fontSize: "1em" }} onClick={closeModal}>
-              x
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "absolute",
+              width: "90%",
+              zIndex: 20,
+            }}
+          >
+            <button
+              style={{
+                fontSize: "1.1em",
+                width: "5em",
+                height: "100%",
+              }}
+              onClick={closeModal}
+            >
+              X
             </button>
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              height: "3em",
+            }}
+          >
+            {/* <button
+              style={{ border: "1px solid red", width: "5em", height: "100%" }}
+              onClick={closeModal}
+            >
+              x
+            </button> */}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             {modalData && modalData != "images/null" ? (
               <img src={modalData} />
             ) : null}
