@@ -646,14 +646,14 @@ function findPreviousItemStatus(data: any, textToFind: any) {
             // Current checklist item is the first in chapter, look at the previous chapter's last task
             const previousChapter = data[chapterIndex - 1];
             const lastTask =
-              previousChapter.chapter.tasks[
-                previousChapter.chapter.tasks.length - 1
+              previousChapter?.chapter?.tasks[
+                previousChapter?.chapter?.tasks.length - 1
               ];
-            return lastTask.checkListData[lastTask.checkListData.length - 1]
-              .isChecked;
+            return lastTask?.checkListData[lastTask.checkListData.length - 1]
+              ?.isChecked;
           } else {
             // This is the very first checkListData item in the array
-            return checkItem.isChecked;
+            return checkItem?.isChecked;
           }
         }
       }
