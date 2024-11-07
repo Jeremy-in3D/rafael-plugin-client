@@ -27,40 +27,40 @@ function App() {
   }, [errorMsg]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(
-        "https://rafael-plugin-server.onrender.com/getData"
-        // "http://localhost:3000/getData"
-      ); // await fetch("http://localhost:3000/getData");
-      // const res = await fetch("http://192.168.1.224:3000/getData");
-      // const res = await fetch(
-      //   "https://rafael-plugin-server.onrender.com/getData",
-      //   {
-      //     method: "GET",
-      //     headers: { "Content-Type": "application/json" },
-      //   }
-      // );
-      // console.log("yee idk");
-      const data = await res.json();
-      if (data && data.checklistData) {
-        console.log("FETCHED DATA: ");
+    // const fetchData = async () => {
+    //   const res = await fetch(
+    //     "https://rafael-plugin-server.onrender.com/getData"
+    //     // "http://localhost:3000/getData"
+    //   ); // await fetch("http://localhost:3000/getData");
+    //   // const res = await fetch("http://192.168.1.224:3000/getData");
+    //   // const res = await fetch(
+    //   //   "https://rafael-plugin-server.onrender.com/getData",
+    //   //   {
+    //   //     method: "GET",
+    //   //     headers: { "Content-Type": "application/json" },
+    //   //   }
+    //   // );
+    //   // console.log("yee idk");
+    //   const data = await res.json();
+    //   if (data && data.checklistData) {
+    //     console.log("FETCHED DATA: ");
 
-        // console.log(data.checklistData);
-        setPluginData(data.checklistData);
-        setFullPluginData(data.checklistData);
-      } else {
-        console.log("FAILED FETCHDATA");
-        setPluginData(mockkDATA);
-      }
-    };
+    //     // console.log(data.checklistData);
+    //     setPluginData(data.checklistData);
+    //     setFullPluginData(data.checklistData);
+    //   } else {
+    //     console.log("FAILED FETCHDATA");
+    //     setPluginData(mockkDATA);
+    //   }
+    // };
 
-    try {
-      fetchData();
-    } catch (e) {
-      console.log("in the first catch", e);
-      // setPluginData(mockkDATA);
-    }
-    // setPluginData(mockkDATA);
+    // try {
+    //   fetchData();
+    // } catch (e) {
+    //   console.log("in the first catch", e);
+    //   // setPluginData(mockkDATA);
+    // }
+    setPluginData(mockkDATA);
     // setFullPluginData(mockkDATA);
   }, []);
 

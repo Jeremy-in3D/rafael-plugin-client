@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-// import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-// import CheckIcon from "@mui/icons-material/Check";
-// import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import CheckIcon from "@mui/icons-material/Check";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 // import { CompareSharp } from "@mui/icons-material";
 import {
   checkNextTasks,
@@ -215,12 +215,14 @@ export function MaintenanceFullChapterList({
                                           {checkData.name}
                                         </div>
                                         {checkData.isChecked ? (
-                                          <img
-                                            style={{
-                                              width: "1.5em",
-                                              height: "1.5em",
+                                          <CheckIcon
+                                            sx={{
+                                              color: isEditMode
+                                                ? "red"
+                                                : "#40e01f",
+
+                                              // border: "1px solid blue",
                                             }}
-                                            src="/images/Checked-faded-4.png"
                                             onClick={() => {
                                               if (isEditMode) {
                                                 const chapterArrCopy = [
@@ -229,30 +231,7 @@ export function MaintenanceFullChapterList({
                                                 console.log(
                                                   "is edit mode check: "
                                                 );
-                                                // console.log(
-                                                //   checkNextTasks(
-                                                //     pluginData,
-                                                //     {
-                                                //       chapterIdx,
-                                                //       taskIdx,
-                                                //       checklistIdx,
-                                                //     },
-                                                //     selectedChapters,
-                                                //     copiedPluginData,
-                                                //     chapter.chapter.tasks,
-                                                //     { task, taskIdx },
-                                                //     checkData.name,
-                                                //     true,
-                                                //     {
-                                                //       isLastTaskInChapter:
-                                                //         chapter.chapter.tasks
-                                                //           .length -
-                                                //           1 ==
-                                                //         taskIdx,
 
-                                                //     }
-                                                //   )
-                                                // );
                                                 if (
                                                   !checkNextTasks(
                                                     pluginData,
@@ -295,16 +274,76 @@ export function MaintenanceFullChapterList({
                                                   setTriggerRerender(
                                                     (prevState) => !prevState
                                                   );
-                                                  console.log(
-                                                    "it was correctly incorrectly false!"
-                                                  );
                                                 } else {
                                                   console.log(". ");
                                                 }
                                               }
                                             }}
                                           />
-                                        ) : checkPreviousTasks(
+                                        ) : // <img
+                                        //   style={{
+                                        //     width: "1.5em",
+                                        //     height: "1.5em",
+                                        //   }}
+                                        //   src="/images/Checked-faded-4.png"
+                                        //   onClick={() => {
+                                        //     if (isEditMode) {
+                                        //       const chapterArrCopy = [
+                                        //         ...openedChapterContent,
+                                        //       ];
+                                        //       console.log(
+                                        //         "is edit mode check: "
+                                        //       );
+
+                                        //       if (
+                                        //         !checkNextTasks(
+                                        //           pluginData,
+                                        //           {
+                                        //             chapterIdx,
+                                        //             taskIdx,
+                                        //             checklistIdx,
+                                        //           },
+                                        //           selectedChapters,
+                                        //           copiedPluginData,
+                                        //           // chapter.chapter.tasks,
+                                        //           // { task, taskIdx },
+                                        //           checkData.name,
+                                        //           true,
+                                        //           {
+                                        //             isLastTaskInChapter:
+                                        //               chapter.chapter.tasks
+                                        //                 .length -
+                                        //                 1 ==
+                                        //               taskIdx,
+                                        //             // isLastTaskInChapter:
+                                        //             //   chapter.chapter.tasks
+                                        //             //     .length - 1,
+                                        //           }
+                                        //         )
+                                        //       ) {
+                                        //         (
+                                        //           chapterArrCopy[
+                                        //             chapterIdx
+                                        //           ] as any
+                                        //         ).chapter.tasks[
+                                        //           taskIdx
+                                        //         ].checkListData[
+                                        //           checklistIdx
+                                        //         ].isChecked = false;
+                                        //         //   );
+                                        //         setOpenedChatperContent(
+                                        //           chapterArrCopy
+                                        //         );
+                                        //         setTriggerRerender(
+                                        //           (prevState) => !prevState
+                                        //         );
+                                        //       } else {
+                                        //         console.log(". ");
+                                        //       }
+                                        //     }
+                                        //   }}
+                                        // />
+                                        checkPreviousTasks(
                                             pluginData,
                                             {
                                               chapterIdx,
@@ -319,11 +358,13 @@ export function MaintenanceFullChapterList({
                                             checkData.name
                                             // setCurrentQuestionHeaderText
                                           ) ? (
-                                          <img
-                                            style={{
-                                              width: "1.5em",
-                                              height: "1.5em",
-                                            }}
+                                          <GpsFixedIcon
+                                            // sx={
+                                            // isEditMode
+                                            //   ? { color: "red" }
+                                            //   : { color: "#40e01f" }
+                                            // { border: "1px solid red" }
+                                            // }
                                             onClick={() => {
                                               if (isEditMode) {
                                                 return;
@@ -368,19 +409,69 @@ export function MaintenanceFullChapterList({
                                                 console.log("out");
                                               }
                                             }}
-                                            src="/images/Check-4.png"
                                           />
                                         ) : (
-                                          // <RadioButtonUncheckedIcon
-                                          //   style={{ marginLeft: "2em" }}
+                                          // <img
+                                          //   style={{
+                                          //     width: "1.5em",
+                                          //     height: "1.5em",
+                                          //   }}
+                                          //   onClick={() => {
+                                          //     if (isEditMode) {
+                                          //       return;
+                                          //     }
+                                          //     const chapterArrCopy = [
+                                          //       ...openedChapterContent,
+                                          //     ];
+
+                                          //     if (
+                                          //       checkPreviousTasks(
+                                          //         chapterArrCopy,
+                                          //         {
+                                          //           chapterIdx,
+                                          //           taskIdx,
+                                          //           checklistIdx,
+                                          //         },
+                                          //         maintenanceCompletedChapters,
+                                          //         selectedChapters,
+                                          //         null,
+                                          //         true,
+                                          //         copiedPluginData,
+                                          //         checkData.name
+                                          //       )
+                                          //     ) {
+                                          //       (
+                                          //         chapterArrCopy[
+                                          //           chapterIdx
+                                          //         ] as any
+                                          //       ).chapter.tasks[
+                                          //         taskIdx
+                                          //       ].checkListData[
+                                          //         checklistIdx
+                                          //       ].isChecked = true;
+                                          //       //   );
+                                          //       setOpenedChatperContent(
+                                          //         chapterArrCopy
+                                          //       );
+                                          //       setTriggerRerender(
+                                          //         (prevState) => !prevState
+                                          //       );
+                                          //     } else {
+                                          //       console.log("out");
+                                          //     }
+                                          //   }}
+                                          //   src="/images/Check-4.png"
                                           // />
-                                          <img
-                                            style={{
-                                              width: "1.5em",
-                                              height: "1.5em",
-                                            }}
-                                            src="/images/Check-4.png"
+                                          <RadioButtonUncheckedIcon
+                                            style={{ marginLeft: "2em" }}
                                           />
+                                          // <img
+                                          //   style={{
+                                          //     width: "1.5em",
+                                          //     height: "1.5em",
+                                          //   }}
+                                          //   src="/images/Check-4.png"
+                                          // />
                                         )}
                                       </div>
                                       {task.table ? (

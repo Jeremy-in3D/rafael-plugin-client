@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-// import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-// import CheckIcon from "@mui/icons-material/Check";
-// import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import CheckIcon from "@mui/icons-material/Check";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { useAppContext } from "../../context/appContext";
 
 type OperationalFullChapterListProps = {
@@ -121,12 +121,10 @@ export function OperationalFullChapterList({
                                   task.questions &&
                                   task.questions["question-2"] &&
                                   task?.questions["question-2"]?.isChecked ? (
-                                    <img
-                                      style={{
-                                        width: "1.5em",
-                                        height: "1.5em",
+                                    <CheckIcon
+                                      sx={{
+                                        color: isEditMode ? "red" : "#40e01f",
                                       }}
-                                      src="/images/Checked-faded-4.png"
                                       onClick={() => {
                                         const testThing = [
                                           ...openedChapterContent,
@@ -150,7 +148,36 @@ export function OperationalFullChapterList({
                                         return;
                                       }}
                                     />
-                                  ) : // <CheckIcon
+                                  ) : // <img
+                                  //   style={{
+                                  //     width: "1.5em",
+                                  //     height: "1.5em",
+                                  //   }}
+                                  //   src="/images/Checked-faded-4.png"
+                                  //   onClick={() => {
+                                  //     const testThing = [
+                                  //       ...openedChapterContent,
+                                  //     ];
+                                  //     if (isEditMode) {
+                                  //       if (
+                                  //         !checkNextTask(
+                                  //           testThing,
+                                  //           { chapterIdx: idx, taskIdx },
+                                  //           true
+                                  //         )
+                                  //       ) {
+                                  //         (
+                                  //           testThing[idx] as any
+                                  //         ).chapter.tasks[taskIdx].questions[
+                                  //           "question-2"
+                                  //         ].isChecked = false;
+                                  //         setOpenedChatperContent(testThing);
+                                  //       }
+                                  //     }
+                                  //     return;
+                                  //   }}
+                                  // />
+                                  // <CheckIcon
                                   //   sx={{
                                   //     color: isEditMode ? "red" : "#40e01f",
                                   //   }}
@@ -182,12 +209,7 @@ export function OperationalFullChapterList({
                                       { chapterIdx: idx, taskIdx },
                                       false
                                     ) ? (
-                                    <img
-                                      style={{
-                                        width: "1.5em",
-                                        height: "1.5em",
-                                      }}
-                                      src="/images/Check-4.png"
+                                    <GpsFixedIcon
                                       onClick={() => {
                                         if (isEditMode) {
                                           return;
@@ -214,6 +236,37 @@ export function OperationalFullChapterList({
                                       }}
                                     />
                                   ) : (
+                                    // <img
+                                    //   style={{
+                                    //     width: "1.5em",
+                                    //     height: "1.5em",
+                                    //   }}
+                                    //   src="/images/Check-4.png"
+                                    //   onClick={() => {
+                                    //     if (isEditMode) {
+                                    //       return;
+                                    //     }
+                                    //     const chapterArrCopy = [
+                                    //       ...openedChapterContent,
+                                    //     ];
+                                    //     if (
+                                    //       checkPreviousTasks(
+                                    //         chapterArrCopy,
+                                    //         { chapterIdx: idx, taskIdx },
+                                    //         false
+                                    //       )
+                                    //     ) {
+                                    //       (
+                                    //         chapterArrCopy[idx] as any
+                                    //       ).chapter.tasks[taskIdx].questions[
+                                    //         "question-2"
+                                    //       ].isChecked = true;
+                                    //       setOpenedChatperContent(
+                                    //         chapterArrCopy
+                                    //       );
+                                    //     }
+                                    //   }}
+                                    // />
                                     // <GpsFixedIcon
                                     //   onClick={() => {
                                     //     if (isEditMode) {
@@ -241,13 +294,15 @@ export function OperationalFullChapterList({
                                     //   }}
                                     // />
                                     // <RadioButtonUncheckedIcon />
-                                    <img
-                                      style={{
-                                        width: "1.5em",
-                                        height: "1.5em",
-                                      }}
-                                      src="/images/Check-4.png"
-                                    />
+                                    <RadioButtonUncheckedIcon />
+
+                                    // <img
+                                    //   style={{
+                                    //     width: "1.5em",
+                                    //     height: "1.5em",
+                                    //   }}
+                                    //   src="/images/Check-4.png"
+                                    // />
                                   )}
                                 </div>
                                 {task?.questions["question-2"]?.image ? (
@@ -295,12 +350,10 @@ export function OperationalFullChapterList({
                               <div style={{ display: "flex", flex: 1 }}>
                                 <div style={{ marginLeft: "1em" }}>
                                   {task?.questions["question-1"]?.isChecked ? (
-                                    <img
-                                      style={{
-                                        width: "1.5em",
-                                        height: "1.5em",
+                                    <CheckIcon
+                                      sx={{
+                                        color: isEditMode ? "red" : "#40e01f",
                                       }}
-                                      src="/images/Checked-faded-4.png"
                                       onClick={() => {
                                         const chapterArrCopy = [
                                           ...openedChapterContent,
@@ -326,7 +379,38 @@ export function OperationalFullChapterList({
                                         return;
                                       }}
                                     />
-                                  ) : // <CheckIcon
+                                  ) : // <img
+                                  //   style={{
+                                  //     width: "1.5em",
+                                  //     height: "1.5em",
+                                  //   }}
+                                  //   src="/images/Checked-faded-4.png"
+                                  //   onClick={() => {
+                                  //     const chapterArrCopy = [
+                                  //       ...openedChapterContent,
+                                  //     ];
+                                  //     if (isEditMode) {
+                                  //       if (
+                                  //         !checkNextTask(
+                                  //           chapterArrCopy,
+                                  //           { chapterIdx: idx, taskIdx },
+                                  //           true
+                                  //         )
+                                  //       ) {
+                                  //         (
+                                  //           chapterArrCopy[idx] as any
+                                  //         ).chapter.tasks[taskIdx].questions[
+                                  //           "question-1"
+                                  //         ].isChecked = false;
+                                  //         setOpenedChatperContent(
+                                  //           chapterArrCopy
+                                  //         );
+                                  //       }
+                                  //     }
+                                  //     return;
+                                  //   }}
+                                  // />
+                                  // <CheckIcon
                                   //   sx={{
                                   //     color: isEditMode ? "red" : "#40e01f",
                                   //   }}
@@ -360,12 +444,7 @@ export function OperationalFullChapterList({
                                       { chapterIdx: idx, taskIdx },
                                       true
                                     ) ? (
-                                    <img
-                                      style={{
-                                        width: "1.5em",
-                                        height: "1.5em",
-                                      }}
-                                      src="/images/Check-4.png"
+                                    <GpsFixedIcon
                                       onClick={() => {
                                         const chapterArrCopy = [
                                           ...openedChapterContent,
@@ -391,6 +470,36 @@ export function OperationalFullChapterList({
                                       }}
                                     />
                                   ) : (
+                                    // <img
+                                    //   style={{
+                                    //     width: "1.5em",
+                                    //     height: "1.5em",
+                                    //   }}
+                                    //   src="/images/Check-4.png"
+                                    //   onClick={() => {
+                                    //     const chapterArrCopy = [
+                                    //       ...openedChapterContent,
+                                    //     ];
+
+                                    //     // return;
+                                    //     if (
+                                    //       checkPreviousTasks(
+                                    //         chapterArrCopy,
+                                    //         { chapterIdx: idx, taskIdx },
+                                    //         true
+                                    //       )
+                                    //     ) {
+                                    //       (
+                                    //         chapterArrCopy[idx] as any
+                                    //       ).chapter.tasks[taskIdx].questions[
+                                    //         "question-1"
+                                    //       ].isChecked = true;
+                                    //       setOpenedChatperContent(
+                                    //         chapterArrCopy
+                                    //       );
+                                    //     }
+                                    //   }}
+                                    // />
                                     // <GpsFixedIcon
                                     // onClick={() => {
                                     //   const chapterArrCopy = [
@@ -416,14 +525,14 @@ export function OperationalFullChapterList({
                                     //   }
                                     // }}
                                     // />
-                                    // <RadioButtonUncheckedIcon />
-                                    <img
-                                      style={{
-                                        width: "1.5em",
-                                        height: "1.5em",
-                                      }}
-                                      src="/images/Check-4.png"
-                                    />
+                                    <RadioButtonUncheckedIcon />
+                                    // <img
+                                    //   style={{
+                                    //     width: "1.5em",
+                                    //     height: "1.5em",
+                                    //   }}
+                                    //   src="/images/Check-4.png"
+                                    // />
                                   )}
                                 </div>
                                 {task?.questions["question-1"]?.image ? (
