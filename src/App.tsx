@@ -16,7 +16,7 @@ function App() {
     modalIsOpen,
     setIsOpen,
     modalData,
-    setFullPluginData,
+    // setFullPluginData,
     modalText,
     errorMsg,
     setErrorMsg,
